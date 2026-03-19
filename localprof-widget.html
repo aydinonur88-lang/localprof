@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LocalProf — Yaşam Analizi</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#1a1917;--ink2:#4a4845;--ink3:#8a8784;
+  --paper:#faf9f7;--paper2:#f2f0ec;--paper3:#e8e4de;
+  --green:#1a6b4a;--green-bg:#eef5f1;
+  --rule:rgba(26,25,23,.1);
+  --serif:'DM Serif Display',Georgia,serif;
+  --sans:'DM Sans',sans-serif;
+}
+body{font-family:var(--sans);background:var(--paper);color:var(--ink);min-height:100vh}
+#app{max-width:660px;margin:0 auto;padding:1.5rem 1rem 3rem}
+.screen{display:none}.screen.active{display:block}
+#s-intro{text-align:center;padding:4rem 1rem 3rem;position:relative}
+.intro-rule{width:40px;height:2px;background:var(--ink);margin:0 auto 2rem}
+.intro-kicker{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);margin-bottom:1rem}
+.intro-headline{font-family:var(--serif);font-size:clamp(36px,6vw,52px);line-height:1.1;color:var(--ink);margin-bottom:.5rem;font-weight:400}
+.intro-headline em{font-style:italic;color:var(--green)}
+.intro-body{font-size:15px;color:var(--ink2);line-height:1.7;max-width:480px;margin:0 auto 2.5rem}
+.intro-cta-row{display:flex;align-items:center;justify-content:center;gap:1.5rem;flex-wrap:wrap}
+.btn-begin{display:inline-flex;align-items:center;gap:10px;padding:14px 28px;background:var(--ink);color:var(--paper);font-family:var(--sans);font-size:13px;font-weight:500;letter-spacing:.02em;border:none;cursor:pointer;transition:opacity .2s;border-radius:0}
+.btn-begin:hover{opacity:.82}
+.intro-meta{font-size:12px;color:var(--ink3)}
+.intro-footnote{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--rule);display:flex;gap:2rem;flex-wrap:wrap;justify-content:center}
+.footnote-item{font-size:11px;color:var(--ink3);letter-spacing:.04em;text-align:center}
+.footnote-item strong{color:var(--ink2);font-weight:500;display:block;font-size:18px;margin-bottom:2px;font-family:var(--serif)}
+.prog-wrap{margin-bottom:1.75rem}
+.prog-top{display:flex;justify-content:space-between;margin-bottom:6px}
+.prog-label{font-size:12px;color:var(--ink3)}
+.prog-track{height:1px;background:var(--rule);position:relative}
+.prog-fill{height:1px;background:var(--ink);transition:width .5s cubic-bezier(.4,0,.2,1);position:absolute;top:0;left:0}
+.q-badge{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--green);font-weight:500;margin-bottom:.75rem}
+.q-text{font-family:var(--serif);font-size:clamp(20px,3.5vw,26px);line-height:1.35;color:var(--ink);margin-bottom:.6rem;font-weight:400}
+.q-sub{font-size:13px;color:var(--ink3);line-height:1.6;margin-bottom:2rem;padding-left:1rem;border-left:2px solid var(--paper3)}
+.options{display:flex;flex-direction:column;gap:8px}
+.opt{padding:13px 16px;border:1px solid var(--paper3);background:var(--paper);font-family:var(--sans);font-size:14px;color:var(--ink2);cursor:pointer;text-align:left;transition:border-color .15s,background .15s,color .15s;line-height:1.45;display:flex;gap:12px;align-items:flex-start}
+.opt:hover{border-color:var(--ink3);background:var(--paper2);color:var(--ink)}
+.opt.sel{border-color:var(--green);background:var(--green-bg);color:var(--green)}
+.opt-lbl{font-size:10px;font-weight:500;letter-spacing:.08em;color:var(--ink3);min-width:14px;margin-top:2px;flex-shrink:0}
+.opt.sel .opt-lbl{color:var(--green)}
+.quiz-nav{display:flex;justify-content:space-between;align-items:center;margin-top:2rem;padding-top:1.5rem;border-top:1px solid var(--rule)}
+.btn-back{background:none;border:none;font-family:var(--sans);font-size:13px;color:var(--ink3);cursor:pointer;padding:0}
+.btn-back:hover{color:var(--ink)}
+.btn-next{padding:12px 28px;background:var(--ink);color:var(--paper);font-family:var(--sans);font-size:13px;font-weight:500;border:none;cursor:pointer;opacity:.3;pointer-events:none;transition:opacity .2s}
+.btn-next.on{opacity:1;pointer-events:auto}.btn-next.on:hover{opacity:.82}
+.rep-kicker{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);margin-bottom:.75rem}
+.rep-headline{font-family:var(--serif);font-size:clamp(32px,5vw,44px);line-height:1.1;color:var(--ink);margin-bottom:.5rem;font-weight:400}
+.rep-headline em{font-style:italic;color:var(--green)}
+.rep-dateline{font-size:12px;color:var(--ink3);margin-bottom:3rem;padding-bottom:1.5rem;border-bottom:1px solid var(--rule)}
+.rep-sec{margin-bottom:3rem}
+.rep-sec-rule{display:flex;align-items:center;gap:.75rem;margin-bottom:1.5rem}
+.rep-sec-n{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);font-weight:500}
+.rep-sec-line{flex:1;height:1px;background:var(--rule)}
+.rep-sec-title{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);font-weight:500}
+.prof-block{padding:2rem;background:var(--paper2);border-left:3px solid var(--ink);margin-bottom:1rem}
+.prof-type{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);margin-bottom:.5rem}
+.prof-name{font-family:var(--serif);font-size:clamp(20px,3vw,26px);color:var(--ink);margin-bottom:.9rem;font-weight:400;line-height:1.25}
+.prof-body{font-size:14px;color:var(--ink2);line-height:1.75}
+.prof-traits{display:flex;flex-wrap:wrap;gap:6px;margin-top:1.1rem}
+.trait{font-size:11px;padding:3px 10px;border:1px solid var(--paper3);color:var(--ink3);letter-spacing:.03em}
+.clash-block{margin-bottom:.75rem;padding:1.25rem 1.5rem;border:1px solid rgba(139,58,42,.2);background:#fdf0ee}
+.clash-num{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#8b3a2a;opacity:.6;margin-bottom:.3rem}
+.clash-head{font-size:14px;font-weight:500;color:#8b3a2a;margin-bottom:.4rem;line-height:1.3}
+.clash-body{font-size:13px;color:#8b3a2a;line-height:1.65;opacity:.85}
+.no-clash{padding:1.25rem 1.5rem;border:1px solid rgba(26,107,74,.2);background:var(--green-bg);font-size:13px;color:var(--green)}
+.reg-block{margin-bottom:1.5rem;padding:1.75rem;border:1px solid var(--paper3);background:var(--paper)}
+.reg-block.top{border-color:var(--green);border-width:1.5px}
+.reg-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1rem;gap:1rem}
+.reg-rank{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--green);font-weight:500;margin-bottom:.3rem}
+.reg-name{font-family:var(--serif);font-size:clamp(18px,2.5vw,22px);color:var(--ink);font-weight:400;line-height:1.2;margin-bottom:2px}
+.reg-geo{font-size:11px;color:var(--ink3);letter-spacing:.04em}
+.reg-score-block{text-align:right;flex-shrink:0}
+.reg-pct{font-family:var(--serif);font-size:32px;color:var(--ink);line-height:1;font-weight:400}
+.reg-pct-label{font-size:10px;color:var(--ink3);letter-spacing:.06em;text-transform:uppercase}
+.reg-divider{height:1px;background:var(--rule);margin:1rem 0}
+.reg-desc{font-size:13px;color:var(--ink2);line-height:1.7;margin-bottom:1rem}
+.reg-why{font-size:13px;color:var(--ink);line-height:1.7;margin-bottom:1rem;padding:1rem 1.25rem;background:var(--green-bg);border-left:2px solid var(--green)}
+.reg-why-label{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--green);margin-bottom:.4rem;font-weight:500}
+.pros-cons{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
+.pros{padding:1rem;background:var(--green-bg)}.cons{padding:1rem;background:#fdf0ee}
+.pc-label{font-size:10px;letter-spacing:.1em;text-transform:uppercase;font-weight:500;margin-bottom:.5rem}
+.pros .pc-label{color:var(--green)}.cons .pc-label{color:#8b3a2a}
+.pc-item{font-size:12px;line-height:1.6;margin-bottom:2px}
+.pros .pc-item{color:#1a4a35}.cons .pc-item{color:#8b3a2a}
+.reg-tags{display:flex;flex-wrap:wrap;gap:5px}
+.tag{font-size:11px;padding:3px 9px;border:1px solid var(--paper3);color:var(--ink3)}
+.winter-block{padding:1.75rem;border:1px solid rgba(122,85,32,.2);background:#fdf6e8}
+.winter-label{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#7a5520;font-weight:500;margin-bottom:.4rem}
+.winter-title{font-family:var(--serif);font-size:20px;color:#7a5520;margin-bottom:.75rem;font-weight:400}
+.winter-body{font-size:13px;color:#7a5520;line-height:1.72;opacity:.9}
+.winter-badge{display:inline-block;margin-top:.9rem;font-size:11px;padding:4px 12px;border:1px solid rgba(122,85,32,.3);color:#7a5520;letter-spacing:.05em}
+.steps{display:flex;flex-direction:column}
+.step{display:flex;gap:1.25rem;padding:1.25rem 0;border-bottom:1px solid var(--rule)}
+.step:last-child{border-bottom:none}
+.step-n{font-family:var(--serif);font-size:22px;color:var(--paper3);font-weight:400;min-width:28px;line-height:1}
+.step-title{font-size:14px;font-weight:500;color:var(--ink);margin-bottom:.3rem}
+.step-desc{font-size:13px;color:var(--ink2);line-height:1.65}
+.cta-block{margin-top:3rem;padding:2.5rem;background:var(--ink);color:var(--paper);text-align:center}
+.cta-kicker{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:rgba(250,249,247,.4);margin-bottom:.75rem}
+.cta-title{font-family:var(--serif);font-size:clamp(22px,3.5vw,30px);color:var(--paper);margin-bottom:.75rem;font-weight:400;line-height:1.2}
+.cta-body{font-size:13px;color:rgba(250,249,247,.65);line-height:1.7;max-width:440px;margin:0 auto 1.75rem}
+.btn-cta{display:inline-flex;align-items:center;gap:8px;padding:14px 32px;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:13px;font-weight:500;border:none;cursor:pointer;transition:opacity .2s}
+.btn-cta:hover{opacity:.88}
+.btn-restart{display:block;text-align:center;margin-top:1.5rem;font-size:12px;color:var(--ink3);cursor:pointer;background:none;border:none;letter-spacing:.04em;width:100%}
+</style>
+</head>
+<body>
+<div id="app">
+<div id="s-intro" class="screen active">
+  <div class="intro-rule"></div>
+  <div class="intro-kicker">LocalProf — Relokasyon Platformu</div>
+  <h1 class="intro-headline">Turist gibi<br>hayal kurma.<br><em>Gerçeklerle yüzleş.</em></h1>
+  <p class="intro-body">Modern insanın taşınma sürecindeki en büyük hatası, bir bölgeyi yaz tatili gözüyle değerlendirmek. 20 soruda profilinizi analiz ediyoruz; filtresiz bir rapor ve doğru bölge önerisi sunuyoruz.</p>
+  <div class="intro-cta-row">
+    <button class="btn-begin" onclick="start()">Analize başla →</button>
+    <span class="intro-meta">Ücretsiz · ~5 dakika</span>
+  </div>
+  <div class="intro-footnote">
+    <div class="footnote-item"><strong>20</strong>Soru</div>
+    <div class="footnote-item"><strong>15</strong>Bölge</div>
+    <div class="footnote-item"><strong>5</strong>Bölümlük rapor</div>
+    <div class="footnote-item"><strong>9+</strong>Çelişki senaryosu</div>
+  </div>
+</div>
+<div id="s-quiz" class="screen">
+  <div class="prog-wrap">
+    <div class="prog-top">
+      <span class="prog-label" id="qc"></span>
+      <span class="prog-label" id="qs"></span>
+    </div>
+    <div class="prog-track"><div class="prog-fill" id="prog"></div></div>
+  </div>
+  <div class="q-badge" id="qb"></div>
+  <div class="q-text" id="qt"></div>
+  <div class="q-sub" id="qsub"></div>
+  <div class="options" id="opts"></div>
+  <div class="quiz-nav">
+    <button class="btn-back" id="btn-back" onclick="prev()">← Geri</button>
+    <button class="btn-next" id="btn-next" onclick="next()">Devam →</button>
+  </div>
+</div>
+<div id="s-result" class="screen">
+  <div class="rep-kicker">Yaşam Analizi Raporu</div>
+  <h2 class="rep-headline">İşte <em>gerçekleriniz.</em></h2>
+  <div class="rep-dateline" id="r-date"></div>
+  <div class="rep-sec">
+    <div class="rep-sec-rule"><span class="rep-sec-n">01</span><div class="rep-sec-line"></div><span class="rep-sec-title">Profil & karakter analizi</span></div>
+    <div class="prof-block">
+      <div class="prof-type">Profil tipi</div>
+      <div class="prof-name" id="r-pname"></div>
+      <div class="prof-body" id="r-pbody"></div>
+      <div class="prof-traits" id="r-traits"></div>
+    </div>
+  </div>
+  <div class="rep-sec">
+    <div class="rep-sec-rule"><span class="rep-sec-n">02</span><div class="rep-sec-line"></div><span class="rep-sec-title">Çelişki & kör nokta tespiti</span></div>
+    <div id="r-clashes"></div>
+  </div>
+  <div class="rep-sec">
+    <div class="rep-sec-rule"><span class="rep-sec-n">03</span><div class="rep-sec-line"></div><span class="rep-sec-title">Bölge eşleşmeleri</span></div>
+    <div id="r-regions"></div>
+  </div>
+  <div class="rep-sec">
+    <div class="rep-sec-rule"><span class="rep-sec-n">04</span><div class="rep-sec-line"></div><span class="rep-sec-title">Kış gerçeği & mevsimsel uyarı</span></div>
+    <div class="winter-block" id="r-winter"></div>
+  </div>
+  <div class="rep-sec">
+    <div class="rep-sec-rule"><span class="rep-sec-n">05</span><div class="rep-sec-line"></div><span class="rep-sec-title">Pratik sonraki adımlar</span></div>
+    <div class="steps" id="r-steps"></div>
+  </div>
+  <div class="cta-block">
+    <div class="cta-kicker">Bir sonraki adım</div>
+    <div class="cta-title">Hayallerini uzmanına denetlet</div>
+    <div class="cta-body">Bu rapor bir başlangıç noktası. Bölgenin yazılı olmayan kurallarını, gerçek kira piyasasını ve yerel dinamikleri ancak sahada deneyim yaşamış bir uzman aktarabilir.</div>
+    <button class="btn-cta" onclick="alert('Uzman görüşmesi yakında aktif olacak!')">1 saatlik uzman görüşmesi →</button>
+  </div>
+  <button class="btn-restart" onclick="restart()">— Testi yeniden başlat —</button>
+</div>
+</div>
+<script>
+const Qs=[
+  {sec:"Kişilik & uyum",badge:"Bölüm 1 / 4",text:"Kış aylarında bölge ıssızlaşıyor, kafeler kapanıyor. Bu sizi nasıl etkiler?",sub:"Kıyı bölgelerinde kış–yaz nüfus farkı 10 kata kadar çıkabilir.",opts:[{l:"A",t:"Huzur verir, zaten bunu arıyorum",sc:{kışdayanıklı:2,sakin:1}},{l:"B",t:"İdare ederim ama sosyal hayatım olmalı",sc:{kışdayanıklı:1,sosyal:1}},{l:"C",t:"Dayanamam, aktif çevre şart",sc:{sosyal:3,merkez:2,kışdayanıklı:-2}}]},
+  {sec:"Kişilik & uyum",badge:"Bölüm 1 / 4",text:"Şehir gürültüsünden tamamen kopmanız ne kadar sürer?",sub:"Adaptasyon süresi bölge seçimini doğrudan etkiler.",opts:[{l:"A",t:"Çoktan koptum, hazırım",sc:{sakin:2,minimalist:1}},{l:"B",t:"Birkaç ayda alışırım",sc:{sakin:1}},{l:"C",t:"Hiç kopamam, şehre yakın kalmalıyım",sc:{merkez:3,şehiryakın:3,sakin:-1}}]},
+  {sec:"Kişilik & uyum",badge:"Bölüm 1 / 4",text:"Taşınma motivasyonunuz gerçekte ne?",sub:"Dürüst cevap bölge önerisini kökten değiştirir.",opts:[{l:"A",t:"Prestij ve elit çevre — statü önemli",sc:{elit:3,lüks:2}},{l:"B",t:"Entelektüel topluluk ve kültürel yaşam",sc:{kültür:3,entelektüel:2}},{l:"C",t:"Sadelik, yavaşlık, minimalist hayat",sc:{minimalist:3,sakin:2,cittaslow:2}}]},
+  {sec:"Kişilik & uyum",badge:"Bölüm 1 / 4",text:"Yerel halkla ilişkiniz nasıl olsun?",sub:"Bu tercih mahalle tipini doğrudan belirler.",opts:[{l:"A",t:"Tam entegrasyon — köye karışmak istiyorum",sc:{köy:3,lokal:2}},{l:"B",t:"İyi komşuluk yeterli, derin entegrasyon istemiyorum",sc:{dengeli:2}},{l:"C",t:"Expat veya benzer profil topluluk tercihim",sc:{expat:3,site:1,köy:-1}}]},
+  {sec:"Kişilik & uyum",badge:"Bölüm 1 / 4",text:"Doğayla ilişkiniz nasıl?",sub:"Romantik doğa sevgisi ile gerçek doğa yaşamı çok farklıdır.",opts:[{l:"A",t:"Deniz, dağ, orman içinde yaşamak istiyorum",sc:{doğa:3,uzak:1}},{l:"B",t:"Doğa yakın olsun ama şehir konforu da olsun",sc:{doğa:1,merkez:1}},{l:"C",t:"Manzara yeterli, doğanın içinde olmak şart değil",sc:{merkez:2}}]},
+  {sec:"Pratik yaşam",badge:"Bölüm 2 / 4",text:"Çalışma modeliniz nedir?",sub:"Altyapı ve mobilite gereksinimlerinizi belirler.",opts:[{l:"A",t:"Tam remote — nerede olursam olayım",sc:{internet:3,remote:3}},{l:"B",t:"Hibrit — haftada 1–2 gün şehre gitmeliyim",sc:{hibrit:3,ulasim:2,şehiryakın:2}},{l:"C",t:"Yerinde iş veya yeni girişim kuracağım",sc:{ticari:3,merkez:2}}]},
+  {sec:"Pratik yaşam",badge:"Bölüm 2 / 4",text:"Usta bulamamak ve haftalarca beklemek sizi ne kadar etkiler?",sub:"Kırsal ve kıyı bölgelerinde kronik bir gerçektir.",opts:[{l:"A",t:"Büyük sorun, toleransım yok",sc:{düşüktolerans:3,cittaslow:-2,uzak:-2}},{l:"B",t:"Sinir bozucu ama idare ederim",sc:{düşüktolerans:1}},{l:"C",t:"Hayatın parçası, sorun değil",sc:{cittaslow:1,uzak:1}}]},
+  {sec:"Pratik yaşam",badge:"Bölüm 2 / 4",text:"Hanehalkı yapınız nedir?",sub:"Okul çağında çocuk varlığı coğrafi sınırı kökten değiştirir.",opts:[{l:"A",t:"Okul çağında çocuğum var (6–18 yaş)",sc:{okul:3,erişim:2,şehiryakın:1}},{l:"B",t:"Küçük çocuk var (0–5 yaş) veya plan var",sc:{okul:2,erişim:2,kreş:2}},{l:"C",t:"Çocuk yok, yalnız veya çift",sc:{özgür:2}}]},
+  {sec:"Pratik yaşam",badge:"Bölüm 2 / 4",text:"Sağlık erişimi ne kadar kritik?",sub:"Kronik hastalık, yaş veya aile durumuna göre coğrafi sınır çizer.",opts:[{l:"A",t:"Çok kritik — devlet hastanesi 15 dk içinde olmalı",sc:{erişim:3,uzak:-3,sağlık:3}},{l:"B",t:"Önemli ama 30–45 dk kabul edilebilir",sc:{erişim:1,sağlık:1}},{l:"C",t:"Sorun değil, uzaklık beni durdurmaz",sc:{uzak:2}}]},
+  {sec:"Pratik yaşam",badge:"Bölüm 2 / 4",text:"Aylık yaşam bütçeniz?",sub:"Sosyo-ekonomik bölge uyumu için temel parametre.",opts:[{l:"A",t:"40.000 TL altı — sade yaşam yeterli",sc:{ekonomik:3,lüks:-2}},{l:"B",t:"40.000–100.000 TL arası",sc:{ortabütçe:2}},{l:"C",t:"100.000 TL üzeri — konfor önceliğim",sc:{lüks:3,premium:2}}]},
+  {sec:"Pratik yaşam",badge:"Bölüm 2 / 4",text:"Arabaya bağımlılığınız nasıl?",sub:"Türkiye'de araçsız kırsal yaşam fiilen imkânsızdır.",opts:[{l:"A",t:"Her gün kullanıyorum, sorun değil",sc:{araç:2}},{l:"B",t:"Arabam var ama yürüyebileceğim yer isterim",sc:{yürünebilir:2}},{l:"C",t:"Araç kullanmak istemiyorum",sc:{araçsız:3,uzak:-3,yürünebilir:3}}]},
+  {sec:"Konut & çevre",badge:"Bölüm 3 / 4",text:"Hayalindeki mülk tipi nedir?",sub:"Taş ev hayal edenler restorasyon gerçeğiyle yüzleşmeli.",opts:[{l:"A",t:"Tarihi taş ev veya köy evi",sc:{taşev:3,restorasyon:2}},{l:"B",t:"Bahçeli müstakil veya tripleks",sc:{müstakil:2}},{l:"C",t:"Modern daire veya rezidans",sc:{modern:2,site:1}}]},
+  {sec:"Konut & çevre",badge:"Bölüm 3 / 4",text:"Evinizin konumu için önceliğiniz?",sub:"Doğa vs erişim ikilemi en yaygın pişmanlık kaynağıdır.",opts:[{l:"A",t:"Yoldan uzak, doğa içi müstakil",sc:{doğa:2,uzak:2,ulasim:-1}},{l:"B",t:"Köy veya kasaba merkezi yakını",sc:{lokal:1,yürünebilir:1}},{l:"C",t:"Güvenlikli site, garantili altyapı",sc:{site:2,güvenlik:2,modern:1}}]},
+  {sec:"Konut & çevre",badge:"Bölüm 3 / 4",text:"İnternet ve altyapı kalitesi ne kadar önemli?",sub:"Tepe köyleri ve uzak bölgelerde fiber olmayabilir.",opts:[{l:"A",t:"Hayati — fiber veya en az 50 Mbps şart",sc:{internet:3,uzak:-2}},{l:"B",t:"Önemli ama biraz yavaş olsa idare ederim",sc:{internet:1}},{l:"C",t:"Sorun değil, minimal bağlantı yeterli",sc:{uzak:1,sakin:1}}]},
+  {sec:"Konut & çevre",badge:"Bölüm 3 / 4",text:"Çevrenizdeki sosyal atmosfer nasıl olsun?",sub:"Bölgenin sosyal dokusu kişilik uyumunu doğrudan etkiler.",opts:[{l:"A",t:"Sanatçı, yazar, entelektüel profil ağırlıklı",sc:{entelektüel:3,kültür:2}},{l:"B",t:"Karma — her kesimden insan olsun",sc:{dengeli:2}},{l:"C",t:"Benzer sosyoekonomik seviyeden expat ve profesyoneller",sc:{expat:3,elit:2,premium:1}}]},
+  {sec:"Konut & çevre",badge:"Bölüm 3 / 4",text:"İklim tercihiniz?",sub:"Karadeniz nem-sisi ile Akdeniz sıcağı çok farklı deneyimler sunar.",opts:[{l:"A",t:"Sıcak ve güneşli, yaz uzun olsun",sc:{akdeniz:2,karadeniz:-1}},{l:"B",t:"Ilıman, dört mevsim dengeli",sc:{ege:2,karadeniz:1}},{l:"C",t:"Serin, yeşil, nemli — yazın bunaltıcı sıcak istemem",sc:{karadeniz:3,akdeniz:-1}}]},
+  {sec:"Gelecek planı",badge:"Bölüm 4 / 4",text:"Ne zaman taşınmayı planlıyorsunuz?",sub:"Zaman çizelgesi aciliyet ve pilot öneriyi etkiler.",opts:[{l:"A",t:"6 ay içinde — karar verilmiş",sc:{acil:3}},{l:"B",t:"1–2 yıl içinde — araştırma aşamasındayım",sc:{araştırma:2}},{l:"C",t:"Belirsiz — henüz fikir topluyorum",sc:{araştırma:1}}]},
+  {sec:"Gelecek planı",badge:"Bölüm 4 / 4",text:"Taşınma biçiminiz ne olacak?",sub:"Kiralama ile satın alma çok farklı finansal riskler taşır.",opts:[{l:"A",t:"Satın almak istiyorum — uzun vadeli yerleşim",sc:{satın:3,finansal:1}},{l:"B",t:"Önce kiralayıp test edeceğim",sc:{kiralama:3}},{l:"C",t:"Henüz karar vermedim",sc:{araştırma:2}}]},
+  {sec:"Gelecek planı",badge:"Bölüm 4 / 4",text:"Sizi en çok hangi risk duraksatıyor?",sub:"En büyük endişe bölge uyumunu netleştirir.",opts:[{l:"A",t:"Sosyal izolasyon ve yalnızlık",sc:{sosyal:3,kışdayanıklı:-1}},{l:"B",t:"Finansal risk ve gayrimenkul belirsizliği",sc:{finansal:3,kiralama:2}},{l:"C",t:"Çocuklarımın eğitim ve uyum süreci",sc:{okul:3,erişim:2,sağlık:1}}]},
+  {sec:"Gelecek planı",badge:"Bölüm 4 / 4",text:"Taşındıktan sonra en büyük önceliğiniz?",sub:"Son soru — en içten cevap en doğru profili verir.",opts:[{l:"A",t:"Huzur ve yavaşlık — sadece nefes almak",sc:{sakin:3,minimalist:2}},{l:"B",t:"Yeni bir sosyal çevre ve topluluk bulmak",sc:{sosyal:3,lokal:1}},{l:"C",t:"İş ve girişim fırsatları yakalamak",sc:{ticari:3,merkez:2}}]}
+];
+const Regions=[
+  {name:"Bitez, Bodrum",geo:"Ege — Bodrum",desc:"Bodrum'un en dengeli semti. Kışın aktif mahalle dokusu, yıl boyu açık kafeler. Devlet ve özel okul seçenekleri mevcut; hastaneye 15 dakika.",why_base:"Hem aile hem çift profili için Bodrum'un en güvenli giriş noktası.",pros:["Kışın aktif sosyal hayat","Okul & hastane yakın","Orta bütçeye uygun"],cons:["Yaz aylarında trafik","Butik değil, biraz steril","Lüks arayanlar için yetersiz"],tags:["Kış aktif","Aile dostu","Orta bütçe"],w:{kışdayanıklı:2,merkez:2,erişim:3,okul:3,kreş:2,ortabütçe:2,dengeli:2,ege:1,ulasim:1,sağlık:2}},
+  {name:"Gümüşlük, Bodrum",geo:"Ege — Bodrum",desc:"Bodrum'da hâlâ bozulmamış balıkçı kasabası dokusu. Sanatçılar ve yazarların tercih ettiği entelektüel topluluk.",why_base:"Kültürel dokunun öncelikli olduğu profiller için Bodrum'un en tutarlı seçeneği.",pros:["Otantik köy dokusu","Entelektüel topluluk","Taş ev stoku mevcut"],cons:["Kışın çok sessiz","Hizmetler kısıtlı","Okul erişimi zayıf"],tags:["Entelektüel","Sakin","Taş ev"],w:{entelektüel:3,kültür:3,sakin:2,cittaslow:2,minimalist:2,taşev:2,köy:2,ege:1,kışdayanıklı:1}},
+  {name:"Yalıkavak, Bodrum",geo:"Ege — Bodrum",desc:"Türkiye'nin en gelişmiş marina altyapısı, yıl boyu açık restoranlar ve güçlü uluslararası expat nüfusu.",why_base:"Konfor, altyapı ve expat ağı öncelikli profiller için en olgun seçenek.",pros:["Yıl boyu premium hizmetler","Güçlü expat ağı","Uluslararası okul yakın"],cons:["Çok pahalı","Yaz kalabalığı","Lokal entegrasyon zor"],tags:["Premium","Expat","Marina"],w:{lüks:3,elit:3,expat:3,site:2,güvenlik:2,ulasim:2,ege:1,internet:3,okul:2,sağlık:2}},
+  {name:"Alaçatı, Çeşme",geo:"Ege — Çeşme",desc:"Butik taş ev dokusu ve gastronomi kültürüyle Ege'nin en ikonik adresi. Yaz–kış kontrast keskin.",why_base:"Taş ev estetiği ve prestij arayanlar için güçlü seçenek.",pros:["Eşsiz taş ev dokusu","Gastronomi & kültür","İzmir'e 1 saat"],cons:["Kışın çok ıssız","Yüksek fiyatlar","Okul kısıtlı"],tags:["Butik","Taş ev","Prestijli"],w:{elit:2,lüks:2,taşev:2,sakin:2,doğa:1,ege:2,kültür:1,kışdayanıklı:1}},
+  {name:"Seferihisar, İzmir",geo:"Ege — İzmir",desc:"Türkiye'nin ilk Cittaslow kenti. Organik pazarlar, balıkçı kültürü, İzmir'e 45 dakika.",why_base:"Gerçekten yavaş yaşam isteyen profil için ideal.",pros:["Cittaslow kültürü","Organik pazar","Ekonomik bütçeye uygun"],cons:["Kışın sosyal hayat kısıtlı","Okul sınırlı","Entelektüel topluluk küçük"],tags:["Cittaslow","Organik","Yavaş yaşam"],w:{cittaslow:3,minimalist:3,sakin:2,lokal:2,ekonomik:2,ege:2,kültür:1,ulasim:1,şehiryakın:1,hibrit:1}},
+  {name:"Urla, İzmir",geo:"Ege — İzmir",desc:"Bağcılık kültürü, butik restoranlar ve İzmir merkezine 40 dakika. Hibrit çalışma profili için güçlü.",why_base:"Şehirle bağı kesmeden kıyı yaşamı isteyenler için Ege'nin en dengeli hibrit adresi.",pros:["İzmir'e hibrit mesafe","Gastronomi kültürü","Değer artış potansiyeli"],cons:["Fiyatlar hızla yükseliyor","Sosyal çevre sınırlı","Kışın İzmir bağımlılığı"],tags:["Gastronomi","Hibrit uyumlu","Entelektüel"],w:{kültür:3,entelektüel:2,ulasim:3,merkez:2,ortabütçe:2,ege:2,dengeli:1,hibrit:3,şehiryakın:2,okul:1}},
+  {name:"Kaş, Antalya",geo:"Akdeniz — Likya",desc:"Küçük, otantik, henüz bozulmamış Akdeniz kasabası. Remote çalışma kültürü hızla büyüyor.",why_base:"Doğayı ve otantikliği önceliklendiren remote çalışanlar için en tutarlı seçenek.",pros:["Otantik doku","Remote topluluk büyüyor","Kışları ılıman"],cons:["Antalya'ya 3 saat","Okul & hastane zayıf","Altyapı gelişmekte"],tags:["Otantik","Remote uyumlu","Likya"],w:{doğa:3,expat:2,sakin:2,akdeniz:2,remote:3,internet:2,kültür:1,lokal:1,kışdayanıklı:2}},
+  {name:"Fethiye / Ölüdeniz",geo:"Akdeniz — Muğla",desc:"Türkiye'nin en köklü expat ekosistemi. Yıl boyu yaşanabilir iklim, uluslararası okul, iyi hastane.",why_base:"Aile profili veya yıl boyu konforu önceliklendiren herkes için Akdeniz'in en olgun adresi.",pros:["Geniş expat ekosistemi","Uluslararası okul","İyi hastane"],cons:["Bütçe talebi arttı","Turistik his","Lokal entegrasyon güç"],tags:["Kozmopolit","Expat","Yıl boyu"],w:{expat:3,akdeniz:2,merkez:2,ulasim:2,erişim:3,internet:3,dengeli:2,yürünebilir:2,okul:3,sağlık:2,kreş:2}},
+  {name:"Datça, Muğla",geo:"Akdeniz — Datça",desc:"Yarımada coğrafyasının derin izolasyonu. Kışın gerçek anlamda ücra. Doğa tutkunu minimalistler için.",why_base:"Minimalizmi yaşam biçimine dönüştürmüş profil için. Çocuklu aile için tavsiye edilmez.",pros:["En saf doğa","Gerçek sessizlik","Bozulmamış doku"],cons:["Hastane erişimi çok zayıf","Kışın hizmetler kapanır","Çocuklar için okul yok"],tags:["İzole","Doğa","Minimalist"],w:{minimalist:3,sakin:3,doğa:3,akdeniz:2,cittaslow:2,kışdayanıklı:2,uzak:3,lüks:-2,erişim:-2,okul:-2}},
+  {name:"Şile, İstanbul",geo:"Karadeniz — İstanbul yakını",desc:"İstanbul'a TEM ile 55–70 dakika. Hibrit çalışma için Türkiye'nin en pratik geçiş noktası.",why_base:"İstanbul'u tamamen bırakmadan kıyı yaşamına geçmek isteyen hibrit profil için en akılcı adres.",pros:["İstanbul'a pratik mesafe","Orman + deniz","Okul & sağlık güçlü"],cons:["Karadeniz iklimine uyum","İstanbul trafiği","Kışın sis ve nem"],tags:["Hibrit ideal","İstanbul yakın","Orman"],w:{karadeniz:2,hibrit:3,şehiryakın:3,ulasim:3,merkez:1,doğa:2,internet:2,yürünebilir:1,okul:2,sağlık:2,erişim:2}},
+  {name:"Amasra, Bartın",geo:"Karadeniz — Batı",desc:"Tarihi sur kenti. Kışın gerçekten ıssız, fiber altyapısı zayıf.",why_base:"Görsel estetiği ve izolasyonu bilinçli seçen minimalist profil için.",pros:["Eşsiz tarihi güzellik","Gerçek izolasyon","Ekonomik yaşam"],cons:["Fiber internet yok","Kışın çok ıssız","Büyük şehire 3+ saat"],tags:["Tarihi","Sakin","Uzak"],w:{karadeniz:3,sakin:3,doğa:2,taşev:2,minimalist:2,lokal:3,ekonomik:2,internet:-1,uzak:2,kışdayanıklı:1}},
+  {name:"Akçakoca, Düzce",geo:"Karadeniz — Batı",desc:"Batı Karadeniz'in en erişilebilir balıkçı kasabası. Yaz serinliği cazibeli; kış sis ve nemi zorlayıcı.",why_base:"Karadeniz iklimini denemek isteyen ama tam izolasyona hazır olmayan profil için.",pros:["Ekonomik yaşam","Yaz serinliği","Lokal doku otantik"],cons:["İstanbul'a 3 saat","Kış sis ve nemi","Altyapı gelişmekte"],tags:["Sakin","Karadeniz","Ekonomik"],w:{karadeniz:3,sakin:2,doğa:2,ekonomik:2,lokal:2,kışdayanıklı:1,ulasim:1,uzak:1}}
+];
+const WD={
+  "Bodrum":{score:"Orta risk",title:"Bodrum kışına hazırlıklı olun",text:"Bodrum kışı gerçekten ıssızlaşır ama tamamen ölmez. Bitez ve Yalıkavak gibi semtlerde yıl boyu açık kafeler ve aktif mahalle dokusu vardır. Kasım–Şubat arası nüfus %70–80 düşer. Sosyal bağımlılığı yüksek profil için kış planlaması şarttır."},
+  "Ege":{score:"Yüksek risk",title:"Ege kışı sizi hazırlıksız yakalayabilir",text:"Alaçatı ve Gümüşlük başta olmak üzere Ege kıyı kasabalarında kış çarpıcı biçimde sessizleşir. Bazı restoran ve kafeler Kasım'dan Nisan'a kadar kapanır. Bu bölgeleri tercih ediyorsanız kış aylarında mutlaka saha ziyareti yapın."},
+  "Akdeniz":{score:"Düşük risk",title:"Akdeniz kışı en avantajlı seçenek",text:"Akdeniz kıyıları kışın Türkiye'nin en yaşanabilir bölgeleridir. Fethiye ve Kaş'ta kış ayları sakin ama donuk değildir. Günlük ortalama sıcaklık 10–15°C arasında seyreder."},
+  "Karadeniz":{score:"Çok yüksek risk",title:"Karadeniz kışı gerçek bir sınav",text:"Süregelen sis, yüksek nem, uzun yağmurlu dönemler ve erken kararma saatleri psikolojik baskı yaratabilir. Bu bölgeyi değerlendiriyorsanız bir kış ayında 2–3 hafta kiralık kalarak deneyimlemenizi öneririz."}
+};
+let cur=0,ans=Array(Qs.length).fill(null);
+function start(){show('s-quiz');render();}
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
+function render(){
+  const q=Qs[cur];
+  document.getElementById('prog').style.width=Math.round((cur/Qs.length)*100)+'%';
+  document.getElementById('qc').textContent='Soru '+(cur+1)+' / '+Qs.length;
+  document.getElementById('qs').textContent=q.sec;
+  document.getElementById('qb').textContent=q.badge;
+  document.getElementById('qt').textContent=q.text;
+  document.getElementById('qsub').textContent=q.sub;
+  const w=document.getElementById('opts');w.innerHTML='';
+  q.opts.forEach((o,i)=>{
+    const b=document.createElement('button');
+    b.className='opt'+(ans[cur]===i?' sel':'');
+    b.innerHTML='<span class="opt-lbl">'+o.l+'</span>'+o.t;
+    b.onclick=()=>pick(i);
+    w.appendChild(b);
+  });
+  document.getElementById('btn-back').style.visibility=cur===0?'hidden':'visible';
+  updN();
+}
+function pick(i){ans[cur]=i;document.querySelectorAll('.opt').forEach((b,j)=>b.classList.toggle('sel',j===i));updN();}
+function updN(){const b=document.getElementById('btn-next');b.classList.toggle('on',ans[cur]!==null);b.textContent=cur===Qs.length-1?'Raporu gör →':'Devam →';}
+function next(){if(ans[cur]===null)return;if(cur<Qs.length-1){cur++;render();}else result();}
+function prev(){if(cur>0){cur--;render();}}
+function scores(){const t={};ans.forEach((ai,qi)=>{if(ai===null)return;Object.entries(Qs[qi].opts[ai].sc).forEach(([k,v])=>{t[k]=(t[k]||0)+v;});});return t;}
+function matchRegions(t){return Regions.map(r=>{let s=50;Object.entries(r.w).forEach(([k,v])=>{const tv=t[k]||0;if(v>0&&tv>0)s+=Math.min(v,tv)*7;if(v>0&&tv<0)s-=v*4;if(v<0&&tv>0)s+=v*4;});return{...r,m:Math.max(28,Math.min(97,Math.round(s)))};}).sort((a,b)=>b.m-a.m);}
+function whyText(r,t){const sc=k=>t[k]||0;let ex='';if(sc('okul')>=3&&(r.w.okul||0)>=2)ex+=' Okul çağında çocuğunuz için bölgede yeterli eğitim altyapısı mevcut.';if(sc('hibrit')>=3&&(r.w.hibrit||0)>=2)ex+=' Hibrit çalışma düzeniniz için ulaşım mesafesi uygun.';if(sc('remote')>=3&&(r.w.internet||0)>=2)ex+=' Remote çalışma için altyapı yeterli.';if(sc('ekonomik')>=2&&(r.w.ekonomik||0)>=2)ex+=' Bütçenizle uyumlu yaşam maliyeti sunuyor.';if(sc('expat')>=3&&(r.w.expat||0)>=2)ex+=' Aradığınız expat topluluğu burada mevcut.';return r.why_base+(ex?' '+ex:'');}
+function getClashes(t){const sc=k=>t[k]||0;const cl=[];if(sc('sosyal')>=3&&sc('sakin')>=3)cl.push({h:"Sosyal bağımlılık ile sessizlik arayışı",b:"Aktif sosyal hayat isteğiniz ile sakin yaşam arzunuz doğrudan çatışıyor."});if(sc('doğa')>=3&&sc('düşüktolerans')>=2)cl.push({h:"Doğa içi konum ile düşük tolerans",b:"Ormanlık bir evde usta bulmak aylarca sürebilir."});if(sc('araçsız')>=2&&sc('uzak')>=2)cl.push({h:"Araçsız yaşam ile uzak konum",b:"Türkiye'de araçsız kırsal hayat fiilen imkânsızdır."});if(sc('taşev')>=2&&sc('düşüktolerans')>=2)cl.push({h:"Tarihi taş ev ile düşük tolerans",b:"Restorasyon süreci yıllarca sürer, beklenmedik maliyetler getirir."});if(sc('erişim')>=3&&sc('uzak')>=2)cl.push({h:"Yüksek erişim ihtiyacı ile uzak konum",b:"Önce erişim yarıçapını netleştirin, sonra lokasyon seçin."});if(sc('internet')>=3&&sc('uzak')>=2)cl.push({h:"Fiber internet zorunluluğu ile uzak konum",b:"Uzak bölgelerde fiber altyapı çoğunlukla bulunmaz."});if(sc('okul')>=3&&sc('sakin')>=3&&sc('şehiryakın')===0)cl.push({h:"Okul çağında çocuk ile derin sessizlik",b:"Kaliteli okul altyapısı olan bölgeler genellikle daha hareketlidir."});return cl;}
+function getProfile(t){const sc=k=>t[k]||0;const traits=[];if(sc('kışdayanıklı')>=2)traits.push('Kış uyumlu');if(sc('sosyal')>=3)traits.push('Sosyal bağımlı');if(sc('minimalist')>=2)traits.push('Minimalist');if(sc('entelektüel')>=2)traits.push('Entelektüel');if(sc('remote')>=2)traits.push('Remote çalışan');if(sc('hibrit')>=2)traits.push('Hibrit çalışan');if(sc('expat')>=2)traits.push('Expat odaklı');if(sc('lüks')>=2)traits.push('Konfor öncelikli');if(sc('okul')>=2)traits.push('Aile odaklı');if(sc('doğa')>=2)traits.push('Doğa odaklı');if(sc('ekonomik')>=2)traits.push('Bütçe bilinçli');if(sc('okul')>=4&&sc('erişim')>=3)return{name:"Çocuk odaklı aile profili",body:"Okul kalitesi ve sağlık erişimi tüm tercihlerinizin üzerinde. Bölge araştırması mutlaka okul ziyaretiyle başlamalı.",traits};if(sc('hibrit')>=3&&sc('şehiryakın')>=2)return{name:"Hibrit çalışan şehir kaçkını",body:"Şehirden tam kopmak istemiyorsunuz. Ulaşım kalitesi ve mesafe her şeyden önce gelir.",traits};if(sc('elit')>=4&&sc('lüks')>=3)return{name:"Elit yaşam arayan pragmatik",body:"Konfor ve çevre kalitesi önceliğiniz net. Bu profilde en kritik risk hafife alınan bütçedir.",traits};if(sc('entelektüel')>=3&&sc('kültür')>=3)return{name:"Entelektüel kaçış arayan yaratıcı ruh",body:"Kültürel doku ve benzer profil insanlar önceliğinizin merkezinde. Kış izolasyonunu somut olarak planlayın.",traits};if(sc('minimalist')>=3&&sc('sakin')>=3)return{name:"Sadelik arayan gerçek minimalist",body:"Şehrin gürültüsünden kaçıyorsunuz ve bunu ciddi kastediyorsunuz. Gerçek minimalist yaşama hazır mısınız?",traits};if(sc('expat')>=3)return{name:"Kozmopolit expat topluluğu arayan",body:"Uluslararası bir çevre istiyorsunuz. Doğru bölgede bu mümkün — ama lokal kopuşun uzun vadeli bedeli var.",traits};if(sc('remote')>=3&&sc('internet')>=3)return{name:"Dijital göçebe arayan özgürlükçü",body:"Uzaktan çalışma özgürlüğünü konuma dönüştürmek istiyorsunuz. Fiber varlığı ilk filtre olmalı.",traits};if(sc('karadeniz')>=3)return{name:"Yeşil ve serin yaşam arayan",body:"Ege'nin sıcağından kaçıyorsunuz. Karadeniz bu özlemi karşılar ama iklimi mutlaka bizzat deneyimleyin.",traits};return{name:"Dengeli relokasyon arayan",body:"Ortada bir noktada yaşamak istiyorsunuz. Önce hangi kriterin gerçekten vazgeçilmez olduğuna karar verin.",traits};}
+function getWinter(top3){const geos=top3.map(r=>r.geo);if(geos.some(g=>g.includes('Karadeniz')))return WD['Karadeniz'];if(geos.some(g=>g.includes('Akdeniz')))return WD['Akdeniz'];if(geos.some(g=>g.includes('Çeşme')||g.includes('İzmir')))return WD['Ege'];return WD['Bodrum'];}
+function getSteps(t,clashes){const sc=k=>t[k]||0;const steps=[];if(sc('acil')>=3)steps.push({title:"Hemen saha ziyareti planlayın",desc:"Önerilen bölgeleri kış ayında ziyaret edin. En az 3–5 gün kalın."});else steps.push({title:"Önce kış ayında bir keşif ziyareti",desc:"Bölgeyi kışın görmek en kritik adım. Bu farkı bizzat yaşamadan karar vermeyin."});if(sc('kiralama')>=3||sc('finansal')>=2)steps.push({title:"İlk yıl mutlaka kiralayın",desc:"Satın alma kararını en az 1 yıllık kira deneyiminden sonra verin."});if(sc('okul')>=3)steps.push({title:"Okul araştırmasını önceden yapın",desc:"Bölgedeki okul seçeneklerini ve kontenjan durumunu öğrenin."});if(clashes.length>0)steps.push({title:"Çelişkilerinizi önce çözümleyin",desc:"Rapordaki çelişkiler taşınma kararından önce netleştirilmeli."});steps.push({title:"Bir LocalProf uzmanıyla görüşün",desc:"Bölgenin yazılı olmayan kuralları ancak sahada deneyim yaşamış biri tarafından aktarılabilir."});return steps;}
+function result(){
+  const t=scores();const ranked=matchRegions(t);const top4=ranked.slice(0,4);
+  const prof=getProfile(t);const clashes=getClashes(t);
+  const winter=getWinter(top4.slice(0,3));const steps=getSteps(t,clashes);
+  const now=new Date();const months=['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
+  document.getElementById('r-date').textContent=now.getDate()+' '+months[now.getMonth()]+' '+now.getFullYear()+' — Kişisel analiz raporu';
+  document.getElementById('r-pname').textContent=prof.name;
+  document.getElementById('r-pbody').textContent=prof.body;
+  document.getElementById('r-traits').innerHTML=prof.traits.map(tr=>'<span class="trait">'+tr+'</span>').join('');
+  const cw=document.getElementById('r-clashes');cw.innerHTML='';
+  if(clashes.length===0){cw.innerHTML='<div class="no-clash">Cevaplarınızda belirgin bir çelişki tespit edilmedi. Tercihleriniz tutarlı bir profil oluşturuyor.</div>';}
+  else{clashes.forEach((c,i)=>{cw.innerHTML+='<div class="clash-block"><div class="clash-num">Çelişki 0'+(i+1)+'</div><div class="clash-head">'+c.h+'</div><div class="clash-body">'+c.b+'</div></div>';});}
+  const rw=document.getElementById('r-regions');rw.innerHTML='';
+  const labels=['En yüksek eşleşme','İkinci öneri','Üçüncü öneri','Dördüncü öneri'];
+  top4.forEach((r,i)=>{rw.innerHTML+='<div class="reg-block'+(i===0?' top':'')+'"><div class="reg-top"><div><div class="reg-rank">'+labels[i]+'</div><div class="reg-name">'+r.name+'</div><div class="reg-geo">'+r.geo+'</div></div><div class="reg-score-block"><div class="reg-pct">%'+r.m+'</div><div class="reg-pct-label">uyum</div></div></div><div class="reg-divider"></div><div class="reg-desc">'+r.desc+'</div><div class="reg-why"><div class="reg-why-label">Size özel — neden uyuyor</div>'+whyText(r,t)+'</div><div class="pros-cons"><div class="pros"><div class="pc-label">Güçlü yönler</div>'+r.pros.map(p=>'<div class="pc-item">+ '+p+'</div>').join('')+'</div><div class="cons"><div class="pc-label">Zayıf yönler</div>'+r.cons.map(c=>'<div class="pc-item">− '+c+'</div>').join('')+'</div></div><div class="reg-tags">'+r.tags.map(tg=>'<span class="tag">'+tg+'</span>').join('')+'</div></div>';});
+  document.getElementById('r-winter').innerHTML='<div class="winter-label">Mevsimsel uyarı — '+winter.score+'</div><div class="winter-title">'+winter.title+'</div><div class="winter-body">'+winter.text+'</div><div class="winter-badge">'+winter.score+'</div>';
+  const sw=document.getElementById('r-steps');sw.innerHTML='';
+  steps.forEach((s,i)=>{sw.innerHTML+='<div class="step"><div class="step-n">0'+(i+1)+'</div><div><div class="step-title">'+s.title+'</div><div class="step-desc">'+s.desc+'</div></div></div>';});
+  show('s-result');
+}
+function restart(){cur=0;ans=Array(Qs.length).fill(null);show('s-intro');}
+</script>
+</body>
+</html>
