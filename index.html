@@ -1,6 +1,194 @@
 <!DOCTYPE html>
-<html>
+<html lang="tr">
 <head>
-<meta http-equiv="refresh" content="0; url=localprof-widget.html">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LocalProf — Bodrum'da yaşamın tek kapısı</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#06303F;--paper:#E9F2F2;--teal:#0E8C9E;--teal-deep:#0A5361;
+    --turq:#17C2CC;--text:#1c2833;--muted:#5d6b74;--line:#cdddda;--card:#fff;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+  body{background:var(--paper);color:var(--text);font-family:'Inter',system-ui,sans-serif;line-height:1.5}
+  .wrap{max-width:960px;margin:0 auto;padding:0 20px}
+  a{text-decoration:none;color:inherit}
+
+  .nav{position:sticky;top:0;z-index:60;background:rgba(6,48,63,.96);backdrop-filter:blur(6px)}
+  .nav .wrap{display:flex;align-items:center;justify-content:space-between;height:58px}
+  .logo{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:19px;color:#fff;letter-spacing:-.01em}
+  .logo span{color:var(--turq)}
+  .nav .links{display:flex;gap:22px;align-items:center}
+  .nav .links a{font-size:14px;font-weight:500;color:#bcd3d3}
+  .nav .links a:hover{color:#fff}
+  .nav .links a.cta{background:var(--turq);color:#04222c;padding:8px 14px;border-radius:8px;font-weight:600}
+  @media(max-width:640px){.nav .links a:not(.cta){display:none}}
+
+  .hero{background:linear-gradient(165deg,#0C7A8A 0%,#083F4E 55%,#06303F 100%);color:#fff;padding:56px 0 60px}
+  .eyebrow{font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#8fc9cf;margin-bottom:16px;display:flex;gap:8px;align-items:center}
+  .eyebrow::before{content:"";width:22px;height:1px;background:var(--turq)}
+  .hero h1{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(32px,7vw,52px);line-height:1.02;letter-spacing:-.025em;max-width:15ch}
+  .hero h1 em{font-style:normal;color:var(--turq)}
+  .hero p{margin-top:16px;font-size:16px;color:#cfe0e0;max-width:54ch}
+  .hcta{display:flex;gap:12px;margin-top:26px;flex-wrap:wrap}
+  .btn{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:15px;padding:13px 22px;border-radius:10px;cursor:pointer;display:inline-block}
+  .btn.primary{background:var(--turq);color:#04222c}
+  .btn.ghost{background:transparent;border:1.5px solid #2f5762;color:#fff}
+  .btn.ghost:hover{border-color:var(--turq)}
+
+  section{padding:46px 0}
+  .sec-head{margin-bottom:22px}
+  .sec-head .lbl{font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--teal-deep);margin-bottom:8px}
+  .sec-head h2{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(24px,4.7vw,32px);letter-spacing:-.02em;color:var(--ink)}
+  .sec-head p{margin-top:10px;font-size:15px;color:var(--muted);max-width:62ch}
+
+  /* flagship core product */
+  .flag{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:30px 28px;display:flex;gap:28px;flex-wrap:wrap;align-items:center}
+  .flag .body{flex:1;min-width:280px}
+  .flag .lbl{font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--turq);margin-bottom:10px}
+  .flag h2{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(23px,4.3vw,29px);letter-spacing:-.02em;color:var(--ink);line-height:1.08}
+  .flag p{margin-top:12px;font-size:15px;color:var(--text)}
+  .chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .chip{font-size:12.5px;font-weight:600;background:#e4f1f0;color:var(--teal-deep);border:1px solid #cfe4e2;padding:6px 11px;border-radius:999px}
+  .flag .cta-box{margin-top:20px}
+
+  /* verticals */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+  .vert{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;min-height:112px;display:flex;flex-direction:column}
+  .vert.on{border-color:#a9d2ce}
+  .vert .nm{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:16px;color:var(--ink)}
+  .vert .ds{font-size:12px;color:var(--muted);margin-top:4px;flex:1}
+  .vert .st{font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;margin-top:10px;font-weight:700}
+  .vert.on .st{color:#2f8f7e} .vert.soon .st{color:var(--muted)}
+  .vert.soon{opacity:.6}
+  .vert.on:hover{border-color:var(--turq);box-shadow:0 4px 14px rgba(14,140,158,.12)}
+  .vert.core{background:linear-gradient(160deg,#0E9CAB,#06303F);border:none}
+  .vert.core .nm{color:#fff} .vert.core .ds{color:#c9e2e2} .vert.core .st{color:#8fe6ea}
+
+  /* devirprof spotlight (secondary) */
+  .spot{background:linear-gradient(160deg,#0E9CAB,#06303F);color:#fff;border-radius:16px;padding:30px 26px}
+  .spot .lbl{font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#9fe7ec;margin-bottom:10px}
+  .spot h2{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(22px,4.5vw,29px);letter-spacing:-.02em;line-height:1.08;max-width:24ch}
+  .spot p{margin-top:12px;font-size:15px;color:#c9e2e2;max-width:56ch}
+  .funnel{display:flex;gap:10px;margin:22px 0;flex-wrap:wrap}
+  .fstep{flex:1;min-width:150px;background:#ffffff14;border:1px solid #ffffff24;border-radius:10px;padding:13px 14px}
+  .fstep .n{font-family:'Space Mono',monospace;font-size:11px;color:#9fe7ec}
+  .fstep .h{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:14px;margin:5px 0 2px;color:#fff}
+  .fstep .s{font-size:12px;color:#b3cfcf}
+  .btns{display:flex;gap:10px;flex-wrap:wrap}
+  .spot .btn.ghost{border-color:#ffffff40}
+
+  footer{background:var(--ink);color:#9fb8bb;padding:34px 0;margin-top:20px;font-size:13px}
+  footer .logo{margin-bottom:10px;display:inline-block}
+  footer .fl{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:14px}
+  footer .fl a{color:#bcd3d3;font-size:14px}
+  footer .cp{font-size:12px;color:#6f9498;border-top:1px solid #143c46;padding-top:14px}
+</style>
 </head>
+<body>
+
+<nav class="nav">
+  <div class="wrap">
+    <a href="index.html" class="logo">Local<span>Prof</span></a>
+    <div class="links">
+      <a href="#hizmetler">Hizmetler</a>
+      <a href="mahalle-testi.html">Mahalle Testi</a>
+      <a href="#devirprof">DevirProf</a>
+      <a href="mahalle-testi.html" class="cta">Mahalleni Bul</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO — çekirdek ürün: taşınacaklara mahalle eşleştirme -->
+<div class="hero">
+  <div class="wrap">
+    <div class="eyebrow">LocalProf · Bodrum</div>
+    <h1>Bodrum'un neresi <em>sana göre?</em></h1>
+    <p>Bodrum'a taşınmayı mı düşünüyorsun? 20 soruluk testle bütçene, hayat tarzına ve önceliklerine en uygun mahalleyi bul — sonra o hayatı kurmana yardımcı olacak uzmanlar tek çatı altında.</p>
+    <div class="hcta">
+      <a href="mahalle-testi.html" class="btn primary">Ücretsiz Mahalle Testi →</a>
+      <a href="#hizmetler" class="btn ghost">Hizmetlere bak</a>
+    </div>
+  </div>
+</div>
+
+<!-- FLAGSHIP — ana ürün öne çıkıyor -->
+<section>
+  <div class="wrap">
+    <div class="flag">
+      <div class="body">
+        <div class="lbl">Ana hizmet · Mahalle Eşleştirme</div>
+        <h2>Sana en uygun Bodrum mahallesini bulalım</h2>
+        <p>Deniz kenarı mı, merkez mi? Sakin bir köy mü, sosyal bir kasaba mı? 20 soruda hayat tarzını anlıyor, Bodrum'un 10 mahallesi arasından sana en uygununu eşleştiriyoruz — hepsi yerinde, birinci elden bilgiyle.</p>
+        <div class="chips">
+          <span class="chip">Bodrum Merkez</span><span class="chip">Konacık</span><span class="chip">Bitez</span>
+          <span class="chip">Ortakent</span><span class="chip">Gümbet</span><span class="chip">Turgutreis</span>
+          <span class="chip">Gümüşlük</span><span class="chip">Yalıkavak</span><span class="chip">Göltürkbükü</span><span class="chip">Torba</span>
+        </div>
+        <div class="cta-box"><a href="mahalle-testi.html" class="btn primary">Teste başla →</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HİZMETLER — çekirdek ilk, DevirProf ikinci, gerisi planlanıyor -->
+<section id="hizmetler" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="lbl">Hizmet dikeyleri</div>
+      <h2>Her ihtiyaç için bir "prof"</h2>
+      <p>LocalProf tek bir hizmet değil, bir çatı. Bodrum'a taşınan insanın yolculuğundaki her adımda bir uzman. Bugün aktif olanlarla başlıyoruz; ağ büyüdükçe yenileri açılıyor.</p>
+    </div>
+    <div class="grid">
+      <a href="mahalle-testi.html" class="vert core"><div class="nm">Mahalle Eşleştirme</div><div class="ds">Sana uygun Bodrum mahallesini bul</div><div class="st">● Ana hizmet</div></a>
+      <a href="#devirprof" class="vert on"><div class="nm">DevirProf</div><div class="ds">İşletme devir & değerleme danışmanlığı</div><div class="st">● Aktif</div></a>
+      <div class="vert soon"><div class="nm">TadilatProf</div><div class="ds">Tadilat & usta</div><div class="st">Planlanıyor</div></div>
+      <div class="vert soon"><div class="nm">NakliyeProf</div><div class="ds">Taşınma & nakliye</div><div class="st">Planlanıyor</div></div>
+      <div class="vert soon"><div class="nm">TemizlikProf</div><div class="ds">Temizlik hizmetleri</div><div class="st">Planlanıyor</div></div>
+      <div class="vert soon"><div class="nm">PeyzajProf</div><div class="ds">Bahçe & peyzaj</div><div class="st">Planlanıyor</div></div>
+      <div class="vert soon"><div class="nm">TatilProf</div><div class="ds">Konaklama & tatil</div><div class="st">Planlanıyor</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- DEVIRPROF — hizmetlerden biri (ikincil) -->
+<section id="devirprof" style="padding-top:0">
+  <div class="wrap">
+    <div class="spot">
+      <div class="lbl">Hizmetlerimizden · DevirProf</div>
+      <h2>Bodrum'da işletme devralacaklara: almadan önce gerçeği bil.</h2>
+      <p>Taşınıp bir kafe, restoran ya da pansiyon devralmak isteyenler için. Satıcının anlattığını değil, sahadaki gerçeği doğrularız — devir sözleşmesini imzalamadan önce.</p>
+      <div class="funnel">
+        <div class="fstep"><div class="n">01 · Ücretsiz</div><div class="h">Gerçeklik Testi</div><div class="s">Rakamları gir, sezona göre gerçek getiriyi gör.</div></div>
+        <div class="fstep"><div class="n">02 · ₺3.000</div><div class="h">Ön Eleme Raporu</div><div class="s">Bağımsız masabaşı değerlendirme + kırmızı bayraklar.</div></div>
+        <div class="fstep"><div class="n">03 · Saha</div><div class="h">Saha Denetimi</div><div class="s">Bir hafta sahada gerçek ciro & nakit sayımı.</div></div>
+      </div>
+      <div class="btns">
+        <a href="gerceklik-testi.html" class="btn primary">Gerçeklik Testi</a>
+        <a href="paketler.html" class="btn ghost">Hizmet paketleri</a>
+        <a href="uzman-agi.html" class="btn ghost">Uzman Ağı'na katıl</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <a href="index.html" class="logo">Local<span>Prof</span></a>
+    <div class="fl">
+      <a href="mahalle-testi.html">Mahalle Testi</a>
+      <a href="#hizmetler">Hizmetler</a>
+      <a href="gerceklik-testi.html">DevirProf · Gerçeklik Testi</a>
+      <a href="paketler.html">Paketler</a>
+      <a href="uzman-agi.html">Uzman Ağı</a>
+    </div>
+    <div class="cp">© 2026 LocalProf · Bodrum. Bodrum'a taşınan ve yaşayanlar için yerel hizmet çatısı.</div>
+  </div>
+</footer>
+
+</body>
 </html>

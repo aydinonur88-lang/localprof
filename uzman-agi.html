@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LocalProf Uzman Ağı</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#06303F;--paper:#E9F2F2;--teal:#0E8C9E;--teal-deep:#0A5361;
+    --amber:#17C2CC;--clay:#A83A2C;--green:#3E7C5A;
+    --text:#1c2833;--muted:#5d6b74;--line:#d5d9d1;--card:#fff;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{background:var(--paper);color:var(--text);font-family:'Inter',system-ui,sans-serif;line-height:1.5;padding:0 0 60px}
+  .wrap{max-width:600px;margin:0 auto;padding:0 20px}
+
+  header{background:linear-gradient(165deg,#0C7A8A 0%,#083F4E 60%,#06303F 100%);color:var(--paper);padding:36px 0 32px;margin-bottom:24px}
+  .eyebrow{font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#8fb3b8;margin-bottom:14px;display:flex;gap:8px;align-items:center}
+  .eyebrow::before{content:"";width:22px;height:1px;background:var(--teal)}
+  h1{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(28px,7.5vw,40px);line-height:1.03;letter-spacing:-.02em;color:#fff}
+  h1 em{font-style:normal;color:var(--amber)}
+  .lede{margin-top:13px;font-size:15.5px;color:#c3ccd0;max-width:48ch}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 20px;margin-bottom:18px}
+  h2{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:13px;letter-spacing:.02em;text-transform:uppercase;color:var(--teal-deep);margin-bottom:14px}
+
+  .who p{font-size:14px;margin-bottom:12px}
+  .tags{display:flex;flex-wrap:wrap;gap:7px}
+  .tag{font-size:12.5px;font-weight:600;background:#eef3f2;color:var(--teal-deep);border:1px solid #d7e5e3;padding:6px 11px;border-radius:999px}
+
+  .active{background:linear-gradient(160deg,#0E9CAB,#06303F);color:#fff;border:none}
+  .active h2{color:var(--amber)}
+  .active .big{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:18px;line-height:1.2;margin-bottom:8px}
+  .active p{font-size:13.5px;color:#c9d3d6}
+
+  .val{list-style:none}
+  .val li{font-size:13.5px;padding:9px 0 9px 26px;position:relative;border-top:1px solid var(--line)}
+  .val li:first-child{border-top:none}
+  .val li::before{content:"→";position:absolute;left:2px;top:9px;color:var(--teal);font-weight:700}
+  .val li b{color:var(--ink)}
+
+  .steps{counter-reset:s;list-style:none}
+  .steps li{font-size:13.5px;padding:8px 0 8px 34px;position:relative}
+  .steps li::before{counter-increment:s;content:counter(s);position:absolute;left:0;top:7px;width:22px;height:22px;background:var(--teal);color:#fff;border-radius:50%;font-family:'Space Mono',monospace;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center}
+
+  /* form */
+  .field{margin-bottom:14px}
+  .field label{display:block;font-size:13px;font-weight:600;margin-bottom:6px}
+  input,select{width:100%;font-family:'Inter',sans-serif;font-size:15px;padding:11px 13px;border:1.5px solid var(--line);border-radius:10px;background:#fbfcfa;color:var(--ink);outline:none}
+  input:focus,select:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(20,112,124,.14)}
+  .two{display:flex;gap:10px}.two .field{flex:1}
+  .consent{display:flex;gap:9px;align-items:flex-start;font-size:12px;color:var(--muted);margin:6px 0 14px}
+  .consent input{width:auto;margin-top:2px}
+  button{width:100%;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:16px;padding:15px;border:none;border-radius:10px;background:var(--amber);color:#1a1205;cursor:pointer}
+  button:hover{background:#d8892f}
+  .ok{display:none;text-align:center;padding:22px 10px}
+  .ok .chk{width:52px;height:52px;border-radius:50%;background:var(--green);color:#fff;font-size:26px;display:flex;align-items:center;justify-content:center;margin:0 auto 14px}
+  .ok h3{font-family:'Bricolage Grotesque',sans-serif;font-size:19px;color:var(--ink);margin-bottom:6px}
+  .ok p{font-size:14px;color:var(--muted)}
+  .proto{margin-top:12px;font-size:11px;color:var(--muted);font-family:'Space Mono',monospace;text-align:center}
+
+  footer{font-size:12px;color:var(--muted);line-height:1.6;margin-top:6px}
+  footer b{color:var(--text)}
+  /* ==== shared site chrome (LocalProf) ==== */
+  .site-nav{position:sticky;top:0;z-index:60;background:rgba(6,48,63,.96);backdrop-filter:blur(6px)}
+  .site-nav .in{max-width:960px;margin:0 auto;padding:0 20px;height:56px;display:flex;align-items:center;justify-content:space-between}
+  .site-nav .logo{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:18px;color:#fff;text-decoration:none;letter-spacing:-.01em}
+  .site-nav .logo span{color:#17C2CC}
+  .site-nav .lk{display:flex;gap:20px;align-items:center}
+  .site-nav .lk a{font-size:14px;font-weight:500;color:#c3ccd0;text-decoration:none}
+  .site-nav .lk a:hover{color:#fff}
+  .site-nav .lk a.cta{background:#17C2CC;color:#1a1205;padding:7px 13px;border-radius:8px;font-weight:600}
+  @media(max-width:640px){.site-nav .lk a:not(.cta){display:none}}
+  .site-foot{background:#06303F;color:#9fb0b8;padding:30px 0;margin-top:30px}
+  .site-foot .in{max-width:960px;margin:0 auto;padding:0 20px}
+  .site-foot .logo{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:18px;color:#fff;text-decoration:none;display:inline-block;margin-bottom:10px}
+  .site-foot .logo span{color:#17C2CC}
+  .site-foot .fl{display:flex;gap:18px;flex-wrap:wrap;margin-bottom:12px}
+  .site-foot .fl a{color:#c3ccd0;font-size:14px;text-decoration:none}
+  .site-foot .cp{font-size:12px;color:#6f8089;border-top:1px solid #22333d;padding-top:12px}
+  @media print{.site-nav,.site-foot{display:none!important}}
+</style>
+</head>
+<body>
+
+<div class="site-nav"><div class="in">
+<a href="index.html" class="logo">Local<span>Prof</span></a>
+<div class="lk">
+<a href="index.html">Ana Sayfa</a>
+<a href="mahalle-testi.html">Mahalle Testi</a>
+<a href="index.html#devirprof">DevirProf</a>
+<a href="uzman-agi.html">Uzman Ağı</a>
+<a href="mahalle-testi.html" class="cta">Mahalleni Bul</a>
+</div>
+</div></div>
+
+<header>
+  <div class="wrap">
+    <div class="eyebrow">LocalProf · Uzman Ağı · Bodrum</div>
+    <h1>Bodrum'da sektör tecrüben var mı?<br><em>Onu gelire çevir.</em></h1>
+    <p class="lede">LocalProf, Bodrum'da iş kuran ve yaşayan insanlara güvenilir uzman desteği verir. Sen de yılların birikimini, boş zamanında iş başına kazanca çevir — müşteriyi biz getiririz.</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="card who">
+    <h2>Kimi arıyoruz</h2>
+    <p>Bir işi <b>içeriden</b> bilen insanları. Bir kafenin gerçek maliyetini, bir otelin doluluk oyununu, bir marketin ince marjını dışarıdan bakan göremez — sen görürsün.</p>
+    <div class="tags">
+      <span class="tag">Eski / mevcut işletme sahipleri</span>
+      <span class="tag">İşletme müdürleri</span>
+      <span class="tag">Kafe & restoran</span>
+      <span class="tag">Otel & pansiyon</span>
+      <span class="tag">Market & perakende</span>
+      <span class="tag">Kuaför & güzellik</span>
+      <span class="tag">Muhasebe & mali müşavirlik</span>
+    </div>
+  </div>
+
+  <div class="card active">
+    <h2>İlk aktif alan: DevirProf</h2>
+    <div class="big">Devralınacak işletmeleri sahada denetle, gerçeği doğrula.</div>
+    <p>Bodrum'da bir işletmeyi devralmak isteyen alıcılar bize geliyor. Sen, kendi sektöründeki bir işletmeye gidip gerçek trafiği, cirosu ve durumunu yerinde inceliyor; standart raporumuzu doldurup teslim ediyorsun. İş başına ödeme, esnek zaman.</p>
+  </div>
+
+  <div class="card">
+    <h2>Neden katılmalısın</h2>
+    <ul class="val">
+      <li><b>İş başına kazanç.</b> Her tamamlanan saha denetimi için sabit ücret alırsın.</li>
+      <li><b>Müşteriyi biz buluyoruz.</b> Sen iş aramıyorsun; sana uygun iş geldiğinde haber veriyoruz.</li>
+      <li><b>Kendi sektörün.</b> Sadece bildiğin iş kollarına yönlendirilirsin.</li>
+      <li><b>Esnek.</b> Kabul ettiğin işi yaparsın; taahhüt yok, boş zamanında.</li>
+      <li><b>Ağ büyüyor.</b> DevirProf ilk alan; ilerleyen dönemde diğer LocalProf hizmetleri de sana iş açacak.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>Nasıl çalışır</h2>
+    <ol class="steps">
+      <li>Aşağıdaki formu doldur, ağa başvur.</li>
+      <li>Kısa bir görüşme + tecrübe doğrulaması yapıyoruz.</li>
+      <li>Ağa girersin; sana uygun iş çıkınca bildirim gelir.</li>
+      <li>Sahada denetler, standart raporu doldurur, teslim edersin.</li>
+      <li>İş tamamlanınca ödemen yapılır.</li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <h2>Başvuru</h2>
+    <div id="form">
+      <div class="field">
+        <label for="ad">Ad Soyad</label>
+        <input type="text" id="ad" placeholder="Adın ve soyadın">
+      </div>
+      <div class="two">
+        <div class="field">
+          <label for="sektor">Ana sektörün</label>
+          <select id="sektor">
+            <option value="">Seç</option>
+            <option>Kafe & Restoran</option>
+            <option>Otel & Pansiyon</option>
+            <option>Market & Perakende</option>
+            <option>Kuaför & Güzellik</option>
+            <option>Beach club & Eğlence</option>
+            <option>Muhasebe & Mali Müşavirlik</option>
+            <option>Diğer</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="tecrube">Tecrübe (yıl)</label>
+          <input type="number" id="tecrube" placeholder="Örn. 12" min="0">
+        </div>
+      </div>
+      <div class="two">
+        <div class="field">
+          <label for="bolge">Bölgen</label>
+          <input type="text" id="bolge" placeholder="Örn. Bodrum merkez, Yalıkavak">
+        </div>
+        <div class="field">
+          <label for="tel">Telefon</label>
+          <input type="text" id="tel" placeholder="05..">
+        </div>
+      </div>
+      <div class="consent">
+        <input type="checkbox" id="coi">
+        <label for="coi" style="font-weight:400;margin:0">Denetlediğim işletme veya sahibiyle çıkar ilişkim olduğunda bunu bildireceğimi ve bağımsızlık ilkesine uyacağımı kabul ediyorum.</label>
+      </div>
+      <button id="btn">Ağa başvur</button>
+    </div>
+    <div class="ok" id="ok">
+      <div class="chk">✓</div>
+      <h3>Başvurun alındı</h3>
+      <p id="okmsg">En kısa sürede kısa bir görüşme için sana döneceğiz.</p>
+    </div>
+    <div class="proto">Prototip · gerçek üründe başvuru doğrudan ekibe iletilir</div>
+  </div>
+
+  <footer>
+    <b>LocalProf Uzman Ağı</b>, sektör tecrübesi olan kişileri doğrulanmış saha uzmanı olarak ağına dahil eder. Katılım bir iş garantisi vermez; işler uygunluk ve talebe göre yönlendirilir. Bağımsızlık ve gizlilik esastır. © 2026 LocalProf.
+  </footer>
+
+</div>
+
+<script>
+  document.getElementById('btn').addEventListener('click',()=>{
+    const ad=document.getElementById('ad').value.trim();
+    const sektor=document.getElementById('sektor').value;
+    const coi=document.getElementById('coi').checked;
+    if(!ad||!sektor){alert('Lütfen ad ve sektör alanlarını doldur.');return;}
+    if(!coi){alert('Devam etmek için bağımsızlık beyanını onayla.');return;}
+    document.getElementById('form').style.display='none';
+    const ok=document.getElementById('ok'); ok.style.display='block';
+    document.getElementById('okmsg').textContent=ad.split(' ')[0]+', başvurun alındı — kısa bir görüşme için en kısa sürede sana döneceğiz.';
+  });
+</script>
+
+<div class="site-foot"><div class="in">
+<a href="index.html" class="logo">Local<span>Prof</span></a>
+<div class="fl">
+<a href="index.html">Ana Sayfa</a>
+<a href="gerceklik-testi.html">Gerçeklik Testi</a>
+<a href="paketler.html">Paketler</a>
+<a href="uzman-agi.html">Uzman Ağı</a>
+</div>
+<div class="cp">© 2026 LocalProf · Bodrum. Raporlar bağımsız görüş niteliğindedir; yatırım tavsiyesi değildir.</div>
+</div></div>
+</body>
+</html>

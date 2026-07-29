@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LocalProf — Hizmet Paketleri</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#06303F;--paper:#E9F2F2;--teal:#0E8C9E;--teal-deep:#0A5361;
+    --amber:#17C2CC;--clay:#A83A2C;--green:#3E7C5A;
+    --text:#1c2833;--muted:#5d6b74;--line:#d5d9d1;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#d3e6e6;color:var(--text);font-family:'Inter',system-ui,sans-serif;line-height:1.42;padding:0;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .sheet{max-width:940px;margin:0 auto;background:#fff;border-radius:8px;box-shadow:0 8px 30px rgba(6,48,63,.14);padding:32px 34px 26px}
+
+  .head{border-bottom:2px solid var(--ink);padding-bottom:14px;margin-bottom:16px}
+  .brand{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--teal-deep)}
+  h1{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:30px;letter-spacing:-.02em;color:var(--ink);line-height:1.02;margin-top:4px}
+  .frame{margin-top:9px;font-size:13.5px;color:var(--text);max-width:70ch}
+  .frame b{color:var(--ink)}
+
+  .cards{display:flex;gap:14px;margin:20px 0 16px;align-items:stretch}
+  .card{flex:1;border:1px solid var(--line);border-radius:12px;padding:18px 17px;display:flex;flex-direction:column;background:#fff}
+  .card.feature{border:2px solid var(--teal);box-shadow:0 6px 20px rgba(20,112,124,.12)}
+  .ribbon{align-self:flex-start;font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:#fff;background:var(--teal);padding:3px 9px;border-radius:999px;margin-bottom:10px}
+  .ribbon.mute{background:var(--muted)} .ribbon.amber{background:var(--amber)}
+  .name{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:17px;color:var(--ink);line-height:1.1}
+  .who{font-size:11.5px;color:var(--muted);margin-top:4px;min-height:30px}
+  .price{font-family:'Space Mono',monospace;font-weight:700;font-size:27px;color:var(--ink);margin:12px 0 3px;letter-spacing:-.02em}
+  .price small{font-size:12px;color:var(--muted);font-weight:400}
+  .mode{font-family:'Space Mono',monospace;font-size:10.5px;color:var(--teal-deep);margin-bottom:12px}
+  .feats{list-style:none;margin-top:2px;flex:1}
+  .feats li{font-size:12px;padding:5px 0 5px 19px;position:relative;border-top:1px dotted var(--line)}
+  .feats li:first-child{border-top:none}
+  .feats li::before{content:"✓";position:absolute;left:0;top:5px;color:var(--teal);font-weight:700;font-size:12px}
+  .feats li.off{color:var(--muted)}
+  .feats li.off::before{content:"—";color:var(--line)}
+  .foot{margin-top:12px;padding-top:11px;border-top:1px solid var(--line);font-size:11px;color:var(--muted);line-height:1.4}
+  .foot b{color:var(--ink)}
+
+  .flow{display:flex;align-items:center;gap:10px;background:#f4f6f2;border-radius:10px;padding:13px 16px;margin-bottom:16px;flex-wrap:wrap}
+  .flow .step{font-size:12px;color:var(--text)} .flow .step b{color:var(--ink)}
+  .flow .ar{color:var(--teal);font-weight:700}
+  .flow .note{margin-left:auto;font-size:11px;color:var(--muted);font-family:'Space Mono',monospace}
+
+  .fine{font-size:10px;color:var(--muted);line-height:1.55;border-top:1px solid var(--line);padding-top:11px}
+  .fine b{color:var(--text)}
+
+  @media (max-width:760px){.cards{flex-direction:column}.who{min-height:0}}
+  @media print{
+    body{background:#fff;padding:0}
+    .sheet{box-shadow:none;border-radius:0;max-width:none;padding:0}
+    .card.feature{box-shadow:none}
+    @page{size:A4 landscape;margin:12mm}
+  }
+  .sheet-wrap{padding:24px 14px}
+  /* ==== shared site chrome (LocalProf) ==== */
+  .site-nav{position:sticky;top:0;z-index:60;background:rgba(6,48,63,.96);backdrop-filter:blur(6px)}
+  .site-nav .in{max-width:960px;margin:0 auto;padding:0 20px;height:56px;display:flex;align-items:center;justify-content:space-between}
+  .site-nav .logo{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:18px;color:#fff;text-decoration:none;letter-spacing:-.01em}
+  .site-nav .logo span{color:#17C2CC}
+  .site-nav .lk{display:flex;gap:20px;align-items:center}
+  .site-nav .lk a{font-size:14px;font-weight:500;color:#c3ccd0;text-decoration:none}
+  .site-nav .lk a:hover{color:#fff}
+  .site-nav .lk a.cta{background:#17C2CC;color:#1a1205;padding:7px 13px;border-radius:8px;font-weight:600}
+  @media(max-width:640px){.site-nav .lk a:not(.cta){display:none}}
+  .site-foot{background:#06303F;color:#9fb0b8;padding:30px 0;margin-top:30px}
+  .site-foot .in{max-width:960px;margin:0 auto;padding:0 20px}
+  .site-foot .logo{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:18px;color:#fff;text-decoration:none;display:inline-block;margin-bottom:10px}
+  .site-foot .logo span{color:#17C2CC}
+  .site-foot .fl{display:flex;gap:18px;flex-wrap:wrap;margin-bottom:12px}
+  .site-foot .fl a{color:#c3ccd0;font-size:14px;text-decoration:none}
+  .site-foot .cp{font-size:12px;color:#6f8089;border-top:1px solid #22333d;padding-top:12px}
+  @media print{.site-nav,.site-foot{display:none!important}.sheet-wrap{padding:0}}
+</style>
+</head>
+<body>
+<div class="site-nav"><div class="in">
+<a href="index.html" class="logo">Local<span>Prof</span></a>
+<div class="lk">
+<a href="index.html">Ana Sayfa</a>
+<a href="mahalle-testi.html">Mahalle Testi</a>
+<a href="index.html#devirprof">DevirProf</a>
+<a href="uzman-agi.html">Uzman Ağı</a>
+<a href="mahalle-testi.html" class="cta">Mahalleni Bul</a>
+</div>
+</div></div>
+<div class="sheet-wrap">
+<div class="sheet">
+
+  <div class="head">
+    <div class="brand">LocalProf · Bodrum · İşletme Devir Danışmanlığı</div>
+    <h1>Devralmadan önce, gerçeği bil.</h1>
+    <p class="frame">Fiyatı <b>işin ölçeği ve riski</b> belirler — kaç gün çalıştığımız değil. Küçük ve düz sezonlu bir büfe ile alkol ruhsatlı bir beach club aynı derinlikte incelenmez. Hangi paketin size uygun olduğunu ücretsiz ön testten sonra birlikte netleştiririz.</p>
+  </div>
+
+  <div class="flow">
+    <span class="step"><b>1.</b> Gerçeklik Testi <span style="color:var(--green);font-weight:600">(ücretsiz)</span></span>
+    <span class="ar">→</span>
+    <span class="step"><b>2.</b> Ön Eleme Raporu</span>
+    <span class="ar">→</span>
+    <span class="step"><b>3.</b> Saha Denetimi</span>
+    <span class="note">her kademe bir sonrakine hazırlar</span>
+  </div>
+
+  <div class="cards">
+
+    <div class="card">
+      <span class="ribbon mute">Eleme</span>
+      <div class="name">Ön Eleme Raporu</div>
+      <div class="who">Devir masaya gelmeden önce hızlı, ucuz filtre.</div>
+      <div class="price">₺3.000</div>
+      <div class="mode">Uzaktan · ~2 iş günü</div>
+      <ul class="feats">
+        <li>Satıcı beyanı vs. bağımsız masabaşı tahmin</li>
+        <li>Bodrum sezon modeliyle gerçekçi ciro & geri dönüş</li>
+        <li>Ön tespit edilen kırmızı bayraklar</li>
+        <li>Tek sayfa yazılı rapor</li>
+        <li class="off">Saha ziyareti içermez</li>
+      </ul>
+      <div class="foot"><b>Mahsup:</b> Saha denetimine geçerseniz bu ₺3.000 paket ücretinden düşülür.</div>
+    </div>
+
+    <div class="card">
+      <span class="ribbon amber">Küçük & düz sezonlu</span>
+      <div class="name">Ekspres Saha Denetimi</div>
+      <div class="who">Büfe, kuaför, market, küçük kafe — kışı gören, tek konseptli işler.</div>
+      <div class="price">₺25.000</div>
+      <div class="mode">Sahada · kısa doğrulama penceresi</div>
+      <ul class="feats">
+        <li>Ön Eleme Raporu'ndaki her şey</li>
+        <li>Sahada gerçek trafik ve nakit gözlemi</li>
+        <li>POS & banka hareketi eşleştirmesi</li>
+        <li>Kira kontratı, vergi–SGK borç sorgusu</li>
+        <li>Demirbaş envanteri & durum kontrolü</li>
+        <li>Özet saha denetim raporu</li>
+      </ul>
+      <div class="foot">Düşük sezonluk işlerde kısa pencere gerçeği yansıtır; bu yüzden daha uygun fiyatlı.</div>
+    </div>
+
+    <div class="card feature">
+      <span class="ribbon">En kapsamlı · önerilen</span>
+      <div class="name">Tam Saha Denetimi</div>
+      <div class="who">Kafe-restoran, pastane, otel/pansiyon, beach club; yüksek devirli veya ruhsatlı işler.</div>
+      <div class="price">₺50.000</div>
+      <div class="mode">Sahada · ~1 haftalık tam pencere</div>
+      <ul class="feats">
+        <li>Ekspres denetimdeki her şey</li>
+        <li>Hafta içi + hafta sonu gerçek trafik & nakit sayımı</li>
+        <li>Landlord devir onayı & kira yenileme riski</li>
+        <li>Ruhsat / lisans devredilebilirliği</li>
+        <li>Personel ve tedarikçi yapısı analizi</li>
+        <li>Tam değerlendirme raporu + <b>devral / kaçın</b> önerisi</li>
+      </ul>
+      <div class="foot">Sezonlu ve büyük işlerde tek haftalık sayım, hafta içi–sonu dalgasını yakalar. Gerçeği ancak bu pencere verir.</div>
+    </div>
+
+  </div>
+
+  <div class="fine">
+    <b>Notlar:</b> Fiyatlar işin ölçeği ve risk profiline göre belirlenir; nihai paket, ücretsiz ön test ve rapor sonrası netleşir. Bodrum merkez dışı lokasyonlarda (Yalıkavak, Türkbükü, Datça vb.) saha ekibi yol/konaklama farkı eklenebilir. Ön Eleme Raporu ücreti, saha denetimine geçilmesi hâlinde paket ücretinden düşülür. Verilen raporlar bağımsız görüş niteliğindedir; yatırım tavsiyesi değildir, nihai karar müşteriye aittir. © 2026 LocalProf Danışmanlık.
+  </div>
+
+</div>
+</div>
+<div class="site-foot"><div class="in">
+<a href="index.html" class="logo">Local<span>Prof</span></a>
+<div class="fl">
+<a href="index.html">Ana Sayfa</a>
+<a href="gerceklik-testi.html">Gerçeklik Testi</a>
+<a href="paketler.html">Paketler</a>
+<a href="uzman-agi.html">Uzman Ağı</a>
+</div>
+<div class="cp">© 2026 LocalProf · Bodrum. Raporlar bağımsız görüş niteliğindedir; yatırım tavsiyesi değildir.</div>
+</div></div>
+</body>
+</html>

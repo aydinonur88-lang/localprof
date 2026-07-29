@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bodrum İşletme Gerçeklik Testi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#06303F;--paper:#E9F2F2;--teal:#0E8C9E;--teal-deep:#0A5361;
+    --amber:#17C2CC;--clay:#A83A2C;--green:#3E7C5A;
+    --text:#1c2833;--muted:#5d6b74;--line:#d5d9d1;--card:#ffffff;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{background:var(--paper);color:var(--text);font-family:'Inter',system-ui,sans-serif;line-height:1.5;padding:0 0 64px}
+  .wrap{max-width:560px;margin:0 auto;padding:0 20px}
+
+  header{background:linear-gradient(165deg,#0C7A8A 0%,#083F4E 60%,#06303F 100%);color:var(--paper);padding:34px 0 30px;margin-bottom:26px}
+  .eyebrow{font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#8fb3b8;margin-bottom:14px;display:flex;gap:8px;align-items:center}
+  .eyebrow::before{content:"";width:22px;height:1px;background:var(--teal)}
+  h1{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(28px,8vw,40px);line-height:1.02;letter-spacing:-.02em;color:#fff}
+  h1 em{font-style:normal;color:var(--amber)}
+  .lede{margin-top:12px;font-size:15px;color:#c3ccd0;max-width:46ch}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 20px;margin-bottom:18px}
+  .card h2{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:13px;letter-spacing:.02em;text-transform:uppercase;color:var(--teal-deep);margin-bottom:4px}
+  .card .hint{font-size:13px;color:var(--muted);margin-bottom:18px}
+
+  /* sector pills */
+  .sectors-row{display:flex;flex-wrap:wrap;gap:8px}
+  .pill{font-family:'Inter',sans-serif;font-size:14px;font-weight:600;padding:9px 14px;border:1.5px solid var(--line);border-radius:999px;background:#fbfcfa;color:var(--text);cursor:pointer;transition:all .15s}
+  .pill:hover{border-color:var(--teal)}
+  .pill.active{background:var(--teal);border-color:var(--teal);color:#fff}
+  .sector-trait{margin-top:16px;font-size:13.5px;color:var(--text);display:flex;gap:9px;align-items:flex-start;padding-top:14px;border-top:1px solid var(--line)}
+  .sector-trait .mk{color:var(--teal);font-weight:700;font-family:'Space Mono',monospace}
+
+  .field{margin-bottom:18px}
+  .field:last-child{margin-bottom:0}
+  .field label{display:block;font-size:14px;font-weight:600;color:var(--text);margin-bottom:2px}
+  .field .sub{font-size:12px;color:var(--muted);margin-bottom:8px}
+  .money{position:relative}
+  .money::before{content:"₺";position:absolute;left:14px;top:50%;transform:translateY(-50%);font-family:'Space Mono',monospace;color:var(--muted);font-size:15px;pointer-events:none}
+  input[type=number]{width:100%;font-family:'Space Mono',monospace;font-size:17px;color:var(--ink);padding:12px 14px 12px 30px;border:1.5px solid var(--line);border-radius:10px;background:#fbfcfa;outline:none;-moz-appearance:textfield}
+  input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+  input[type=number]:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(20,112,124,.14)}
+  .slider-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
+  .slider-head b{font-family:'Space Mono',monospace;font-size:15px;color:var(--teal-deep)}
+  input[type=range]{width:100%;accent-color:var(--teal);height:22px}
+
+  .verdict{border-radius:14px;padding:20px;margin-bottom:18px;color:#fff}
+  .verdict.red{background:var(--clay)}
+  .verdict.amber{background:#C77A2C}
+  .verdict.green{background:var(--green)}
+  .verdict .tag{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;opacity:.85;margin-bottom:8px}
+  .verdict .big{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:22px;line-height:1.12;letter-spacing:-.01em}
+  .verdict .why{margin-top:10px;font-size:14px;opacity:.95}
+
+  .strip-card h2{margin-bottom:14px}
+  .chart{position:relative;height:170px;display:flex;align-items:flex-end;gap:5px;padding-top:8px}
+  .bar-col{flex:1;display:flex;flex-direction:column;justify-content:flex-end;height:100%;position:relative}
+  .bar{width:100%;border-radius:3px 3px 0 0;transition:height .5s cubic-bezier(.2,.7,.2,1)}
+  .bar.high{background:var(--teal)}
+  .bar.shoulder{background:#7fb0b3}
+  .bar.low{background:#c2d2ce}
+  .bar.deficit{background:var(--clay)}
+  .rent-line{position:absolute;left:0;right:0;border-top:2px dashed var(--ink);z-index:3;pointer-events:none}
+  .rent-tag{position:absolute;right:0;top:-9px;transform:translateY(-100%);font-family:'Space Mono',monospace;font-size:10px;background:var(--ink);color:#fff;padding:2px 6px;border-radius:4px;white-space:nowrap}
+  .months{display:flex;gap:5px;margin-top:6px}
+  .months span{flex:1;text-align:center;font-family:'Space Mono',monospace;font-size:9.5px;color:var(--muted)}
+  .strip-note{margin-top:14px;font-size:13px;color:var(--text);display:flex;gap:8px}
+  .strip-note .dot{color:var(--clay);font-weight:700}
+
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border-radius:12px;overflow:hidden;border:1px solid var(--line)}
+  .cell{background:var(--card);padding:15px 16px}
+  .cell.full{grid-column:1/-1}
+  .cell .k{font-size:12px;color:var(--muted);margin-bottom:5px}
+  .cell .v{font-family:'Space Mono',monospace;font-size:19px;font-weight:700;color:var(--ink);letter-spacing:-.01em}
+  .cell .v.neg{color:var(--clay)}
+  .cell .v.pos{color:var(--green)}
+  .gap-cell{background:#fbf3e7}
+  .gap-cell .v{color:#C77A2C}
+
+  .cta{background:var(--ink);color:#fff;border-radius:14px;padding:24px 20px}
+  .cta .kick{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--amber);margin-bottom:10px}
+  .cta h3{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:20px;line-height:1.15;margin-bottom:10px}
+  .cta p{font-size:14px;color:#c3ccd0;margin-bottom:18px}
+  .cta .row{display:flex;gap:8px;flex-wrap:wrap}
+  .cta input{flex:1;min-width:130px;font-family:'Inter',sans-serif;font-size:15px;padding:12px 14px;border:1.5px solid #33454f;border-radius:10px;background:transparent;color:#fff;outline:none}
+  .cta input::placeholder{color:#7c8c95}
+  .cta input:focus{border-color:var(--teal)}
+  .cta button{width:100%;margin-top:10px;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:16px;padding:14px;border:none;border-radius:10px;background:var(--amber);color:#1a1205;cursor:pointer}
+  .cta button:hover{background:#d8892f}
+  .cta .ok{margin-top:14px;font-size:14px;color:#a8d3bb;display:none}
+  .cta .proto{margin-top:14px;font-size:11px;color:#6f8089;font-family:'Space Mono',monospace}
+
+  footer{font-size:11.5px;color:var(--muted);line-height:1.6;margin-top:22px}
+  footer b{color:var(--text)}
+  @media (prefers-reduced-motion:reduce){.bar{transition:none}}
+  /* ==== shared site chrome (LocalProf) ==== */
+  .site-nav{position:sticky;top:0;z-index:60;background:rgba(6,48,63,.96);backdrop-filter:blur(6px)}
+  .site-nav .in{max-width:960px;margin:0 auto;padding:0 20px;height:56px;display:flex;align-items:center;justify-content:space-between}
+  .site-nav .logo{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:18px;color:#fff;text-decoration:none;letter-spacing:-.01em}
+  .site-nav .logo span{color:#17C2CC}
+  .site-nav .lk{display:flex;gap:20px;align-items:center}
+  .site-nav .lk a{font-size:14px;font-weight:500;color:#c3ccd0;text-decoration:none}
+  .site-nav .lk a:hover{color:#fff}
+  .site-nav .lk a.cta{background:#17C2CC;color:#1a1205;padding:7px 13px;border-radius:8px;font-weight:600}
+  @media(max-width:640px){.site-nav .lk a:not(.cta){display:none}}
+  .site-foot{background:#06303F;color:#9fb0b8;padding:30px 0;margin-top:30px}
+  .site-foot .in{max-width:960px;margin:0 auto;padding:0 20px}
+  .site-foot .logo{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:18px;color:#fff;text-decoration:none;display:inline-block;margin-bottom:10px}
+  .site-foot .logo span{color:#17C2CC}
+  .site-foot .fl{display:flex;gap:18px;flex-wrap:wrap;margin-bottom:12px}
+  .site-foot .fl a{color:#c3ccd0;font-size:14px;text-decoration:none}
+  .site-foot .cp{font-size:12px;color:#6f8089;border-top:1px solid #22333d;padding-top:12px}
+  @media print{.site-nav,.site-foot{display:none!important}}
+</style>
+</head>
+<body>
+
+<div class="site-nav"><div class="in">
+<a href="index.html" class="logo">Local<span>Prof</span></a>
+<div class="lk">
+<a href="index.html">Ana Sayfa</a>
+<a href="mahalle-testi.html">Mahalle Testi</a>
+<a href="index.html#devirprof">DevirProf</a>
+<a href="uzman-agi.html">Uzman Ağı</a>
+<a href="mahalle-testi.html" class="cta">Mahalleni Bul</a>
+</div>
+</div></div>
+
+<header>
+  <div class="wrap">
+    <div class="eyebrow">LocalProf · Bodrum</div>
+    <h1>Bodrum hayalin<br><em>kışın da doyurur mu?</em></h1>
+    <p class="lede">Bodrum yılın birkaç ayında kazanır, kira 12 ay durmaz. Önce işini seç, sonra rakamları gir — gerçeği gör.</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="card">
+    <h2>Hangi işletmeyi devralıyorsun?</h2>
+    <p class="hint">Her sektörün sezon eğrisi farklı. Seçtiğinde model buna göre değişir.</p>
+    <div class="sectors-row" id="sectors"></div>
+    <div class="sector-trait"><span class="mk">›</span><span id="trait"></span></div>
+  </div>
+
+  <div class="card">
+    <h2>İşletmenin rakamları</h2>
+    <p class="hint">Elindeki bilgileri gir — sonuç anında güncellenir.</p>
+
+    <div class="field">
+      <label for="devir">Devir bedeli</label>
+      <div class="sub">Hava parası + demirbaş, peşin ödediğin toplam</div>
+      <div class="money"><input type="number" id="devir" min="0" step="50000"></div>
+    </div>
+
+    <div class="field">
+      <label for="kira">Aylık kira</label>
+      <div class="sub">12 ay boyunca her ay ödersin — sezon dışı dahil</div>
+      <div class="money"><input type="number" id="kira" min="0" step="5000"></div>
+    </div>
+
+    <div class="field">
+      <label for="yaz">Yüksek sezon aylık cirosu</label>
+      <div class="sub">Dolu bir yaz ayında (Haz–Eyl) kasaya giren</div>
+      <div class="money"><input type="number" id="yaz" min="0" step="25000"></div>
+    </div>
+
+    <div class="field">
+      <div class="slider-head">
+        <label for="gider" style="margin:0">İşletme gider oranı</label>
+        <b id="giderVal">65%</b>
+      </div>
+      <div class="sub" id="giderHint">Malzeme + personel + genel gider — kira hariç.</div>
+      <input type="range" id="gider" min="30" max="85" value="65" step="1">
+    </div>
+  </div>
+
+  <div class="verdict red" id="verdict">
+    <div class="tag" id="vtag">Sonuç</div>
+    <div class="big" id="vbig">—</div>
+    <div class="why" id="vwhy"></div>
+  </div>
+
+  <div class="card strip-card">
+    <h2>Yıl boyunca kasa</h2>
+    <div class="chart" id="chart"></div>
+    <div class="months" id="months"></div>
+    <div class="strip-note"><span class="dot">▬</span><span id="stripNote"></span></div>
+  </div>
+
+  <div class="grid">
+    <div class="cell gap-cell full">
+      <div class="k">12 aya çarpsan hayal ettiğin ciro</div>
+      <div class="v" id="naive">—</div>
+    </div>
+    <div class="cell full">
+      <div class="k">Gerçekçi yıllık ciro (sezona göre)</div>
+      <div class="v" id="real">—</div>
+    </div>
+    <div class="cell"><div class="k">Yıllık işletme gideri</div><div class="v" id="cost">—</div></div>
+    <div class="cell"><div class="k">Yıllık kira</div><div class="v" id="rent">—</div></div>
+    <div class="cell"><div class="k">Yıllık net kâr</div><div class="v" id="net">—</div></div>
+    <div class="cell"><div class="k">Paranı geri alma süresi</div><div class="v" id="payback">—</div></div>
+  </div>
+
+  <div class="cta">
+    <div class="kick">Bu bir tahmin</div>
+    <h3>Gerçek ciroyu defter değil, saha söyler.</h3>
+    <p>Yukarıdaki rakam satıcının anlattığına dayanıyor. Biz işletmene bir hafta denetçi indirir, gerçek trafiği ve nakit akışını sayarız — devir sözleşmesini imzalamadan önce. Ücretsiz ön değerlendirme isteyebilirsin.</p>
+    <div class="row">
+      <input type="text" id="cname" placeholder="Adın">
+      <input type="text" id="cphone" placeholder="Telefon">
+    </div>
+    <button id="ctaBtn">Ücretsiz ön değerlendirme iste</button>
+    <div class="ok" id="ctaOk"></div>
+    <div class="proto">Prototip · gerçek üründe bu form seni saha ekibine bağlar</div>
+  </div>
+
+  <footer>
+    <b>Bu bir ön eleme aracıdır, değerleme raporu değildir.</b> Sezon dağılımı ve gider oranları her sektör için Bodrum'a dair temkinli varsayımlardır. Girdiğin ciro doğrulanmamış bir tahmindir; asıl karar, sahada doğrulanmış gerçek rakamlarla verilmelidir.
+  </footer>
+
+</div>
+
+<script>
+  const fmt = new Intl.NumberFormat('tr-TR',{style:'currency',currency:'TRY',maximumFractionDigits:0});
+  const monthNames = ['Oca','Şub','Mar','Nis','May','Haz','Tem','Ağu','Eyl','Eki','Kas','Ara'];
+
+  const sectors = {
+    kafe:{
+      label:'Kafe',
+      factors:[.18,.18,.18,.18,.45,1,1,1,1,.45,.18,.18],
+      gider:65, giderHint:'Malzeme + personel + genel gider (kira hariç). Kafede tipik: %60–70.',
+      devir:1500000, kira:55000, yaz:550000,
+      trait:'Orta-yüksek sezonluk. Yaz 4 ay taşır, kışın kasa incelir; kira ise durmaz.'
+    },
+    restoran:{
+      label:'Restoran / Lokanta',
+      factors:[.25,.25,.28,.35,.55,1,1,1,.9,.5,.3,.28],
+      gider:70, giderHint:'Yüksek malzeme + kalabalık personel (kira hariç). Tipik: %65–75.',
+      devir:3000000, kira:90000, yaz:1200000,
+      trait:'Sezonluk ama kafeye göre kışı biraz daha taşır — yerel müşteri yıl boyu yer. Buna karşılık personel ve malzeme yükü ağır.'
+    },
+    donerci:{
+      label:'Dönerci / Fast-food',
+      factors:[.35,.35,.38,.45,.6,1,1,1,.9,.55,.4,.38],
+      gider:72, giderHint:'Yüksek et/malzeme maliyeti + personel (kira hariç). Tipik: %65–78.',
+      devir:1200000, kira:45000, yaz:500000,
+      trait:'Az sezonluk, hızlı devirli iş — yıl boyu yerel öğle talebi var. Ama et ve malzeme maliyeti marjı inceltir; küçük alanda yüksek ciro döner.'
+    },
+    pastane:{
+      label:'Pastane / Fırın',
+      factors:[.45,.45,.5,.55,.7,1,1,1,.9,.65,.5,.5],
+      gider:68, giderHint:'Malzeme + fırıncı emeği + enerji (kira hariç). Tipik: %60–75.',
+      devir:1300000, kira:45000, yaz:450000,
+      trait:'Yeme-içmenin sabit talepli ayağı — ekmek ve tatlı yıl boyu satar, kışı görece iyi taşır. Fırın enerji gideri ve erken mesai emeği ağırdır.'
+    },
+    market:{
+      label:'Market / Büfe',
+      factors:[.55,.55,.6,.65,.75,1,1,1,.9,.7,.6,.6],
+      gider:80, giderHint:'Ürün maliyeti yüksek, marj ince (kira hariç). Tipik: %72–88.',
+      devir:900000, kira:40000, yaz:400000,
+      trait:'En az sezonluk, günlük ihtiyaç işi — kışı rahat görür. Dikkat: perakende marjı ince, ciro yüksek görünse de net kâr düşüktür.'
+    },
+    pansiyon:{
+      label:'Butik otel / Pansiyon',
+      factors:[.05,.05,.08,.2,.5,1,1,1,.85,.4,.1,.08],
+      gider:45, giderHint:'Temizlik, aidat, enerji (kira hariç). Malzeme düşük, sabit gider yüksek. Tipik: %35–55.',
+      devir:3500000, kira:60000, yaz:650000,
+      trait:'Çok sezonluk. Kışın doluluk neredeyse sıfıra iner; yılın parasını yazda kazanır ya da hiç kazanmaz.'
+    },
+    beachclub:{
+      label:'Beach club / Plaj',
+      factors:[0,0,0,.05,.3,1,1,1,.6,.15,0,0],
+      gider:60, giderHint:'Sezonda yoğun personel, yüksek içecek marjı (kira hariç). Tipik: %50–70.',
+      devir:5000000, kira:150000, yaz:2000000,
+      trait:'Bodrum\u2019un en sert sezonluk işi. Fiilen 3-4 ay açık; kışın gelir sıfır, sabit giderler devam eder. Yüksek getiri, yüksek risk.'
+    },
+    kuafor:{
+      label:'Kuaför / Güzellik',
+      factors:[.6,.6,.65,.7,.8,1,1,1,.9,.75,.65,.7],
+      gider:55, giderHint:'Ağırlıklı personel, düşük malzeme (kira hariç). Tipik: %45–65.',
+      devir:700000, kira:35000, yaz:180000,
+      trait:'En az sezonluk seçenek. Yerel müşteri yıl boyu gelir; yazda bir miktar artar. Bodrum\u2019da "kışı gören" nadir işlerden.'
+    }
+  };
+
+  let current = 'kafe';
+  let factors = sectors.kafe.factors;
+
+  const els = {};
+  ['devir','kira','yaz','gider','giderVal','giderHint','chart','months','stripNote',
+   'naive','real','cost','rent','net','payback','verdict','vtag','vbig','vwhy','trait','sectors']
+   .forEach(id=>els[id]=document.getElementById(id));
+
+  // build sector pills
+  Object.keys(sectors).forEach(key=>{
+    const b=document.createElement('button');
+    b.className='pill'+(key===current?' active':'');
+    b.textContent=sectors[key].label;
+    b.dataset.key=key;
+    b.addEventListener('click',()=>selectSector(key));
+    els.sectors.appendChild(b);
+  });
+
+  function selectSector(key){
+    current=key; const s=sectors[key]; factors=s.factors;
+    document.querySelectorAll('.pill').forEach(p=>p.classList.toggle('active',p.dataset.key===key));
+    els.devir.value=s.devir; els.kira.value=s.kira; els.yaz.value=s.yaz;
+    els.gider.value=s.gider; els.giderHint.textContent=s.giderHint;
+    els.trait.textContent=s.trait;
+    render();
+  }
+
+  function num(el){ const v=parseFloat(el.value); return isFinite(v)&&v>0?v:0; }
+
+  function render(){
+    const devir=num(els.devir), kira=num(els.kira), yaz=num(els.yaz);
+    const gr=parseInt(els.gider.value,10)/100;
+    els.giderVal.textContent=(gr*100).toFixed(0)+'%';
+
+    const sumFactors=factors.reduce((a,b)=>a+b,0);
+    const realCiro=yaz*sumFactors;
+    const naiveCiro=yaz*12;
+    const yCost=realCiro*gr;
+    const yRent=kira*12;
+    const yNet=realCiro-yCost-yRent;
+    const payback=yNet>0?devir/yNet:Infinity;
+
+    let deficitMonths=0;
+    const monthly=factors.map(f=>{
+      const rev=yaz*f; const n=rev*(1-gr)-kira;
+      if(n<0) deficitMonths++;
+      return {rev,net:n};
+    });
+
+    els.naive.textContent=fmt.format(naiveCiro);
+    els.real.textContent=fmt.format(realCiro);
+    els.cost.textContent=fmt.format(yCost);
+    els.rent.textContent=fmt.format(yRent);
+    els.net.textContent=fmt.format(yNet);
+    els.net.className='v '+(yNet>0?'pos':'neg');
+    els.payback.textContent = yNet>0 ? payback.toFixed(1).replace('.',',')+' yıl' : 'Geri gelmez';
+    els.payback.className='v '+(yNet>0?'':'neg');
+
+    const maxRev=Math.max(yaz,kira,1);
+    els.chart.innerHTML='';
+    monthly.forEach((m,i)=>{
+      const col=document.createElement('div'); col.className='bar-col';
+      const bar=document.createElement('div');
+      const cls = m.net<0 ? 'deficit' : (factors[i]>=0.9?'high':(factors[i]>=0.4?'shoulder':'low'));
+      bar.className='bar '+cls;
+      bar.style.height=Math.max(2,(m.rev/maxRev)*100)+'%';
+      col.appendChild(bar); els.chart.appendChild(col);
+    });
+    const line=document.createElement('div'); line.className='rent-line';
+    line.style.bottom=Math.min(100,(kira/maxRev)*100)+'%';
+    const tag=document.createElement('div'); tag.className='rent-tag'; tag.textContent='Kira '+fmt.format(kira);
+    line.appendChild(tag); els.chart.appendChild(line);
+
+    els.months.innerHTML=monthNames.map(m=>'<span>'+m+'</span>').join('');
+    els.stripNote.innerHTML = deficitMonths>0
+      ? 'Yılın <b>'+deficitMonths+' ayında</b> kiran cironu geçiyor — o aylarda kasadan para çıkıyor.'
+      : 'Bu senaryoda işletme her ay kirayı çıkarıyor. Sektörün kışı görebilenlerden — ama rakamı yine de sahada doğrula.';
+
+    let cls,tagt,big,why;
+    const gap=naiveCiro-realCiro;
+    if(yNet<=0){
+      cls='red'; tagt='Kırmızı · Zarar';
+      big='Bu işletme para kazandırmıyor, kaybettiriyor.';
+      why='Gerçekçi ciroda yıllık net '+fmt.format(yNet)+'. Devir bedelini bir yana bırak, işin kendisi seni her yıl cebinden ödetiyor.';
+    } else if(payback>5){
+      cls='red'; tagt='Kırmızı · Çok uzun';
+      big='Paran '+payback.toFixed(1).replace('.',',')+' yılda geri geliyor.';
+      why='Bu ölçekte makul geri dönüş 2–3 yıldır. Bu süre, kira zammı ya da zayıf bir sezonla kolayca "hiç"e döner.';
+    } else if(payback>=3){
+      cls='amber'; tagt='Sarı · Sınırda';
+      big='İş görünürde dönüyor ama marj ince.';
+      why='Paran ~'+payback.toFixed(1).replace('.',',')+' yılda geri geliyor. Tek bir kötü sezon ya da kira yenilemesi dengeyi bozar. Rakamların gerçek olduğundan emin olmadan girme.';
+    } else {
+      cls='green'; tagt='Yeşil · Makul görünüyor';
+      big='Rakamlar tutarsa sağlıklı bir devir.';
+      why='Paran ~'+payback.toFixed(1).replace('.',',')+' yılda geri geliyor. Tek şart: girdiğin yüksek sezon cirosu gerçek olmalı — çoğu satıcı bu rakamı şişirir.';
+    }
+    why+=' Ayrıca 12 aya çarparak '+fmt.format(gap)+' fazladan ciro hayal etmiştin.';
+    els.verdict.className='verdict '+cls;
+    els.vtag.textContent=tagt; els.vbig.textContent=big; els.vwhy.textContent=why;
+  }
+
+  ['devir','kira','yaz','gider'].forEach(id=>document.getElementById(id).addEventListener('input',render));
+  document.getElementById('ctaBtn').addEventListener('click',()=>{
+    const n=document.getElementById('cname').value.trim();
+    const ok=document.getElementById('ctaOk');
+    ok.style.display='block';
+    ok.textContent = n ? (n+', aldık — saha ekibi en kısa sürede dönecek.') : 'Aldık — saha ekibi en kısa sürede dönecek.';
+  });
+
+  selectSector('kafe');
+</script>
+
+<div class="site-foot"><div class="in">
+<a href="index.html" class="logo">Local<span>Prof</span></a>
+<div class="fl">
+<a href="index.html">Ana Sayfa</a>
+<a href="gerceklik-testi.html">Gerçeklik Testi</a>
+<a href="paketler.html">Paketler</a>
+<a href="uzman-agi.html">Uzman Ağı</a>
+</div>
+<div class="cp">© 2026 LocalProf · Bodrum. Raporlar bağımsız görüş niteliğindedir; yatırım tavsiyesi değildir.</div>
+</div></div>
+</body>
+</html>
