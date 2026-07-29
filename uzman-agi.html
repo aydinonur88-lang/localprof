@@ -4,13 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LocalProf Uzman Ağı</title>
+<link rel="icon" href="localprof-logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --ink:#06303F;--paper:#E9F2F2;--teal:#0E8C9E;--teal-deep:#0A5361;
-    --amber:#17C2CC;--clay:#A83A2C;--green:#3E7C5A;
+    --ink:#2A5F7E;--paper:#F4EFE3;--teal:#2A5F7E;--teal-deep:#1F4A61;
+    --amber:#B0894A;--clay:#A83A2C;--green:#3E7C5A;
     --text:#1c2833;--muted:#5d6b74;--line:#d5d9d1;--card:#fff;
   }
   *{box-sizing:border-box;margin:0;padding:0}
@@ -18,12 +19,12 @@
   body{background:var(--paper);color:var(--text);font-family:'Inter',system-ui,sans-serif;line-height:1.5;padding:0 0 60px}
   .wrap{max-width:600px;margin:0 auto;padding:0 20px}
 
-  header{background:linear-gradient(165deg,#0C7A8A 0%,#083F4E 60%,#06303F 100%);color:var(--paper);padding:36px 0 32px;margin-bottom:24px}
-  .eyebrow{font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#8fb3b8;margin-bottom:14px;display:flex;gap:8px;align-items:center}
+  header{background:linear-gradient(165deg,#3A729A 0%,#1F4A61 60%,#2A5F7E 100%);color:var(--paper);padding:36px 0 32px;margin-bottom:24px}
+  .eyebrow{font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#C9D6CF;margin-bottom:14px;display:flex;gap:8px;align-items:center}
   .eyebrow::before{content:"";width:22px;height:1px;background:var(--teal)}
   h1{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(28px,7.5vw,40px);line-height:1.03;letter-spacing:-.02em;color:#fff}
   h1 em{font-style:normal;color:var(--amber)}
-  .lede{margin-top:13px;font-size:15.5px;color:#c3ccd0;max-width:48ch}
+  .lede{margin-top:13px;font-size:15.5px;color:#DDE7E3;max-width:48ch}
 
   .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 20px;margin-bottom:18px}
   h2{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:13px;letter-spacing:.02em;text-transform:uppercase;color:var(--teal-deep);margin-bottom:14px}
@@ -32,7 +33,7 @@
   .tags{display:flex;flex-wrap:wrap;gap:7px}
   .tag{font-size:12.5px;font-weight:600;background:#eef3f2;color:var(--teal-deep);border:1px solid #d7e5e3;padding:6px 11px;border-radius:999px}
 
-  .active{background:linear-gradient(160deg,#0E9CAB,#06303F);color:#fff;border:none}
+  .active{background:linear-gradient(160deg,#3A729A,#2A5F7E);color:#fff;border:none}
   .active h2{color:var(--amber)}
   .active .big{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:18px;line-height:1.2;margin-bottom:8px}
   .active p{font-size:13.5px;color:#c9d3d6}
@@ -66,29 +67,30 @@
   footer{font-size:12px;color:var(--muted);line-height:1.6;margin-top:6px}
   footer b{color:var(--text)}
   /* ==== shared site chrome (LocalProf) ==== */
-  .site-nav{position:sticky;top:0;z-index:60;background:rgba(6,48,63,.96);backdrop-filter:blur(6px)}
+  .site-nav{position:sticky;top:0;z-index:60;background:rgba(42,95,126,.96);backdrop-filter:blur(6px)}
   .site-nav .in{max-width:960px;margin:0 auto;padding:0 20px;height:56px;display:flex;align-items:center;justify-content:space-between}
   .site-nav .logo{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:18px;color:#fff;text-decoration:none;letter-spacing:-.01em}
-  .site-nav .logo span{color:#17C2CC}
+  .site-nav .logo span{color:#B0894A}
   .site-nav .lk{display:flex;gap:20px;align-items:center}
-  .site-nav .lk a{font-size:14px;font-weight:500;color:#c3ccd0;text-decoration:none}
+  .site-nav .lk a{font-size:14px;font-weight:500;color:#DDE7E3;text-decoration:none}
   .site-nav .lk a:hover{color:#fff}
-  .site-nav .lk a.cta{background:#17C2CC;color:#1a1205;padding:7px 13px;border-radius:8px;font-weight:600}
+  .site-nav .lk a.cta{background:#B0894A;color:#1a1205;padding:7px 13px;border-radius:8px;font-weight:600}
   @media(max-width:640px){.site-nav .lk a:not(.cta){display:none}}
-  .site-foot{background:#06303F;color:#9fb0b8;padding:30px 0;margin-top:30px}
+  .site-foot{background:#2A5F7E;color:#9fb0b8;padding:30px 0;margin-top:30px}
   .site-foot .in{max-width:960px;margin:0 auto;padding:0 20px}
   .site-foot .logo{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:18px;color:#fff;text-decoration:none;display:inline-block;margin-bottom:10px}
-  .site-foot .logo span{color:#17C2CC}
+  .site-foot .logo span{color:#B0894A}
   .site-foot .fl{display:flex;gap:18px;flex-wrap:wrap;margin-bottom:12px}
-  .site-foot .fl a{color:#c3ccd0;font-size:14px;text-decoration:none}
+  .site-foot .fl a{color:#DDE7E3;font-size:14px;text-decoration:none}
   .site-foot .cp{font-size:12px;color:#6f8089;border-top:1px solid #22333d;padding-top:12px}
   @media print{.site-nav,.site-foot{display:none!important}}
+.site-nav .logo,.site-foot .logo{display:inline-flex;align-items:center;gap:8px}.badge{width:34px;height:34px;border-radius:50%;flex-shrink:0;vertical-align:middle}
 </style>
 </head>
 <body>
 
 <div class="site-nav"><div class="in">
-<a href="index.html" class="logo">Local<span>Prof</span></a>
+<a href="index.html" class="logo"><img src="localprof-logo.png" class="badge" alt="LocalProf">Local<span>Prof</span></a>
 <div class="lk">
 <a href="index.html">Ana Sayfa</a>
 <a href="mahalle-testi.html">Mahalle Testi</a>
@@ -220,7 +222,7 @@
 </script>
 
 <div class="site-foot"><div class="in">
-<a href="index.html" class="logo">Local<span>Prof</span></a>
+<a href="index.html" class="logo"><img src="localprof-logo.png" class="badge" alt="LocalProf">Local<span>Prof</span></a>
 <div class="fl">
 <a href="index.html">Ana Sayfa</a>
 <a href="gerceklik-testi.html">Gerçeklik Testi</a>
