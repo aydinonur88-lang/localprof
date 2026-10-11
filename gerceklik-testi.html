@@ -146,7 +146,7 @@
 <div class="lk">
 <a href="index.html">Ana Sayfa</a>
 <a href="mahalle-testi.html">Mahalle Testi</a>
-<a href="index.html#devirprof">DevirProf</a>
+<a href="gerceklik-testi.html">DevirProf</a>
 <a href="uzman-agi.html">Uzman Ağı</a>
 <a href="mahalle-testi.html" class="cta">Mahalleni Bul</a>
 </div>
@@ -156,7 +156,7 @@
   <div class="wrap">
     <div class="eyebrow">LocalProf · Bodrum</div>
     <h1>Bodrum hayalin<br><em>kışın da doyurur mu?</em></h1>
-    <p class="lede">Bodrum yılın birkaç ayında kazanır, kira 12 ay durmaz. Önce işini seç, sonra rakamları gir — gerçeği gör.</p>
+    <p class="lede">Bodrum yılın birkaç ayında kazanır, kira 12 ay durmaz. Önce işini seç, sonra rakamları gir — yıl boyu tabloyu gör.</p>
   </div>
 </header>
 
@@ -231,15 +231,15 @@
 
   <div class="cta">
     <div class="kick">Bu bir tahmin</div>
-    <h3>Gerçek ciroyu defter değil, saha söyler.</h3>
-    <p>Yukarıdaki rakam satıcının anlattığına dayanıyor. Biz işletmene bir hafta denetçi indirir, gerçek trafiği ve nakit akışını sayarız — devir sözleşmesini imzalamadan önce. Ücretsiz ön değerlendirme isteyebilirsin.</p>
+    <h3>Kararını sağlam rakamlarla ver.</h3>
+    <p>Yukarıdaki hesap, sana iletilen rakamlara dayanıyor. Devir sözleşmesini imzalamadan önce bu rakamları sahada birlikte doğrulayalım, içi rahat devral. Ücretsiz ön değerlendirme isteyebilirsin.</p>
     <div class="row">
       <input type="text" id="cname" placeholder="Adın">
       <input type="text" id="cphone" placeholder="Telefon">
     </div>
     <button id="ctaBtn">Ücretsiz ön değerlendirme iste</button>
     <div class="ok" id="ctaOk"></div>
-    <div class="proto">Prototip · gerçek üründe bu form seni saha ekibine bağlar</div>
+    <div class="proto">Talebin, girdiğin rakamlarla birlikte WhatsApp'ta hazır açılır; sen sadece gönderirsin.</div>
   </div>
 
   <footer>
@@ -402,11 +402,11 @@
     } else if(payback>=3){
       cls='amber'; tagt='Sarı · Sınırda';
       big='İş görünürde dönüyor ama marj ince.';
-      why='Paran ~'+payback.toFixed(1).replace('.',',')+' yılda geri geliyor. Tek bir kötü sezon ya da kira yenilemesi dengeyi bozar. Rakamların gerçek olduğundan emin olmadan girme.';
+      why='Paran ~'+payback.toFixed(1).replace('.',',')+' yılda geri geliyor. Tek bir kötü sezon ya da kira yenilemesi dengeyi bozar. Rakamları doğrulamadan karar verme.';
     } else {
       cls='green'; tagt='Yeşil · Makul görünüyor';
       big='Rakamlar tutarsa sağlıklı bir devir.';
-      why='Paran ~'+payback.toFixed(1).replace('.',',')+' yılda geri geliyor. Tek şart: girdiğin yüksek sezon cirosu gerçek olmalı — çoğu satıcı bu rakamı şişirir.';
+      why='Paran ~'+payback.toFixed(1).replace('.',',')+' yılda geri geliyor. Tek şart: girdiğin yüksek sezon cirosu doğru olmalı — en sağlıklısı bu rakamı sahada doğrulamak.';
     }
     why+=' Ayrıca 12 aya çarparak '+fmt.format(gap)+' fazladan ciro hayal etmiştin.';
     els.verdict.className='verdict '+cls;
@@ -416,9 +416,19 @@
   ['devir','kira','yaz','gider'].forEach(id=>document.getElementById(id).addEventListener('input',render));
   document.getElementById('ctaBtn').addEventListener('click',()=>{
     const n=document.getElementById('cname').value.trim();
+    const ph=document.getElementById('cphone').value.trim();
     const ok=document.getElementById('ctaOk');
     ok.style.display='block';
-    ok.textContent = n ? (n+', aldık — saha ekibi en kısa sürede dönecek.') : 'Aldık — saha ekibi en kısa sürede dönecek.';
+    if(!n||!ph){ ok.textContent='Lütfen adını ve telefonunu yaz.'; return; }
+    const v=id=>document.getElementById(id).value;
+    const tl=x=>x?Number(x).toLocaleString('tr-TR')+' TL':'-';
+    const text='LocalProf DevirProf ön değerlendirme talebi\n'
+      +'Ad: '+n+'\nTelefon: '+ph+'\n'
+      +'Sektör: '+(sectors[current]?sectors[current].label:'-')+'\n'
+      +'Devir bedeli: '+tl(v('devir'))+'\nAylık kira: '+tl(v('kira'))+'\n'
+      +'Yüksek sezon aylık ciro: '+tl(v('yaz'))+'\nGider oranı: %'+v('gider')+'\n';
+    ok.textContent=n+', mesajın WhatsApp\'ta hazırlandı. Göndermeyi unutma.';
+    window.location.href='https://wa.me/905317708414?text='+encodeURIComponent(text);
   });
 
   selectSector('kafe');
