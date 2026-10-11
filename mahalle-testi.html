@@ -290,7 +290,7 @@ body{font-family:var(--sans);background:var(--paper);color:var(--ink);min-height
     <div class="cta-kicker">Bir sonraki adım</div>
     <div class="cta-title">Hayallerini uzmanına denetlet</div>
     <div class="cta-body">Bu rapor bir başlangıç noktası. Mahallenin yazılı olmayan kurallarını, gerçek kira piyasasını ve yerel dinamikleri ancak sahada deneyim yaşamış bir uzman aktarabilir.</div>
-    <button class="btn-cta" onclick="alert('Uzman görüşmesi yakında aktif olacak!')">1 saatlik uzman görüşmesi →</button>
+    <button class="btn-cta" onclick="goDanisman()">1 saatlik uzman görüşmesi →</button>
   </div>
   <button class="btn-restart" onclick="restart()">— Testi yeniden başlat —</button>
 </div>
@@ -386,7 +386,14 @@ function result(){
   document.getElementById('r-winter').innerHTML='<div class="winter-label">Mevsimsel uyarı — '+winter.score+'</div><div class="winter-title">'+winter.title+'</div><div class="winter-body">'+winter.text+'</div><div class="winter-badge">'+winter.score+'</div>';
   const sw=document.getElementById('r-steps');sw.innerHTML='';
   steps.forEach((s,i)=>{sw.innerHTML+='<div class="step"><div class="step-n">0'+(i+1)+'</div><div><div class="step-title">'+s.title+'</div><div class="step-desc">'+s.desc+'</div></div></div>';});
+  window.__lpReport={profil:prof.name,m:top4.slice(0,3).map(r=>r.name+'|'+r.m),c:clashes.length};
   show('s-result');
+}
+function goDanisman(){
+  const r=window.__lpReport;
+  let u='yasam-danismani.html';
+  if(r){u+='?profil='+encodeURIComponent(r.profil)+'&m='+encodeURIComponent(r.m.join(','))+'&c='+r.c;}
+  window.location.href=u;
 }
 function restart(){cur=0;ans=Array(Qs.length).fill(null);show('s-intro');}
 </script>
