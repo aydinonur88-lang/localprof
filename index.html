@@ -32,7 +32,7 @@
   .nav .links a.cta:hover{background:#c1985a}
   @media(max-width:640px){.nav .links a:not(.cta){display:none}}
 
-  .hero{background:var(--blue);color:var(--cream);padding:60px 0 64px;position:relative;border-bottom:3px solid var(--gold)}
+  .hero{background:var(--blue);color:var(--cream);padding:60px 0 64px;position:relative;}
   .eyebrow{font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;display:flex;gap:8px;align-items:center}
   .eyebrow::before{content:"";width:24px;height:2px;background:var(--gold)}
   .hero h1{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(32px,7vw,52px);line-height:1.02;letter-spacing:-.025em;color:#fff;max-width:15ch}
@@ -112,6 +112,49 @@
     .nav .links a.cta{font-size:14px;padding:10px 14px}
   }
 </style>
+
+<!-- LP-VISUAL --><style>
+  /* hero: metin + fotoğraf */
+  .hero{padding:56px 0 64px;overflow:hidden}
+  .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:52px;align-items:center}
+  .hero-photo{position:relative;margin:0}
+  .hero-photo img{position:relative;z-index:1;display:block;width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:22px;box-shadow:0 18px 40px rgba(0,0,0,.25)}
+  .hero-photo::before{content:"";position:absolute;inset:-12px 12px 12px -12px;border:1.5px solid rgba(176,137,74,.75);border-radius:26px;pointer-events:none}
+  .hero-photo .tag{position:absolute;z-index:2;left:16px;bottom:16px;background:rgba(31,74,97,.88);color:#F3ECDB;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;padding:7px 11px;border-radius:8px;border:1px solid rgba(176,137,74,.5)}
+  .hero-wave{display:block;width:100%;height:46px;margin-top:-1px}
+  @media(max-width:760px){
+    .hero{padding:40px 0 44px}
+    .hero-grid{grid-template-columns:1fr;gap:30px}
+    .hero-photo img{aspect-ratio:16/10}
+    .hero-photo::before{inset:-8px 8px 8px -8px;border-radius:24px}
+    .hero-photo .tag{bottom:12px;left:12px}
+  }
+
+  /* mahalle kartları */
+  .hoods{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:22px}
+  .hood{display:flex;flex-direction:column;background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;transition:transform .2s,box-shadow .2s,border-color .2s}
+  .hood:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(42,95,126,.14);border-color:var(--blue)}
+  .hood-media{position:relative;aspect-ratio:4/3;background:var(--blue);overflow:hidden}
+  .hood-media img,.hood-media svg{display:block;width:100%;height:100%;object-fit:cover;transition:transform .5s}
+  .hood:hover .hood-media img{transform:scale(1.05)}
+  .season{position:absolute;left:8px;top:8px;font-size:10.5px;font-weight:600;padding:4px 8px;border-radius:999px;background:rgba(255,255,255,.92);color:var(--ink);letter-spacing:.01em}
+  .season::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:5px;vertical-align:1px}
+  .season.y::before{background:#3E8E6A} .season.o::before{background:var(--gold)} .season.s::before{background:#C0563F}
+  .hood-body{padding:11px 12px 13px}
+  .hood-name{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:16px;color:var(--ink);line-height:1.15}
+  .hood-tags{font-size:12px;color:var(--muted);margin-top:4px}
+  .hoods-legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:14px;font-size:12.5px;color:var(--muted)}
+  .hoods-legend span::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:0}
+  .hoods-legend .y::before{background:#3E8E6A} .hoods-legend .o::before{background:var(--gold)} .hoods-legend .s::before{background:#C0563F}
+  @media(max-width:900px){.hoods{grid-template-columns:repeat(3,1fr)}}
+  @media(max-width:560px){.hoods{grid-template-columns:repeat(2,1fr);gap:10px}.hood-name{font-size:15px}}
+
+  /* fotoğraf kaynakları */
+  .credits{margin-top:12px;font-size:11.5px;color:#9fb3ad}
+  .credits summary{cursor:pointer;color:#c9d6cf}
+  .credits div{margin-top:8px;line-height:1.7}
+  .credits a{color:#c9d6cf;text-decoration:underline;text-decoration-color:rgba(201,214,207,.35)}
+</style>
 </head>
 <body>
 
@@ -132,7 +175,8 @@
 </nav>
 
 <div class="hero">
-  <div class="wrap">
+  <div class="wrap hero-grid">
+    <div class="hero-text">
     <div class="eyebrow">LocalProf · Bodrum Relocation &amp; Business</div>
     <h1>Bodrum'un neresi <em>sana göre?</em></h1>
     <p>Bodrum'a taşınmayı mı düşünüyorsun? 20 soruluk testle bütçene, hayat tarzına ve önceliklerine en uygun mahalleyi bul — sonra o hayatı kurmana yardımcı olacak uzmanlar tek çatı altında.</p>
@@ -140,8 +184,17 @@
       <a href="mahalle-testi.html" class="btn gold">Ücretsiz Mahalle Testi →</a>
       <a href="#hizmetler" class="btn ghost-cream">Hizmetlere bak</a>
     </div>
+    </div>
+    <figure class="hero-photo">
+      <img src="https://images.unsplash.com/photo-1684858504602-677ac40eadfd?w=1400&q=70&auto=format&fit=crop" alt="Bodrum'da begonvilli bir terastan gün batımında deniz manzarası" fetchpriority="high">
+      <span class="tag">Bodrum · Ege</span>
+    </figure>
   </div>
 </div>
+<svg class="hero-wave" viewBox="0 0 1440 46" preserveAspectRatio="none" aria-hidden="true">
+  <path d="M0 0 H1440 V14 C 1200 46, 960 46, 720 24 S 240 2, 0 30 Z" fill="#2A5F7E"/>
+  <path d="M0 30 C 240 2, 480 2, 720 24 S 1200 46, 1440 14" fill="none" stroke="#B0894A" stroke-width="2"/>
+</svg>
 
 <section>
   <div class="wrap">
@@ -149,11 +202,57 @@
       <div class="lbl">Ana hizmet · Mahalle Eşleştirme</div>
       <h2>Sana en uygun Bodrum mahallesini bulalım</h2>
       <p>Deniz kenarı mı, merkez mi? Sakin bir köy mü, sosyal bir kasaba mı? 20 soruda hayat tarzını anlıyor, Bodrum'un 10 mahallesi arasından sana en uygununu eşleştiriyoruz — hepsi yerinde, birinci elden bilgiyle.</p>
-      <div class="chips">
-        <span class="chip">Bodrum Merkez</span><span class="chip">Konacık</span><span class="chip">Bitez</span>
-        <span class="chip">Ortakent</span><span class="chip">Gümbet</span><span class="chip">Turgutreis</span>
-        <span class="chip">Gümüşlük</span><span class="chip">Yalıkavak</span><span class="chip">Göltürkbükü</span><span class="chip">Torba</span>
-      </div>
+      <div class="hoods">
+      <a href="mahalle-testi.html" class="hood">
+        <div class="hood-media"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Bodrum_-_39976741843.jpg/960px-Bodrum_-_39976741843.jpg" alt="Bodrum Merkez, Bodrum" loading="lazy" decoding="async"><span class="season y">Yıl boyu canlı</span></div>
+        <div class="hood-body"><div class="hood-name">Bodrum Merkez</div><div class="hood-tags">Yürünebilir · Merkezî</div></div>
+      </a>
+      <a href="mahalle-testi.html" class="hood">
+        <div class="hood-media"><svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+  <rect width="320" height="200" fill="#2A5F7E"/>
+  <circle cx="250" cy="52" r="20" fill="#B0894A" opacity=".85"/>
+  <path d="M0 150 C 60 128, 120 134, 170 146 S 270 160, 320 140 V200 H0Z" fill="#1F4A61"/>
+  <path fill="#F4EFE3" fill-rule="evenodd" d="M70 92 H138 V150 H70Z M82 104 H94 V116 H82Z M110 150 V118 A11 11 0 0 1 132 118 V150Z"/>
+  <path fill="#F4EFE3" opacity=".9" fill-rule="evenodd" d="M150 106 H200 V150 H150Z M160 116 H170 V126 H160Z M182 150 V128 A8 8 0 0 1 198 128 V150Z"/>
+  <path fill="#F4EFE3" opacity=".75" d="M212 118 H246 V150 H212Z"/>
+  <path d="M40 166 C 90 152, 140 156, 180 166 S 260 178, 290 164" fill="none" stroke="#B0894A" stroke-width="5" stroke-linecap="round"/>
+</svg><span class="season y">Yıl boyu canlı</span></div>
+        <div class="hood-body"><div class="hood-name">Konacık</div><div class="hood-tags">Pratik · Aile</div></div>
+      </a>
+      <a href="mahalle-testi.html" class="hood">
+        <div class="hood-media"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Bitez_-_panoramio_%281%29.jpg/960px-Bitez_-_panoramio_%281%29.jpg" alt="Bitez, Bodrum" loading="lazy" decoding="async"><span class="season o">Kışın orta</span></div>
+        <div class="hood-body"><div class="hood-name">Bitez</div><div class="hood-tags">Aile dostu · Orta bütçe</div></div>
+      </a>
+      <a href="mahalle-testi.html" class="hood">
+        <div class="hood-media"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Ortakent_-_Bodrum_-_panoramio_%282%29.jpg/960px-Ortakent_-_Bodrum_-_panoramio_%282%29.jpg" alt="Ortakent &amp; Yahşi, Bodrum" loading="lazy" decoding="async"><span class="season o">Kışın orta</span></div>
+        <div class="hood-body"><div class="hood-name">Ortakent &amp; Yahşi</div><div class="hood-tags">Plaj · Müstakil</div></div>
+      </a>
+      <a href="mahalle-testi.html" class="hood">
+        <div class="hood-media"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/G%C3%BCmbet%2C_1510._Sk._No-6%2C_48400_Bodrum-Mu%C4%9Fla%2C_Turkey_-_panoramio.jpg/960px-G%C3%BCmbet%2C_1510._Sk._No-6%2C_48400_Bodrum-Mu%C4%9Fla%2C_Turkey_-_panoramio.jpg" alt="Gümbet, Bodrum" loading="lazy" decoding="async"><span class="season s">Sezonluk</span></div>
+        <div class="hood-body"><div class="hood-name">Gümbet</div><div class="hood-tags">Hareketli · Ekonomik</div></div>
+      </a>
+      <a href="mahalle-testi.html" class="hood">
+        <div class="hood-media"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Turgutreis_-_panoramio_%281%29.jpg/960px-Turgutreis_-_panoramio_%281%29.jpg" alt="Turgutreis, Bodrum" loading="lazy" decoding="async"><span class="season o">Kışın orta</span></div>
+        <div class="hood-body"><div class="hood-name">Turgutreis</div><div class="hood-tags">Kasaba · Ekonomik</div></div>
+      </a>
+      <a href="mahalle-testi.html" class="hood">
+        <div class="hood-media"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/G%C3%BCm%C3%BC%C5%9Fl%C3%BCk_January_2025.jpg/960px-G%C3%BCm%C3%BC%C5%9Fl%C3%BCk_January_2025.jpg" alt="Gümüşlük, Bodrum" loading="lazy" decoding="async"><span class="season s">Sezonluk</span></div>
+        <div class="hood-body"><div class="hood-name">Gümüşlük</div><div class="hood-tags">Sakin · Taş ev</div></div>
+      </a>
+      <a href="mahalle-testi.html" class="hood">
+        <div class="hood-media"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/Yalikavak_%287009471963%29.jpg/960px-Yalikavak_%287009471963%29.jpg" alt="Yalıkavak, Bodrum" loading="lazy" decoding="async"><span class="season o">Kışın orta</span></div>
+        <div class="hood-body"><div class="hood-name">Yalıkavak</div><div class="hood-tags">Marina · Premium</div></div>
+      </a>
+      <a href="mahalle-testi.html" class="hood">
+        <div class="hood-media"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/G%C3%B6lt%C3%BCrkb%C3%BCk%C3%BC-Bodrum-Mu%C4%9Fla%2C_Turkey_-_panoramio_%284%29.jpg/960px-G%C3%B6lt%C3%BCrkb%C3%BCk%C3%BC-Bodrum-Mu%C4%9Fla%2C_Turkey_-_panoramio_%284%29.jpg" alt="Göltürkbükü, Bodrum" loading="lazy" decoding="async"><span class="season s">Sezonluk</span></div>
+        <div class="hood-body"><div class="hood-name">Göltürkbükü</div><div class="hood-tags">Prestijli · Lüks</div></div>
+      </a>
+      <a href="mahalle-testi.html" class="hood">
+        <div class="hood-media"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Torba_Bay.JPG/960px-Torba_Bay.JPG" alt="Torba, Bodrum" loading="lazy" decoding="async"><span class="season o">Kışın orta</span></div>
+        <div class="hood-body"><div class="hood-name">Torba</div><div class="hood-tags">Sakin · Ulaşım kolay</div></div>
+      </a>
+    </div>
+    <div class="hoods-legend"><span class="y">Yıl boyu canlı</span><span class="o">Kışın orta</span><span class="s">Sezonluk, kışın sakin</span></div>
       <div class="cta-box"><a href="mahalle-testi.html" class="btn blue">Teste başla →</a></div>
     </div>
   </div>
@@ -243,6 +342,7 @@
       <a href="#iletisim">İletişim</a>
     </div>
     <div class="cp">© 2026 LocalProf · Bodrum Relocation &amp; Business. Bodrum'a taşınan ve yaşayanlar için yerel hizmet çatısı.</div>
+    <details class="credits"><summary>Fotoğraf kaynakları</summary><div><a href="https://unsplash.com/photos/the-sun-is-setting-over-the-water-from-a-house-lH-Fd1fgcuk" target="_blank" rel="noopener">Ana görsel: Igor Pyrig / Unsplash</a> · <a href="https://commons.wikimedia.org/wiki/File:Bodrum_-_39976741843.jpg" target="_blank" rel="noopener">Bodrum Merkez: Shadowgate (CC BY 2.0)</a> · <a href="https://commons.wikimedia.org/wiki/File:Bitez_-_panoramio_(1).jpg" target="_blank" rel="noopener">Bitez: Mahmut Efe (CC BY 3.0)</a> · <a href="https://commons.wikimedia.org/wiki/File:Ortakent_-_Bodrum_-_panoramio_(2).jpg" target="_blank" rel="noopener">Ortakent &amp; Yahşi: Haluk Cömertel (CC BY 3.0)</a> · <a href="https://commons.wikimedia.org/wiki/File:Gümbet,_1510._Sk._No-6,_48400_Bodrum-Muğla,_Turkey_-_panoramio.jpg" target="_blank" rel="noopener">Gümbet: karel291 (CC BY 3.0)</a> · <a href="https://commons.wikimedia.org/wiki/File:Turgutreis_-_panoramio_(1).jpg" target="_blank" rel="noopener">Turgutreis: Tanya Dedyukhina (CC BY 3.0)</a> · <a href="https://commons.wikimedia.org/wiki/File:Gümüşlük_January_2025.jpg" target="_blank" rel="noopener">Gümüşlük: Byekush (CC0)</a> · <a href="https://commons.wikimedia.org/wiki/File:Yalikavak_(7009471963).jpg" target="_blank" rel="noopener">Yalıkavak: Yilmaz Oevuenc (CC BY-SA 2.0)</a> · <a href="https://commons.wikimedia.org/wiki/File:Göltürkbükü-Bodrum-Muğla,_Turkey_-_panoramio_(4).jpg" target="_blank" rel="noopener">Göltürkbükü: bynyalcin (CC BY 3.0)</a> · <a href="https://commons.wikimedia.org/wiki/File:Torba_Bay.JPG" target="_blank" rel="noopener">Torba: Dw updike (CC BY-SA 4.0)</a> · Lisanslar: <a href="https://creativecommons.org/licenses/" target="_blank" rel="noopener">Creative Commons</a></div></details>
   </div>
 </footer>
 
