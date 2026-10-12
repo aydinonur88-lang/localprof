@@ -291,9 +291,10 @@
       </div>
       <div class="f" style="margin-bottom:16px"><label for="not">Kendini kısaca anlat</label><textarea id="not" placeholder="Kaç yıldır Bodrum'dasın, ne iş yapıyorsun, hangi konularda yardımcı olabilirsin?"></textarea></div>
       <label class="check"><input type="checkbox" id="onay"> Bilgilerimin başvuru sürecinde benimle iletişim için kullanılmasını, müşteriyle çıkar ilişkim olduğunda bunu bildireceğimi ve bağımsızlık ilkesine uyacağımı kabul ediyorum.</label>
+      <input type="text" id="lp_hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none">
       <div class="err" id="err"></div>
       <button type="submit" class="btn blue">Başvurumu gönder →</button>
-      <div class="sent" id="sent">Başvurun WhatsApp'ta hazırlandı. Göndermeyi unutma, en kısa sürede dönüş yapacağız.</div>
+      <div class="sent" id="sent"></div>
       <p class="fine">Ağa katılım bir iş garantisi vermez; işler uygunluk ve talebe göre yönlendirilir.</p>
     </form>
   </div>
@@ -315,7 +316,35 @@
 </footer>
 
 <script>
-var WHATSAPP_NUMBER = "905317708414";
+/* Kayıtlar Google Tablosu'na gider (LocalProf Kayıtlar). Adres: Apps Script web uygulaması */
+var LP_SHEET_URL = "https://script.google.com/macros/s/AKfycbyDukUDrKZNkU4cGzUlyjGJ5YoDfNoaZ6pEImNEhG9rZ-buJ5oDyoSFGQLNnYKaVEg8kg/exec";
+var LP_WA = "905317708414";
+function lpWa(text){ return "https://wa.me/" + LP_WA + "?text=" + encodeURIComponent(text); }
+function lpEsc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); }
+/* form: tablo sekmesi, data: {sütun adı: değer}, text: WhatsApp yedeği, cb(ok) */
+function lpSend(form, data, text, cb){
+  var hp = document.getElementById("lp_hp");
+  if(hp && hp.value){ cb(true); return; }
+  if(LP_SHEET_URL.indexOf("https://") !== 0){ window.open(lpWa(text), "_blank"); cb(true); return; }
+  var body = new URLSearchParams();
+  body.append("form", form);
+  body.append("data", JSON.stringify(data));
+  fetch(LP_SHEET_URL, {method:"POST", mode:"no-cors", body:body})
+    .then(function(){ cb(true); })
+    .catch(function(){ cb(false); });
+}
+function lpBusy(btn, on){
+  if(!btn) return;
+  if(on){ btn.dataset.t = btn.textContent; btn.textContent = "Gönderiliyor…"; btn.disabled = true; btn.style.opacity = ".7"; }
+  else { btn.textContent = btn.dataset.t || btn.textContent; btn.disabled = false; btn.style.opacity = ""; }
+}
+function lpShow(box, ok, okHtml, text){
+  box.innerHTML = ok
+    ? okHtml + ' <a href="' + lpWa(text) + '" target="_blank" rel="noopener" style="color:inherit;font-weight:600;white-space:nowrap">WhatsApp\'tan da yazabilirsin →</a>'
+    : 'Bağlantı sorunu oldu, talebin iletilemedi. <a href="' + lpWa(text) + '" target="_blank" rel="noopener" style="color:inherit;font-weight:600">WhatsApp\'tan gönder →</a>';
+  box.style.display = "block";
+  box.scrollIntoView({behavior:"smooth", block:"center"});
+}
 document.getElementById("f").addEventListener("submit", function(e){
   e.preventDefault();
   var v = function(id){ return document.getElementById(id).value.trim(); };
@@ -331,8 +360,16 @@ document.getElementById("f").addEventListener("submit", function(e){
     + (v("bolge") ? "Bölge: " + v("bolge") + "\n" : "")
     + (v("yil") ? "Bodrum'da: " + v("yil") + " yıl\n" : "")
     + (v("not") ? "Not: " + v("not") + "\n" : "");
-  document.getElementById("sent").style.display = "block";
-  window.location.href = "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(text);
+  var form = this, btn = form.querySelector('button[type="submit"]'), box = document.getElementById("sent"), ad = v("ad");
+  box.style.display = "none"; lpBusy(btn, true);
+  lpSend("Danışman Başvuru", {
+    "Ad soyad": ad, "Telefon": v("tel"), "Alan": v("alan"), "Mahalle": v("bolge"),
+    "Bodrum'da yıl": v("yil"), "Not": v("not")
+  }, text, function(ok){
+    lpBusy(btn, false);
+    if(ok) form.reset();
+    lpShow(box, ok, "Başvurun alındı, teşekkürler " + lpEsc(ad.split(" ")[0]) + "! Değerlendirip seni arayacağız.", text);
+  });
 });
 </script>
 </body>
