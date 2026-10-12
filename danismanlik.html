@@ -4,6 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Yaşam Danışmanlığı — LocalProf Bodrum</title>
+<link rel="canonical" href="https://localprof.com.tr/danismanlik.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="LocalProf">
+<meta property="og:locale" content="tr_TR">
+<meta property="og:title" content="Yaşam Danışmanlığı — LocalProf Bodrum">
+<meta property="og:description" content="Bodrum'a taşınmayı düşünenler için yaşam danışmanlığı al ya da Bodrum'da yaşıyorsan danışman ol.">
+<meta property="og:url" content="https://localprof.com.tr/danismanlik.html">
+<meta property="og:image" content="https://localprof.com.tr/og-genel.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Yaşam Danışmanlığı — LocalProf Bodrum">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="description" content="Bodrum'a taşınmayı düşünenler için yaşam danışmanlığı al ya da Bodrum'da yaşıyorsan danışman ol.">
 <link rel="icon" href="localprof-logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,7 +24,7 @@
 <style>
   :root{
     --paper:#F4EFE3;--card:#FCFAF3;--blue:#2A5F7E;--blue-deep:#1F4A61;
-    --gold:#B0894A;--cream:#F3ECDB;--ink:#24414D;--line:#E4DDCB;
+    --gold:#B85430;--cream:#F3ECDB;--ink:#24414D;--line:#E4DDCB;
     --text:#3a4d54;--muted:#727f80;--ok:#3E8E6A;
   }
   *{box-sizing:border-box;margin:0;padding:0}
@@ -22,7 +34,7 @@
   a{text-decoration:none;color:inherit}
 
   /* menü (ana sayfayla aynı) */
-  .nav{position:sticky;top:0;z-index:60;background:rgba(42,95,126,.97);backdrop-filter:blur(8px);border-bottom:1px solid rgba(176,137,74,.45)}
+  .nav{position:sticky;top:0;z-index:60;background:rgba(42,95,126,.97);backdrop-filter:blur(8px);border-bottom:1px solid rgba(184,84,48,.45)}
   .nav .wrap{display:flex;align-items:center;justify-content:space-between;height:80px}
   .logo{display:flex;align-items:center;gap:12px;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:25px;color:var(--cream);letter-spacing:-.02em}
   .logo b{color:var(--gold);font-weight:800}
@@ -31,8 +43,8 @@
   .nav .links a{font-size:16px;font-weight:500;color:#d6e2e0}
   .nav .links a:hover{color:#fff}
   .nav .links a.on{color:var(--gold)}
-  .nav .links a.cta{background:var(--gold);color:#241a08;padding:12px 20px;border-radius:10px;font-weight:600}
-  .nav .links a.cta:hover{background:#c1985a}
+  .nav .links a.cta{background:var(--gold);color:#fff;padding:12px 20px;border-radius:10px;font-weight:600}
+  .nav .links a.cta:hover{background:#A14726}
   @media(max-width:640px){
     .nav .wrap{height:66px}.logo{font-size:21px;gap:10px}.logo .badge{width:42px;height:42px}
     .nav .links a:not(.cta){display:none}.nav .links a.cta{font-size:14px;padding:10px 14px}
@@ -40,7 +52,7 @@
 
   /* butonlar */
   .btn{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:16px;padding:14px 24px;border-radius:10px;cursor:pointer;display:inline-block;border:0}
-  .btn.gold{background:var(--gold);color:#241a08}.btn.gold:hover{background:#c1985a}
+  .btn.gold{background:var(--gold);color:#fff}.btn.gold:hover{background:#A14726}
   .btn.blue{background:var(--blue);color:var(--cream)}.btn.blue:hover{background:var(--blue-deep)}
   .btn.ghost-cream{background:transparent;border:1.5px solid rgba(243,236,219,.55);color:var(--cream)}
   .btn.ghost-cream:hover{border-color:var(--gold);color:#fff}
@@ -58,8 +70,8 @@
 
   /* örnek profil kartı (hero görseli) */
   .pcard{position:relative;background:var(--card);color:var(--text);border-radius:20px;padding:22px;box-shadow:0 20px 44px rgba(0,0,0,.28);max-width:360px;justify-self:end;width:100%}
-  .pcard::before{content:"";position:absolute;inset:-12px 12px 12px -12px;border:1.5px solid rgba(176,137,74,.75);border-radius:24px;z-index:-1}
-  .pcard .demo{position:absolute;top:-11px;right:18px;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;background:var(--gold);color:#241a08;padding:4px 9px;border-radius:6px}
+  .pcard::before{content:"";position:absolute;inset:-12px 12px 12px -12px;border:1.5px solid rgba(184,84,48,.75);border-radius:24px;z-index:-1}
+  .pcard .demo{position:absolute;top:-11px;right:18px;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;background:var(--gold);color:#fff;padding:4px 9px;border-radius:6px}
   .ptop{display:flex;gap:14px;align-items:center}
   .avatar{width:58px;height:58px;border-radius:50%;background:var(--blue);display:grid;place-items:center;color:var(--cream);font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:21px;flex-shrink:0}
   .pname{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:19px;color:var(--ink);line-height:1.15}
@@ -143,7 +155,7 @@
   footer .fl{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:14px}
   footer .fl a{color:#d6e2e0;font-size:14px}
   footer .fl a:hover{color:var(--gold)}
-  footer .cp{font-size:12px;color:#9fb3ad;border-top:1px solid rgba(176,137,74,.3);padding-top:14px}
+  footer .cp{font-size:12px;color:#9fb3ad;border-top:1px solid rgba(184,84,48,.3);padding-top:14px}
 
   .hero{padding:60px 0 120px;text-align:center}
   .hero .eyebrow{justify-content:center}
@@ -152,11 +164,11 @@
   .choices{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:-92px;position:relative;z-index:1}
   .choice{background:var(--card);border:1.5px solid var(--line);border-radius:20px;padding:30px 28px;display:flex;flex-direction:column;gap:14px;box-shadow:0 18px 40px rgba(31,74,97,.16);transition:transform .2s,border-color .2s}
   .choice:hover{transform:translateY(-3px);border-color:var(--blue)}
-  .choice.main{background:var(--blue);border-color:rgba(176,137,74,.85);color:var(--cream);box-shadow:0 18px 40px rgba(0,0,0,.28)}
+  .choice.main{background:var(--blue);border-color:rgba(184,84,48,.85);color:var(--cream);box-shadow:0 18px 40px rgba(0,0,0,.28)}
   .choice .big{width:58px;height:58px;border-radius:16px;background:var(--blue);display:grid;place-items:center}
   .choice.main .big{background:var(--gold)}
   .choice .big svg{width:30px;height:30px;stroke:var(--cream);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-  .choice.main .big svg{stroke:#241a08}
+  .choice.main .big svg{stroke:#fff}
   .choice .who2{font-family:'Space Mono',monospace;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
   .choice h2{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(24px,3.6vw,30px);line-height:1.1;letter-spacing:-.02em;color:var(--ink)}
   .choice.main h2{color:#fff}
@@ -171,6 +183,15 @@
   @media(max-width:760px){.choices{grid-template-columns:1fr;margin-top:-80px}.hero{padding:40px 0 104px}}
 </style>
 <style>@media(max-width:960px){.nav .links a:not(.cta){display:none}}</style>
+<style>/* kiremit paleti: koyu (mavi) zeminlerde açık ton */
+.hero .eyebrow,.hero h1 em,.hero .lbl{color:#F6B08C}.hero .eyebrow::before{background:#F6B08C}
+.nav .links a.on{color:#F6B08C}
+footer .fl a:hover,.site-foot .fl a:hover{color:#F6B08C}
+.choice.main .who2{color:#F6B08C}.choice.main li::before{border-color:#F6B08C}
+.cta .kick{color:#F6B08C}
+header h1 em{color:#F6B08C}
+.ribbon.amber{background:#C77A2C}
+</style>
 </head>
 <body>
 <nav class="nav">

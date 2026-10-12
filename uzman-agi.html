@@ -4,6 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Uzman Ağı — LocalProf Bodrum</title>
+<link rel="canonical" href="https://localprof.com.tr/uzman-agi.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="LocalProf">
+<meta property="og:locale" content="tr_TR">
+<meta property="og:title" content="Uzman Ağı — LocalProf Bodrum">
+<meta property="og:description" content="Bodrum'u içeriden biliyorsan LocalProf yaşam danışmanı ol. Taşınmak isteyenlere online görüşme ve saha turuyla rehberlik et.">
+<meta property="og:url" content="https://localprof.com.tr/uzman-agi.html">
+<meta property="og:image" content="https://localprof.com.tr/og-genel.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Uzman Ağı — LocalProf Bodrum">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="description" content="Bodrum'u içeriden biliyorsan LocalProf yaşam danışmanı ol. Taşınmak isteyenlere online görüşme ve saha turuyla rehberlik et.">
 <link rel="icon" href="localprof-logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,7 +24,7 @@
 <style>
   :root{
     --paper:#F4EFE3;--card:#FCFAF3;--blue:#2A5F7E;--blue-deep:#1F4A61;
-    --gold:#B0894A;--cream:#F3ECDB;--ink:#24414D;--line:#E4DDCB;
+    --gold:#B85430;--cream:#F3ECDB;--ink:#24414D;--line:#E4DDCB;
     --text:#3a4d54;--muted:#727f80;--ok:#3E8E6A;
   }
   *{box-sizing:border-box;margin:0;padding:0}
@@ -22,7 +34,7 @@
   a{text-decoration:none;color:inherit}
 
   /* menü (ana sayfayla aynı) */
-  .nav{position:sticky;top:0;z-index:60;background:rgba(42,95,126,.97);backdrop-filter:blur(8px);border-bottom:1px solid rgba(176,137,74,.45)}
+  .nav{position:sticky;top:0;z-index:60;background:rgba(42,95,126,.97);backdrop-filter:blur(8px);border-bottom:1px solid rgba(184,84,48,.45)}
   .nav .wrap{display:flex;align-items:center;justify-content:space-between;height:80px}
   .logo{display:flex;align-items:center;gap:12px;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:25px;color:var(--cream);letter-spacing:-.02em}
   .logo b{color:var(--gold);font-weight:800}
@@ -31,8 +43,8 @@
   .nav .links a{font-size:16px;font-weight:500;color:#d6e2e0}
   .nav .links a:hover{color:#fff}
   .nav .links a.on{color:var(--gold)}
-  .nav .links a.cta{background:var(--gold);color:#241a08;padding:12px 20px;border-radius:10px;font-weight:600}
-  .nav .links a.cta:hover{background:#c1985a}
+  .nav .links a.cta{background:var(--gold);color:#fff;padding:12px 20px;border-radius:10px;font-weight:600}
+  .nav .links a.cta:hover{background:#A14726}
   @media(max-width:640px){
     .nav .wrap{height:66px}.logo{font-size:21px;gap:10px}.logo .badge{width:42px;height:42px}
     .nav .links a:not(.cta){display:none}.nav .links a.cta{font-size:14px;padding:10px 14px}
@@ -40,7 +52,7 @@
 
   /* butonlar */
   .btn{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:16px;padding:14px 24px;border-radius:10px;cursor:pointer;display:inline-block;border:0}
-  .btn.gold{background:var(--gold);color:#241a08}.btn.gold:hover{background:#c1985a}
+  .btn.gold{background:var(--gold);color:#fff}.btn.gold:hover{background:#A14726}
   .btn.blue{background:var(--blue);color:var(--cream)}.btn.blue:hover{background:var(--blue-deep)}
   .btn.ghost-cream{background:transparent;border:1.5px solid rgba(243,236,219,.55);color:var(--cream)}
   .btn.ghost-cream:hover{border-color:var(--gold);color:#fff}
@@ -58,8 +70,8 @@
 
   /* örnek profil kartı (hero görseli) */
   .pcard{position:relative;background:var(--card);color:var(--text);border-radius:20px;padding:22px;box-shadow:0 20px 44px rgba(0,0,0,.28);max-width:360px;justify-self:end;width:100%}
-  .pcard::before{content:"";position:absolute;inset:-12px 12px 12px -12px;border:1.5px solid rgba(176,137,74,.75);border-radius:24px;z-index:-1}
-  .pcard .demo{position:absolute;top:-11px;right:18px;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;background:var(--gold);color:#241a08;padding:4px 9px;border-radius:6px}
+  .pcard::before{content:"";position:absolute;inset:-12px 12px 12px -12px;border:1.5px solid rgba(184,84,48,.75);border-radius:24px;z-index:-1}
+  .pcard .demo{position:absolute;top:-11px;right:18px;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;background:var(--gold);color:#fff;padding:4px 9px;border-radius:6px}
   .ptop{display:flex;gap:14px;align-items:center}
   .avatar{width:58px;height:58px;border-radius:50%;background:var(--blue);display:grid;place-items:center;color:var(--cream);font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:21px;flex-shrink:0}
   .pname{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:19px;color:var(--ink);line-height:1.15}
@@ -143,9 +155,18 @@
   footer .fl{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:14px}
   footer .fl a{color:#d6e2e0;font-size:14px}
   footer .fl a:hover{color:var(--gold)}
-  footer .cp{font-size:12px;color:#9fb3ad;border-top:1px solid rgba(176,137,74,.3);padding-top:14px}
+  footer .cp{font-size:12px;color:#9fb3ad;border-top:1px solid rgba(184,84,48,.3);padding-top:14px}
 </style>
 <style>@media(max-width:960px){.nav .links a:not(.cta){display:none}}</style>
+<style>/* kiremit paleti: koyu (mavi) zeminlerde açık ton */
+.hero .eyebrow,.hero h1 em,.hero .lbl{color:#F6B08C}.hero .eyebrow::before{background:#F6B08C}
+.nav .links a.on{color:#F6B08C}
+footer .fl a:hover,.site-foot .fl a:hover{color:#F6B08C}
+.choice.main .who2{color:#F6B08C}.choice.main li::before{border-color:#F6B08C}
+.cta .kick{color:#F6B08C}
+header h1 em{color:#F6B08C}
+.ribbon.amber{background:#C77A2C}
+</style>
 </head>
 <body>
 
@@ -190,7 +211,7 @@
 </div>
 <svg class="hero-wave" viewBox="0 0 1440 46" preserveAspectRatio="none" aria-hidden="true">
   <path d="M0 0 H1440 V14 C 1200 46, 960 46, 720 24 S 240 2, 0 30 Z" fill="#2A5F7E"/>
-  <path d="M0 30 C 240 2, 480 2, 720 24 S 1200 46, 1440 14" fill="none" stroke="#B0894A" stroke-width="2"/>
+  <path d="M0 30 C 240 2, 480 2, 720 24 S 1200 46, 1440 14" fill="none" stroke="#B85430" stroke-width="2"/>
 </svg>
 
 <section>
@@ -219,9 +240,9 @@
   <div class="wrap">
     <div class="spot">
       <svg class="seal" viewBox="0 0 160 160" aria-hidden="true">
-        <circle cx="80" cy="80" r="76" fill="#1F4A61" stroke="#B0894A" stroke-width="3"/>
-        <circle cx="80" cy="80" r="62" fill="none" stroke="#B0894A" stroke-width="1.2" stroke-dasharray="3 4"/>
-        <path d="M80 34l9 8 12-1.5 3.4 11.6 10.4 6-4.5 11.2 4.5 11.2-10.4 6-3.4 11.6L89 116l-9 8-9-8-12 1.5-3.4-11.6-10.4-6 4.5-11.2-4.5-11.2 10.4-6L59 40.5 71 42z" fill="#2A5F7E" stroke="#B0894A" stroke-width="2"/>
+        <circle cx="80" cy="80" r="76" fill="#1F4A61" stroke="#B85430" stroke-width="3"/>
+        <circle cx="80" cy="80" r="62" fill="none" stroke="#B85430" stroke-width="1.2" stroke-dasharray="3 4"/>
+        <path d="M80 34l9 8 12-1.5 3.4 11.6 10.4 6-4.5 11.2 4.5 11.2-10.4 6-3.4 11.6L89 116l-9 8-9-8-12 1.5-3.4-11.6-10.4-6 4.5-11.2-4.5-11.2 10.4-6L59 40.5 71 42z" fill="#2A5F7E" stroke="#B85430" stroke-width="2"/>
         <path d="M64 81l11 11 22-23" fill="none" stroke="#F3ECDB" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
       <div>
