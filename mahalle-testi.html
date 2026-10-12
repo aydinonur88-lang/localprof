@@ -48,6 +48,7 @@ body{font-family:var(--sans);background:var(--paper);color:var(--ink);min-height
 .intro-meta{font-size:12px;color:var(--ink3)}
 .intro-footnote{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--rule);display:flex;gap:2rem;flex-wrap:wrap;justify-content:center}
 .footnote-item{font-size:11px;color:var(--ink3);letter-spacing:.04em;text-align:center}
+.intro-privacy{font-size:12.5px;color:var(--ink3);line-height:1.6;max-width:460px;margin:1.6rem auto 0;text-align:center}
 .footnote-item strong{color:var(--ink2);font-weight:500;display:block;font-size:18px;margin-bottom:2px;font-family:var(--serif)}
 .prog-wrap{margin-bottom:1.75rem}
 .prog-top{display:flex;justify-content:space-between;margin-bottom:6px}
@@ -254,6 +255,7 @@ body{font-family:var(--sans);background:var(--paper);color:var(--ink);min-height
     <div class="footnote-item"><strong>5</strong>Bölümlük rapor</div>
     <div class="footnote-item"><strong>9+</strong>Çelişki senaryosu</div>
   </div>
+  <p class="intro-privacy">Ad veya telefon istemiyoruz. Cevapların kimliğin olmadan kaydedilir ve Bodrum'a taşınma eğilimleri üzerine anonim istatistiklerde kullanılır.</p>
 </div>
 <div id="s-quiz" class="screen">
   <div class="prog-wrap">
@@ -453,13 +455,43 @@ function result(){
   const sw=document.getElementById('r-steps');sw.innerHTML='';
   steps.forEach((s,i)=>{sw.innerHTML+='<div class="step"><div class="step-n">0'+(i+1)+'</div><div><div class="step-title">'+s.title+'</div><div class="step-desc">'+s.desc+'</div></div></div>';});
   document.getElementById('r-devir').hidden=!((t.devir||0)>=3);
-  window.__lpReport={profil:prof.name,m:top4.slice(0,3).map(r=>r.name+'|'+r.m),c:clashes.length};
+  const sid=lpTestLog(prof,top4,clashes);
+  window.__lpReport={profil:prof.name,m:top4.slice(0,3).map(r=>r.name+'|'+r.m),c:clashes.length,sid:sid};
   show('s-result');
+}
+
+/* ===== Anonim test kaydı → LocalProf Kayıtlar / Test Sonuçları ===== */
+var LP_SHEET_URL = "https://script.google.com/macros/s/AKfycbyDukUDrKZNkU4cGzUlyjGJ5YoDfNoaZ6pEImNEhG9rZ-buJ5oDyoSFGQLNnYKaVEg8kg/exec";
+var LP_QKISA = ["Kış","Şehirden kopma","Motivasyon","Yerel ilişki","Doğa","Çalışma modeli","Usta toleransı","Hanehalkı","Sağlık","Bütçe","Araç","Mülk tipi","Ev konumu","İnternet","Sosyal atmosfer","Yaz kalabalığı","Taşınma zamanı","Satın al / kirala","Risk","Öncelik"];
+function lpTestLog(prof, top, clashes){
+  try{
+    var sid = Math.random().toString(36).slice(2, 8).toUpperCase();
+    var q = new URLSearchParams(location.search), ref = "";
+    try{ ref = document.referrer ? new URL(document.referrer).hostname : ""; }catch(e){}
+    var kaynak = q.get("utm_source") || (ref ? (ref === location.hostname ? "Site içi" : ref) : "Doğrudan");
+    var d = {
+      "Test kimliği": sid,
+      "Cihaz": /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent) ? "Mobil" : "Masaüstü",
+      "Kaynak": kaynak,
+      "Profil": prof.name
+    };
+    top.slice(0,3).forEach(function(r, i){ d[(i+1) + ". mahalle"] = r.name; d[(i+1) + ". uyum"] = r.m; });
+    d["Çelişki sayısı"] = clashes.length;
+    ans.forEach(function(ai, qi){
+      var o = ai === null ? null : Qs[qi].opts[ai];
+      d["S" + (qi+1) + " " + (LP_QKISA[qi] || "")] = o ? o.l + " · " + o.t : "";
+    });
+    if(LP_SHEET_URL.indexOf("https://") === 0){
+      var b = new URLSearchParams(); b.append("form", "Test Sonuçları"); b.append("data", JSON.stringify(d));
+      fetch(LP_SHEET_URL, {method:"POST", mode:"no-cors", body:b, keepalive:true}).catch(function(){});
+    }
+    return sid;
+  }catch(e){ return ""; }
 }
 function goDanisman(){
   const r=window.__lpReport;
   let u='yasam-danismani.html';
-  if(r){u+='?profil='+encodeURIComponent(r.profil)+'&m='+encodeURIComponent(r.m.join(','))+'&c='+r.c;}
+  if(r){u+='?profil='+encodeURIComponent(r.profil)+'&m='+encodeURIComponent(r.m.join(','))+'&c='+r.c+(r.sid?'&sid='+r.sid:'');}
   window.location.href=u;
 }
 function restart(){cur=0;ans=Array(Qs.length).fill(null);show('s-intro');}

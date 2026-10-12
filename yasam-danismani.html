@@ -458,7 +458,7 @@ var REPORT = null;
   var list = m.split(",").map(function(x){ var p = x.split("|"); return {ad: p[0], uyum: p[1]}; }).filter(function(x){ return x.ad; }).slice(0,3);
   if(!list.length) return;
   var c = parseInt(q.get("c") || "0", 10) || 0;
-  REPORT = {profil: profil, list: list, celiski: c};
+  REPORT = {profil: profil, list: list, celiski: c, sid: (q.get("sid") || "").replace(/[^A-Z0-9]/gi, "").slice(0, 12)};
   document.getElementById("rc-profil").textContent = profil;
   var ol = document.getElementById("rc-list");
   list.forEach(function(x){ var li = document.createElement("li"); li.textContent = x.ad; if(x.uyum){ var s = document.createElement("span"); s.textContent = "%" + x.uyum; li.appendChild(s); } ol.appendChild(li); });
@@ -512,7 +512,8 @@ document.getElementById("f").addEventListener("submit", function(e){
     "Taşınma zamanı": v("zaman"), "Uygun zaman": v("gun"), "Konuşmak istediği": v("soru"),
     "Test profili": REPORT ? REPORT.profil : "",
     "Test mahalleleri": REPORT ? REPORT.list.map(function(x){ return x.ad + (x.uyum ? " (%" + x.uyum + ")" : ""); }).join(", ") : "",
-    "Çelişki sayısı": REPORT ? String(REPORT.celiski) : ""
+    "Çelişki sayısı": REPORT ? String(REPORT.celiski) : "",
+    "Test kimliği": REPORT ? REPORT.sid : ""
   }, text, function(ok){
     lpBusy(btn, false);
     if(ok){ ["ad","tel","sehir","gun","soru"].forEach(function(id){ document.getElementById(id).value = ""; }); }
