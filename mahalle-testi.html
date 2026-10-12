@@ -89,6 +89,20 @@ body{font-family:var(--sans);background:var(--paper);color:var(--ink);min-height
 .pair-res .pair-row{margin-bottom:10px}
 .pair-res .pair-row input{background:#fff}
 .pair-res .sh-note{color:rgba(244,239,227,.7)}
+
+.ev-block{margin:0 0 3rem;padding:2rem;border:1.5px solid var(--green);background:#fff}
+.ev-block .share-title{margin-bottom:.6rem}
+.ev-form{display:none;margin-top:1.2rem}
+.ev-form.open{display:block}
+.ev-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+@media(max-width:560px){.ev-grid{grid-template-columns:1fr}}
+.ev-form label{display:block;font-size:12px;color:var(--ink3);margin-bottom:4px;letter-spacing:.02em}
+.ev-form input[type=text],.ev-form input[type=tel],.ev-form select,.ev-form textarea{width:100%;padding:12px 14px;border:1px solid var(--paper3);background:var(--paper);font-family:var(--sans);font-size:16px;color:var(--ink);border-radius:0;outline:none}
+.ev-form textarea{min-height:70px;resize:vertical}
+.ev-form .ev-ok{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--ink2);line-height:1.5;margin:12px 0 14px}
+.ev-form .ev-ok input{margin-top:3px;width:18px;height:18px;flex:none}
+.ev-err{color:#a33a2a;font-size:13.5px;margin-bottom:10px;display:none}
+.ev-done{display:none;background:#EAF3EE;border:1px solid #c3dccd;padding:13px 15px;margin-top:12px;font-size:14.5px;color:#2d6b50}
 .pair-invite{background:var(--ink);color:var(--paper);padding:14px 18px;margin-bottom:1.6rem;font-size:14.5px;line-height:1.55;text-align:center}
 .pair-invite b{color:#d9b77c}
 
@@ -351,6 +365,27 @@ select.city-sel{background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www
   <div class="rep-sec">
     <div class="rep-sec-rule"><span class="rep-sec-n">03</span><div class="rep-sec-line"></div><span class="rep-sec-title">Mahalle eşleşmeleri</span></div>
     <div id="r-regions"></div>
+  </div>
+  <div class="ev-block" id="r-ev">
+    <div class="share-kicker">Ev arıyorsan</div>
+    <div class="share-title">Bu mahallelerde ev bulmana yardım edelim mi?</div>
+    <p class="pair-body" style="margin:0">Raporuna uyan kiralık ya da satılık seçenekler için anlaşmalı, bölgeyi bilen bir emlak danışmanı seni arasın. Tamamen isteğe bağlı.</p>
+    <button class="sh-btn main" id="ev-open" style="margin-top:1rem" onclick="lpEvOpen()">Evet, ev bulmama yardım edin →</button>
+    <div class="ev-form" id="ev-form">
+      <div class="ev-grid">
+        <div><label for="ev-ad">Ad soyad</label><input type="text" id="ev-ad" autocomplete="name" maxlength="60"></div>
+        <div><label for="ev-tel">Telefon</label><input type="tel" id="ev-tel" autocomplete="tel" maxlength="20" placeholder="05xx xxx xx xx"></div>
+        <div><label for="ev-tur">Ne arıyorsun?</label><select id="ev-tur"><option>Kiralık</option><option>Satılık</option><option>İkisine de bakarım</option></select></div>
+        <div><label for="ev-butce">Bütçe (isteğe bağlı)</label><input type="text" id="ev-butce" maxlength="60" placeholder="Örn. aylık 40.000 TL / 8 milyon TL"></div>
+      </div>
+      <label for="ev-not">Eklemek istediğin (isteğe bağlı)</label>
+      <textarea id="ev-not" maxlength="500" placeholder="Örn. bahçeli olsun, evcil hayvanım var, Haziran'da taşınacağım"></textarea>
+      <input type="text" id="ev-hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
+      <label class="ev-ok"><input type="checkbox" id="ev-onay"><span>Bilgilerimin ve test sonucumun, beni aramaları için LocalProf'un anlaşmalı emlak danışmanlarıyla paylaşılmasına izin veriyorum.</span></label>
+      <div class="ev-err" id="ev-err"></div>
+      <button class="sh-btn main" id="ev-btn" onclick="lpEvSend()">Talebimi gönder →</button>
+      <div class="ev-done" id="ev-done"></div>
+    </div>
   </div>
   <div class="share-block">
     <div class="share-kicker">Sonucunu paylaş</div>
@@ -718,6 +753,8 @@ function lpAfterResult(top){
   document.getElementById('r-invite').hidden = !!PAIR;
   lpRenderPair();
   lpPrepStory();
+  document.getElementById('ev-form').classList.remove('open'); document.getElementById('ev-open').style.display='';
+  document.getElementById('ev-done').style.display='none'; document.getElementById('ev-btn').style.display='';
 }
 /* davetle gelen: bant göster; ortak rapor linkiyse doğrudan raporu aç */
 (function(){
@@ -726,6 +763,47 @@ function lpAfterResult(top){
   var v = lpAns(new URLSearchParams(location.search).get('v'));
   if(v){ PAIR.view = true; b.hidden = true; ans = v; result(); }
 })();
+
+/* ===== Emlak talebi (açık onaylı) → Emlak Talebi sekmesi ===== */
+function lpEvOpen(){
+  var t = document.getElementById('ev-tur'), a18 = ans[17];
+  if(a18 === 0) t.value = 'Satılık'; else if(a18 === 1) t.value = 'Kiralık'; else t.value = 'İkisine de bakarım';
+  document.getElementById('ev-form').classList.add('open');
+  document.getElementById('ev-open').style.display = 'none';
+  document.getElementById('ev-ad').focus();
+}
+function lpEvSend(){
+  var v = function(id){ return document.getElementById(id).value.trim(); };
+  var err = document.getElementById('ev-err'), msg = '';
+  if(!v('ev-ad')) msg = 'Lütfen adını yaz.';
+  else if(v('ev-tel').replace(/\D/g, '').length < 10) msg = 'Lütfen telefon numaranı yaz.';
+  else if(!document.getElementById('ev-onay').checked) msg = 'Danışmanın seni arayabilmesi için onay kutusunu işaretle.';
+  if(msg){ err.textContent = msg; err.style.display = 'block'; return; }
+  err.style.display = 'none';
+  var btn = document.getElementById('ev-btn'), done = document.getElementById('ev-done');
+  var top = window.__lpTop || [], r = window.__lpReport || {};
+  var cev = function(qi){ var ai = ans[qi]; return ai === null || ai === undefined ? '' : Qs[qi].opts[ai].t; };
+  var city = document.getElementById('city').value, c2 = document.getElementById('city2').value.trim();
+  var d = {
+    "Ad soyad": v('ev-ad'), "Telefon": v('ev-tel'), "Aradığı": v('ev-tur'), "Bütçe": v('ev-butce'),
+    "Önerilen mahalleler": top.slice(0, 3).map(function(x){ return x.name + ' (%' + x.m + ')'; }).join(', '),
+    "Mülk tipi": cev(11), "Ev konumu": cev(12), "Hanehalkı": cev(7), "Taşınma zamanı": cev(16),
+    "Yaşadığı şehir": city && city !== 'Belirtmek istemiyorum' ? (c2 ? city + ' / ' + c2 : city) : '',
+    "Not": v('ev-not'), "Profil": r.profil || '', "Test kimliği": r.sid || '', "Paylaşım onayı": 'Evet'
+  };
+  var finish = function(ok){
+    btn.disabled = false; btn.textContent = 'Talebimi gönder →';
+    if(ok){
+      done.textContent = 'Talebin alındı, teşekkürler ' + v('ev-ad').split(' ')[0] + '! Bölgeyi bilen bir danışman seni arayacak.';
+      done.style.display = 'block'; btn.style.display = 'none';
+    } else { err.textContent = 'Bağlantı sorunu oldu, lütfen tekrar dene.'; err.style.display = 'block'; }
+  };
+  if(v('ev-hp')){ finish(true); return; }
+  btn.disabled = true; btn.textContent = 'Gönderiliyor…';
+  if(LP_SHEET_URL.indexOf('https://') !== 0){ finish(false); return; }
+  var b = new URLSearchParams(); b.append('form', 'Emlak Talebi'); b.append('data', JSON.stringify(d));
+  fetch(LP_SHEET_URL, {method:'POST', mode:'no-cors', body:b}).then(function(){ finish(true); }, function(){ finish(false); });
+}
 function goDanisman(){
   const r=window.__lpReport;
   let u='yasam-danismani.html';
