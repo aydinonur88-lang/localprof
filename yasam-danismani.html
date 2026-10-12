@@ -449,6 +449,8 @@ document.querySelectorAll("[data-price]").forEach(function(el){
   if(FIYATLAR.online){ d.innerHTML = "Online uzman görüşmesi yaptıysan saha turunda <b>" + tl(Math.round(FIYATLAR.online/2)) + " indirim</b>."; }
 })();
 
+(function(){ var sh = new URLSearchParams(location.search).get("sehir"); if(sh) document.getElementById("sehir").value = sh.slice(0, 80); })();
+
 /* testten gelen rapor özeti: ?profil=...&m=Ad|97,Ad|91,...&c=2 */
 var REPORT = null;
 (function(){

@@ -59,6 +59,10 @@ body{font-family:var(--sans);background:var(--paper);color:var(--ink);min-height
 .q-text{font-family:var(--serif);font-size:clamp(20px,3.5vw,26px);line-height:1.35;color:var(--ink);margin-bottom:.6rem;font-weight:400}
 .q-sub{font-size:13px;color:var(--ink3);line-height:1.6;margin-bottom:2rem;padding-left:1rem;border-left:2px solid var(--paper3)}
 .options{display:flex;flex-direction:column;gap:8px}
+.city-f{display:flex;flex-direction:column;gap:10px;margin-bottom:.5rem}
+.city-sel{width:100%;padding:14px 16px;border:1px solid var(--paper3);background:#fff;font-family:var(--sans);font-size:16px;color:var(--ink);border-radius:0;outline:none;-webkit-appearance:none;appearance:none}
+select.city-sel{background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%232A5F7E' stroke-width='1.6'/%3E%3C/svg%3E") no-repeat right 16px center;padding-right:40px}
+.city-sel:focus{border-color:var(--ink)}
 .opt{padding:13px 16px;border:1px solid var(--paper3);background:var(--paper);font-family:var(--sans);font-size:14px;color:var(--ink2);cursor:pointer;text-align:left;transition:border-color .15s,background .15s,color .15s;line-height:1.45;display:flex;gap:12px;align-items:flex-start}
 .opt:hover{border-color:var(--ink3);background:var(--paper2);color:var(--ink)}
 .opt.sel{border-color:var(--green);background:var(--green-bg);color:var(--green)}
@@ -257,6 +261,24 @@ body{font-family:var(--sans);background:var(--paper);color:var(--ink);min-height
   </div>
   <p class="intro-privacy">Ad veya telefon istemiyoruz. Cevapların kimliğin olmadan kaydedilir ve Bodrum'a taşınma eğilimleri üzerine anonim istatistiklerde kullanılır.</p>
 </div>
+<div id="s-city" class="screen">
+  <div class="q-badge">Başlamadan önce</div>
+  <div class="q-text">Şu an nerede yaşıyorsun?</div>
+  <div class="q-sub">Bodrum'a nereden gelindiğini bilmek, sana ve sonraki gelenlere daha doğru bilgi vermemizi sağlıyor.</div>
+  <div class="city-f">
+    <select id="city" class="city-sel" onchange="cityChg()">
+      <option value="">Şehir seç</option>
+      <optgroup label="En çok seçilenler"><option>İstanbul</option><option>Ankara</option><option>İzmir</option><option value="Bodrum">Zaten Bodrum'da yaşıyorum</option><option value="Muğla (Bodrum dışı)">Muğla (Bodrum dışı)</option><option value="Yurt dışı">Yurt dışı</option></optgroup>
+      <optgroup label="Tüm iller"><option>Adana</option><option>Adıyaman</option><option>Afyonkarahisar</option><option>Ağrı</option><option>Aksaray</option><option>Amasya</option><option>Ankara</option><option>Antalya</option><option>Ardahan</option><option>Artvin</option><option>Aydın</option><option>Balıkesir</option><option>Bartın</option><option>Batman</option><option>Bayburt</option><option>Bilecik</option><option>Bingöl</option><option>Bitlis</option><option>Bolu</option><option>Burdur</option><option>Bursa</option><option>Çanakkale</option><option>Çankırı</option><option>Çorum</option><option>Denizli</option><option>Diyarbakır</option><option>Düzce</option><option>Edirne</option><option>Elazığ</option><option>Erzincan</option><option>Erzurum</option><option>Eskişehir</option><option>Gaziantep</option><option>Giresun</option><option>Gümüşhane</option><option>Hakkari</option><option>Hatay</option><option>Iğdır</option><option>Isparta</option><option>İstanbul</option><option>İzmir</option><option>Kahramanmaraş</option><option>Karabük</option><option>Karaman</option><option>Kars</option><option>Kastamonu</option><option>Kayseri</option><option>Kilis</option><option>Kırıkkale</option><option>Kırklareli</option><option>Kırşehir</option><option>Kocaeli</option><option>Konya</option><option>Kütahya</option><option>Malatya</option><option>Manisa</option><option>Mardin</option><option>Mersin</option><option>Muğla</option><option>Muş</option><option>Nevşehir</option><option>Niğde</option><option>Ordu</option><option>Osmaniye</option><option>Rize</option><option>Sakarya</option><option>Samsun</option><option>Siirt</option><option>Sinop</option><option>Sivas</option><option>Şanlıurfa</option><option>Şırnak</option><option>Tekirdağ</option><option>Tokat</option><option>Trabzon</option><option>Tunceli</option><option>Uşak</option><option>Van</option><option>Yalova</option><option>Yozgat</option><option>Zonguldak</option></optgroup>
+      <option value="Belirtmek istemiyorum">Belirtmek istemiyorum</option>
+    </select>
+    <input type="text" id="city2" class="city-sel" maxlength="60" placeholder="İlçe (isteğe bağlı)" style="display:none">
+  </div>
+  <div class="quiz-nav">
+    <button class="btn-back" onclick="show('s-intro')">← Geri</button>
+    <button class="btn-next" id="btn-city" onclick="cityGo()">Teste başla →</button>
+  </div>
+</div>
 <div id="s-quiz" class="screen">
   <div class="prog-wrap">
     <div class="prog-top">
@@ -360,7 +382,9 @@ const WD={
   "sezonluk":{score:"Yüksek risk",title:"Bu mahalleler kışın büyük ölçüde kapanır",text:"Önerilen mahalleler yoğun turistik/sezonluk bölgeler. Kasım–Nisan arası restoran ve kafelerin çoğu kapanır, nüfus %70–80 düşer, sosyal hayat durur. Buraları düşünüyorsan mutlaka bir kış ayında 2–3 hafta kiralık kalarak deneyimle."}
 };
 let cur=0,ans=Array(Qs.length).fill(null);
-function start(){show('s-quiz');render();}
+function start(){show('s-city');window.scrollTo(0,0);}
+function cityChg(){const v=document.getElementById('city').value,c2=document.getElementById('city2');const no=!v||v==='Belirtmek istemiyorum';c2.style.display=no?'none':'block';c2.placeholder=v==='Yurt dışı'?'Hangi ülke? (isteğe bağlı)':(v==='Bodrum'?'Hangi mahalle? (isteğe bağlı)':'İlçe (isteğe bağlı)');document.getElementById('btn-city').classList.toggle('on',!!v);}
+function cityGo(){if(!document.getElementById('city').value)return;show('s-quiz');render();window.scrollTo(0,0);}
 function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
 function render(){
   const q=Qs[cur];
@@ -473,6 +497,8 @@ function lpTestLog(prof, top, clashes){
       "Test kimliği": sid,
       "Cihaz": /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent) ? "Mobil" : "Masaüstü",
       "Kaynak": kaynak,
+      "Yaşadığı şehir": document.getElementById("city").value,
+      "İlçe / ülke": document.getElementById("city2").value.trim(),
       "Profil": prof.name
     };
     top.slice(0,3).forEach(function(r, i){ d[(i+1) + ". mahalle"] = r.name; d[(i+1) + ". uyum"] = r.m; });
@@ -491,7 +517,7 @@ function lpTestLog(prof, top, clashes){
 function goDanisman(){
   const r=window.__lpReport;
   let u='yasam-danismani.html';
-  if(r){u+='?profil='+encodeURIComponent(r.profil)+'&m='+encodeURIComponent(r.m.join(','))+'&c='+r.c+(r.sid?'&sid='+r.sid:'');}
+  if(r){u+='?profil='+encodeURIComponent(r.profil)+'&m='+encodeURIComponent(r.m.join(','))+'&c='+r.c+(r.sid?'&sid='+r.sid:'');const ct=document.getElementById('city').value,c2=document.getElementById('city2').value.trim();if(ct&&ct!=='Belirtmek istemiyorum')u+='&sehir='+encodeURIComponent(c2?ct+' / '+c2:ct);}
   window.location.href=u;
 }
 function restart(){cur=0;ans=Array(Qs.length).fill(null);show('s-intro');}
