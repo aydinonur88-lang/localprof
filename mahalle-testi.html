@@ -59,6 +59,39 @@ body{font-family:var(--sans);background:var(--paper);color:var(--ink);min-height
 .q-text{font-family:var(--serif);font-size:clamp(20px,3.5vw,26px);line-height:1.35;color:var(--ink);margin-bottom:.6rem;font-weight:400}
 .q-sub{font-size:13px;color:var(--ink3);line-height:1.6;margin-bottom:2rem;padding-left:1rem;border-left:2px solid var(--paper3)}
 .options{display:flex;flex-direction:column;gap:8px}
+.share-block,.pair-block{margin:0 0 3rem;padding:2rem;border:1px solid var(--paper3);background:#fff}
+.share-kicker,.pair-kicker{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#B0894A;font-weight:500;margin-bottom:.6rem}
+.share-title{font-family:var(--serif);font-size:clamp(20px,3vw,26px);line-height:1.3;color:var(--ink);margin-bottom:1.1rem;font-weight:400}
+.share-title em{color:#B0894A}
+.share-btns,.pair-row{display:flex;flex-wrap:wrap;gap:8px}
+.sh-btn{padding:12px 18px;border:1px solid var(--ink);background:transparent;color:var(--ink);font-family:var(--sans);font-size:13.5px;font-weight:500;cursor:pointer}
+.sh-btn.main{background:var(--ink);color:var(--paper)}
+.sh-btn:hover{opacity:.85}
+.pair-row input{flex:1;min-width:160px;padding:12px 14px;border:1px solid var(--paper3);font-family:var(--sans);font-size:16px;color:var(--ink);background:var(--paper);outline:none;border-radius:0}
+.pair-body{font-size:14px;color:var(--ink2);line-height:1.65;margin:0 0 1.1rem}
+.sh-note{font-size:13px;color:var(--ink3);margin-top:.8rem;line-height:1.5}
+.pair-res{margin:1.5rem 0 3rem;padding:2rem;background:var(--ink);color:var(--paper)}
+.pair-res .pair-kicker{color:#d9b77c}
+.pair-head{font-family:var(--serif);font-size:clamp(24px,4vw,34px);line-height:1.2;margin-bottom:1.2rem}
+.pair-head em{color:#d9b77c}
+.pair-item{display:flex;justify-content:space-between;gap:4px 12px;flex-wrap:wrap;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.15);font-size:15px}
+.pair-item.top .pi-n{font-weight:600}
+.pi-s{color:rgba(244,239,227,.7);font-size:13.5px}
+.pair-same{margin:1rem 0 1.4rem;font-size:14px;color:rgba(244,239,227,.85)}
+.pair-sub{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#d9b77c;margin-bottom:.6rem}
+.pair-diff{padding:12px 14px;background:rgba(255,255,255,.07);margin-bottom:8px}
+.pd-q{font-size:14px;margin-bottom:6px;color:#fff;line-height:1.45}
+.pd-a{font-size:13.5px;color:rgba(244,239,227,.8);line-height:1.5}
+.pd-a span{color:#d9b77c;font-weight:500}
+.pair-note{font-size:13px;color:rgba(244,239,227,.7);margin:1rem 0 1.4rem;line-height:1.6}
+.pair-res .sh-btn{border-color:var(--paper);color:var(--paper)}
+.pair-res .sh-btn.main{background:var(--paper);color:var(--ink)}
+.pair-res .pair-row{margin-bottom:10px}
+.pair-res .pair-row input{background:#fff}
+.pair-res .sh-note{color:rgba(244,239,227,.7)}
+.pair-invite{background:var(--ink);color:var(--paper);padding:14px 18px;margin-bottom:1.6rem;font-size:14.5px;line-height:1.55;text-align:center}
+.pair-invite b{color:#d9b77c}
+
 .city-f{display:flex;flex-direction:column;gap:10px;margin-bottom:.5rem}
 .city-sel{width:100%;padding:14px 16px;border:1px solid var(--paper3);background:#fff;font-family:var(--sans);font-size:16px;color:var(--ink);border-radius:0;outline:none;-webkit-appearance:none;appearance:none}
 select.city-sel{background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%232A5F7E' stroke-width='1.6'/%3E%3C/svg%3E") no-repeat right 16px center;padding-right:40px}
@@ -246,6 +279,7 @@ select.city-sel{background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www
 <div id="app">
 <div id="s-intro" class="screen active">
   <div class="intro-rule"></div>
+  <div class="pair-invite" id="pair-invite" hidden><b></b> seni Bodrum mahalle testine davet etti. Sen de çöz, ikinizin <b>ortak mahallesini</b> birlikte görün.</div>
   <div class="intro-kicker">LocalProf — Bodrum Relokasyon</div>
   <h1 class="intro-headline">Bodrum'u tatil gibi<br>hayal kurma.<br><em>Mahalleni doğru seç.</em></h1>
   <p class="intro-body">Bodrum'a taşınırken en büyük hata, yarımadayı yaz tatili gözüyle değerlendirmek. Her mahallenin kışı, dokusu ve maliyeti bambaşka. 20 soruda profilini analiz ediyor, sana en uygun Bodrum mahallesini filtresiz bir raporla öneriyoruz.</p>
@@ -300,6 +334,7 @@ select.city-sel{background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www
   <div class="rep-kicker">Yaşam Analizi Raporu</div>
   <h2 class="rep-headline">İşte <em>gerçekleriniz.</em></h2>
   <div class="rep-dateline" id="r-date"></div>
+  <div class="pair-res" id="r-pair" hidden></div>
   <div class="rep-sec">
     <div class="rep-sec-rule"><span class="rep-sec-n">01</span><div class="rep-sec-line"></div><span class="rep-sec-title">Profil & karakter analizi</span></div>
     <div class="prof-block">
@@ -316,6 +351,23 @@ select.city-sel{background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www
   <div class="rep-sec">
     <div class="rep-sec-rule"><span class="rep-sec-n">03</span><div class="rep-sec-line"></div><span class="rep-sec-title">Mahalle eşleşmeleri</span></div>
     <div id="r-regions"></div>
+  </div>
+  <div class="share-block">
+    <div class="share-kicker">Sonucunu paylaş</div>
+    <div class="share-title">Senin Bodrum mahallen <em id="sh-name"></em>. Arkadaşlarınınki hangisi?</div>
+    <div class="share-btns">
+      <button class="sh-btn main" onclick="lpShareStory()">Hikâye görseli paylaş</button>
+      <button class="sh-btn" onclick="lpShareWa()">WhatsApp'ta gönder</button>
+      <button class="sh-btn" onclick="lpCopy(this,lpLink('paylasim'))">Linki kopyala</button>
+    </div>
+    <div class="sh-note" id="sh-note"></div>
+  </div>
+  <div class="pair-block" id="r-invite">
+    <div class="pair-kicker">Partner modu</div>
+    <div class="share-title">Taşınma kararını birlikte mi veriyorsunuz?</div>
+    <p class="pair-body">Eşine, partnerine ya da birlikte taşınacağın kişiye gönder. O da testi çözünce ikinizin <b>ortak mahallesini</b> ve en çok ayrıştığınız konuları görecek.</p>
+    <div class="pair-row"><input id="pair-me" maxlength="20" placeholder="Adın (ona görünecek)"><button class="sh-btn main" onclick="lpInvite()">Partnerime gönder →</button></div>
+    <div class="sh-note" id="pair-note"></div>
   </div>
   <div class="rep-sec">
     <div class="rep-sec-rule"><span class="rep-sec-n">04</span><div class="rep-sec-line"></div><span class="rep-sec-title">Kış gerçeği & mevsimsel uyarı</span></div>
@@ -479,8 +531,9 @@ function result(){
   const sw=document.getElementById('r-steps');sw.innerHTML='';
   steps.forEach((s,i)=>{sw.innerHTML+='<div class="step"><div class="step-n">0'+(i+1)+'</div><div><div class="step-title">'+s.title+'</div><div class="step-desc">'+s.desc+'</div></div></div>';});
   document.getElementById('r-devir').hidden=!((t.devir||0)>=3);
+  window.__lpPairRes=PAIR?lpPair(t):null;
   const sid=lpTestLog(prof,top4,clashes);
-  window.__lpReport={profil:prof.name,m:top4.slice(0,3).map(r=>r.name+'|'+r.m),c:clashes.length,sid:sid};
+  window.__lpReport={profil:prof.name,m:top4.slice(0,3).map(r=>r.name+'|'+r.m),c:clashes.length,sid:sid};lpAfterResult(top4);
   show('s-result');
 }
 
@@ -488,6 +541,7 @@ function result(){
 var LP_SHEET_URL = "https://script.google.com/macros/s/AKfycbyDukUDrKZNkU4cGzUlyjGJ5YoDfNoaZ6pEImNEhG9rZ-buJ5oDyoSFGQLNnYKaVEg8kg/exec";
 var LP_QKISA = ["Kış","Şehirden kopma","Motivasyon","Yerel ilişki","Doğa","Çalışma modeli","Usta toleransı","Hanehalkı","Sağlık","Bütçe","Araç","Mülk tipi","Ev konumu","İnternet","Sosyal atmosfer","Yaz kalabalığı","Taşınma zamanı","Satın al / kirala","Risk","Öncelik"];
 function lpTestLog(prof, top, clashes){
+  if(typeof PAIR !== 'undefined' && PAIR && PAIR.view) return '';
   try{
     var sid = Math.random().toString(36).slice(2, 8).toUpperCase();
     var q = new URLSearchParams(location.search), ref = "";
@@ -507,6 +561,8 @@ function lpTestLog(prof, top, clashes){
       var o = ai === null ? null : Qs[qi].opts[ai];
       d["S" + (qi+1) + " " + (LP_QKISA[qi] || "")] = o ? o.l + " · " + o.t : "";
     });
+    var pr = window.__lpPairRes;
+    if(pr){ d["Partner davetiyle"] = "Evet"; d["Davet eden (test kimliği)"] = PAIR.sid; d["Ortak mahalle"] = pr.joint[0].name; d["Partnerle aynı cevap"] = pr.same; }
     if(LP_SHEET_URL.indexOf("https://") === 0){
       var b = new URLSearchParams(); b.append("form", "Test Sonuçları"); b.append("data", JSON.stringify(d));
       fetch(LP_SHEET_URL, {method:"POST", mode:"no-cors", body:b, keepalive:true}).catch(function(){});
@@ -514,13 +570,169 @@ function lpTestLog(prof, top, clashes){
     return sid;
   }catch(e){ return ""; }
 }
+
+/* ===== Paylaş & partner modu ===== */
+var LP_BASE = location.origin + location.pathname;
+function lpH(x){ return String(x).replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
+function lpAns(str){
+  if(!str || str.length !== Qs.length || !/^[0-3]+$/.test(str)) return null;
+  var a = str.split('').map(Number);
+  for(var i = 0; i < a.length; i++){ if(a[i] >= Qs[i].opts.length) return null; }
+  return a;
+}
+var PAIR = (function(){
+  var q = new URLSearchParams(location.search), a = lpAns(q.get('d'));
+  if(!a) return null;
+  var n = (q.get('n') || '').replace(/[<>&"']/g, '').trim().slice(0, 20) || 'Partnerin';
+  return {ans:a, name:n, sid:(q.get('r') || '').replace(/[^A-Z0-9]/gi, '').slice(0, 12), view:false};
+})();
+function lpScoresFrom(arr){ var t = {}; arr.forEach(function(ai, qi){ if(ai === null) return; Object.entries(Qs[qi].opts[ai].sc).forEach(function(e){ t[e[0]] = (t[e[0]] || 0) + e[1]; }); }); return t; }
+function lpPair(tMe){
+  var rp = matchRegions(lpScoresFrom(PAIR.ans)), rm = matchRegions(tMe), mp = {};
+  rp.forEach(function(r){ mp[r.name] = r.m; });
+  var joint = rm.map(function(r){ var p = mp[r.name]; return {name:r.name, me:r.m, p:p, j:Math.round((r.m + p) / 2 - Math.abs(r.m - p) * 0.25)}; })
+                .sort(function(a, b){ return b.j - a.j; });
+  var diffs = [];
+  ans.forEach(function(ai, qi){
+    var pi = PAIR.ans[qi]; if(ai === null || ai === pi) return;
+    var a = Qs[qi].opts[ai].sc, b = Qs[qi].opts[pi].sc, w = 0, ks = {};
+    Object.keys(a).concat(Object.keys(b)).forEach(function(k){ ks[k] = 1; });
+    Object.keys(ks).forEach(function(k){ w += Math.abs((a[k] || 0) - (b[k] || 0)); });
+    diffs.push({qi:qi, w:w, me:Qs[qi].opts[ai].t, p:Qs[qi].opts[pi].t});
+  });
+  diffs.sort(function(x, y){ return y.w - x.w; });
+  return {joint:joint, diffs:diffs, same:Qs.length - diffs.length};
+}
+function lpRenderPair(){
+  var el = document.getElementById('r-pair'), pr = window.__lpPairRes;
+  if(!pr){ el.hidden = true; el.innerHTML = ''; return; }
+  var nm = lpH(PAIR.name), j = pr.joint;
+  var h = '<div class="pair-kicker">Ortak sonuç · Sen &amp; ' + nm + '</div>'
+    + '<div class="pair-head">İkinizin ortak mahallesi: <em>' + j[0].name + '</em></div>'
+    + j.slice(0, 3).map(function(r, i){ return '<div class="pair-item' + (i === 0 ? ' top' : '') + '"><span class="pi-n">' + (i + 1) + '. ' + r.name + '</span><span class="pi-s">Sen %' + r.me + ' · ' + nm + ' %' + r.p + '</span></div>'; }).join('')
+    + '<div class="pair-same">' + Qs.length + ' sorunun <b>' + pr.same + '</b> tanesinde aynı cevabı verdiniz.</div>';
+  if(pr.diffs.length){
+    h += '<div class="pair-sub">En çok ayrıştığınız konular</div>'
+      + pr.diffs.slice(0, 4).map(function(d){ return '<div class="pair-diff"><div class="pd-q">' + lpH(Qs[d.qi].text) + '</div><div class="pd-a"><span>Sen:</span> ' + lpH(d.me) + '</div><div class="pd-a"><span>' + nm + ':</span> ' + lpH(d.p) + '</div></div>'; }).join('')
+      + '<div class="pair-note">Bu farklar, taşınmadan önce konuşmanız gereken konular. Bir yaşam danışmanı ikinizin ortak noktasını bulmanıza yardım edebilir.</div>';
+  }
+  if(!PAIR.view){
+    h += '<div class="pair-row"><input id="pair-back" maxlength="20" placeholder="Adın"><button class="sh-btn main" onclick="lpSendBack()">Ortak sonucu ona da gönder →</button></div><div class="sh-note" id="pair-note2"></div>';
+  }
+  h += '<button class="sh-btn" onclick="goDanisman()">Birlikte uzmanla görüşün →</button>';
+  el.innerHTML = h; el.hidden = false;
+}
+function lpLink(src){ return LP_BASE + '?utm_source=' + src; }
+function lpShareText(){ var t = window.__lpTop[0]; return "Bodrum'da bana en uygun mahalle: " + t.name + " (%" + t.m + "). Seninki hangisi? "; }
+function lpShareLink(text, url, noteId){
+  var note = document.getElementById(noteId);
+  var wa = function(){ window.open('https://wa.me/?text=' + encodeURIComponent(text + url), '_blank'); };
+  if(navigator.share){ navigator.share({text:text, url:url}).catch(function(e){ if(e && e.name !== 'AbortError') wa(); }); }
+  else wa();
+  if(note){ note.innerHTML = 'Link: <a href="' + lpH(url) + '" target="_blank" rel="noopener" style="color:inherit;word-break:break-all">' + lpH(url) + '</a>'; }
+}
+function lpCopy(btn, url){
+  var done = function(){ var o = btn.textContent; btn.textContent = 'Kopyalandı ✓'; setTimeout(function(){ btn.textContent = o; }, 1800); };
+  if(navigator.clipboard){ navigator.clipboard.writeText(url).then(done, function(){ prompt('Linki kopyala:', url); }); }
+  else prompt('Linki kopyala:', url);
+}
+function lpShareWa(){ window.open('https://wa.me/?text=' + encodeURIComponent(lpShareText() + lpLink('whatsapp')), '_blank'); }
+function lpInvite(){
+  var nm = document.getElementById('pair-me').value.replace(/[<>&"']/g, '').trim().slice(0, 20), r = window.__lpReport || {};
+  var url = LP_BASE + '?d=' + ans.join('') + (nm ? '&n=' + encodeURIComponent(nm) : '') + (r.sid ? '&r=' + r.sid : '') + '&utm_source=partner';
+  lpShareLink((nm ? nm + ' seni' : 'Seni') + " Bodrum mahalle testine davet ediyor. Testi çöz, ikimizin ortak mahallesini görelim: ", url, 'pair-note');
+}
+function lpSendBack(){
+  var nm = document.getElementById('pair-back').value.replace(/[<>&"']/g, '').trim().slice(0, 20), j = window.__lpPairRes.joint[0];
+  var url = LP_BASE + '?d=' + ans.join('') + (nm ? '&n=' + encodeURIComponent(nm) : '') + '&v=' + PAIR.ans.join('') + '&utm_source=partner';
+  lpShareLink('Testi çözdüm! Ortak mahallemiz: ' + j.name + '. Ortak raporumuzu gör: ', url, 'pair-note2');
+}
+/* hikâye görseli (1080×1920) */
+function lpFonts(){
+  if(!document.fonts || !document.fonts.load) return Promise.resolve();
+  return Promise.all(['64px "DM Serif Display"', 'italic 64px "DM Serif Display"', '500 30px "DM Sans"', '800 64px "Bricolage Grotesque"']
+    .map(function(f){ return document.fonts.load(f).catch(function(){}); }));
+}
+function lpWrap(x, text, maxW){
+  var words = text.split(' '), lines = [], line = '';
+  words.forEach(function(w){ var t = line ? line + ' ' + w : w; if(x.measureText(t).width > maxW && line){ lines.push(line); line = w; } else line = t; });
+  if(line) lines.push(line); return lines;
+}
+function lpStoryCanvas(){
+  var top = window.__lpTop, prof = (window.__lpReport || {}).profil || '';
+  var c = document.createElement('canvas'); c.width = 1080; c.height = 1920;
+  var x = c.getContext('2d'), ink = '#2A5F7E', paper = '#F4EFE3', gold = '#B0894A', SERIF = '"DM Serif Display", Georgia, serif', SANS = '"DM Sans", Arial, sans-serif';
+  x.fillStyle = paper; x.fillRect(0, 0, 1080, 1920);
+  x.fillStyle = ink; x.fillRect(0, 0, 1080, 230);
+  x.textBaseline = 'alphabetic';
+  x.font = '800 68px "Bricolage Grotesque", Arial, sans-serif'; x.fillStyle = '#fff'; x.fillText('Local', 90, 140);
+  var w = x.measureText('Local').width; x.fillStyle = gold; x.fillText('Prof', 90 + w, 140);
+  x.font = '500 30px ' + SANS; x.fillStyle = 'rgba(255,255,255,.75)'; x.textAlign = 'right'; x.fillText('Bodrum Mahalle Testi', 990, 135); x.textAlign = 'left';
+  x.fillStyle = gold; x.font = '500 34px ' + SANS; x.fillText('BENİM BODRUM MAHALLEM', 90, 420);
+  var fs = 150, name = top[0].name; x.font = fs + 'px ' + SERIF;
+  while(x.measureText(name).width > 900 && fs > 70){ fs -= 6; x.font = fs + 'px ' + SERIF; }
+  x.fillStyle = ink; x.fillText(name, 86, 420 + fs + 20);
+  var y = 420 + fs + 20 + 140;
+  x.fillStyle = gold; x.font = 'italic 116px ' + SERIF; x.fillText('%' + top[0].m + ' uyum', 90, y);
+  y += 90; x.fillStyle = 'rgba(42,95,126,.25)'; x.fillRect(90, y, 900, 3);
+  y += 100; x.fillStyle = '#6b858c'; x.font = '500 30px ' + SANS; x.fillText('PROFİLİM', 90, y);
+  x.fillStyle = ink; x.font = '58px ' + SERIF; y += 80;
+  lpWrap(x, prof, 900).slice(0, 3).forEach(function(l){ x.fillText(l, 90, y); y += 72; });
+  y += 50; x.fillStyle = '#6b858c'; x.font = '500 30px ' + SANS; x.fillText('SONRAKİ ÖNERİLER', 90, y); y += 70;
+  top.slice(1, 3).forEach(function(r, i){
+    x.fillStyle = ink; x.font = '44px ' + SERIF; x.fillText((i + 2) + '. ' + r.name, 90, y);
+    x.fillStyle = gold; x.font = '500 38px ' + SANS; x.textAlign = 'right'; x.fillText('%' + r.m, 990, y); x.textAlign = 'left'; y += 72;
+  });
+  x.fillStyle = ink; x.fillRect(90, 1560, 900, 250);
+  x.fillStyle = '#fff'; x.font = '68px ' + SERIF; x.fillText('Seninki hangisi?', 140, 1665);
+  x.fillStyle = '#d9b77c'; x.font = '500 40px ' + SANS; x.fillText('localprof.com.tr → Mahalle Testi', 140, 1750);
+  return c;
+}
+function lpPrepStory(){
+  window.__lpStory = null;
+  lpFonts().then(function(){
+    try{ lpStoryCanvas().toBlob(function(b){ if(b) window.__lpStory = b; }, 'image/png'); }catch(e){}
+  });
+}
+function lpDownload(b, note){
+  var a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = 'bodrum-mahallem.png';
+  document.body.appendChild(a); a.click(); a.remove();
+  note.textContent = 'Görsel indirildi. Instagram hikâyene ekle, linki çıkartma olarak koy: localprof.com.tr';
+}
+function lpShareStory(){
+  var note = document.getElementById('sh-note'), b = window.__lpStory;
+  var go = function(blob){
+    var f = null; try{ f = new File([blob], 'bodrum-mahallem.png', {type:'image/png'}); }catch(e){}
+    if(f && navigator.canShare && navigator.canShare({files:[f]})){
+      navigator.share({files:[f], text:lpShareText() + lpLink('hikaye')}).then(function(){ note.textContent = ''; },
+        function(e){ if(e && e.name !== 'AbortError') lpDownload(blob, note); });
+    } else lpDownload(blob, note);
+  };
+  if(b){ go(b); return; }
+  note.textContent = 'Görsel hazırlanıyor…';
+  lpFonts().then(function(){ lpStoryCanvas().toBlob(function(bb){ note.textContent = ''; if(bb){ window.__lpStory = bb; go(bb); } }, 'image/png'); });
+}
+function lpAfterResult(top){
+  window.__lpTop = top;
+  document.getElementById('sh-name').textContent = top[0].name;
+  document.getElementById('r-invite').hidden = !!PAIR;
+  lpRenderPair();
+  lpPrepStory();
+}
+/* davetle gelen: bant göster; ortak rapor linkiyse doğrudan raporu aç */
+(function(){
+  if(!PAIR) return;
+  var b = document.getElementById('pair-invite'); b.querySelector('b').textContent = PAIR.name; b.hidden = false;
+  var v = lpAns(new URLSearchParams(location.search).get('v'));
+  if(v){ PAIR.view = true; b.hidden = true; ans = v; result(); }
+})();
 function goDanisman(){
   const r=window.__lpReport;
   let u='yasam-danismani.html';
   if(r){u+='?profil='+encodeURIComponent(r.profil)+'&m='+encodeURIComponent(r.m.join(','))+'&c='+r.c+(r.sid?'&sid='+r.sid:'');const ct=document.getElementById('city').value,c2=document.getElementById('city2').value.trim();if(ct&&ct!=='Belirtmek istemiyorum')u+='&sehir='+encodeURIComponent(c2?ct+' / '+c2:ct);}
   window.location.href=u;
 }
-function restart(){cur=0;ans=Array(Qs.length).fill(null);show('s-intro');}
+function restart(){cur=0;ans=Array(Qs.length).fill(null);if(PAIR)PAIR.view=false;window.__lpPairRes=null;show('s-intro');window.scrollTo(0,0);}
 </script>
 <div class="site-foot"><div class="in">
 <a href="index.html" class="logo"><img src="localprof-logo.png" class="badge" alt="LocalProf">Local<span>Prof</span></a>
