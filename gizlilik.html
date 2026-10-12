@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gizlilik ve KVKK Aydınlatma Metni — LocalProf</title>
+<meta name="description" content="LocalProf kişisel verilerini nasıl işler: hangi veriler, ne amaçla, kimlerle paylaşılır ve haklarınız.">
+<link rel="icon" href="localprof-logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F4EFE3;--card:#FCFAF3;--blue:#2A5F7E;--blue-deep:#1F4A61;
+    --gold:#B0894A;--cream:#F3ECDB;--ink:#24414D;--line:#E4DDCB;
+    --text:#3a4d54;--muted:#727f80;--ok:#3E8E6A;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+  body{background:var(--paper);color:var(--text);font-family:'Inter',system-ui,sans-serif;line-height:1.55}
+  .wrap{max-width:960px;margin:0 auto;padding:0 20px}
+  a{text-decoration:none;color:inherit}
+
+  /* menü (ana sayfayla aynı) */
+  .nav{position:sticky;top:0;z-index:60;background:rgba(42,95,126,.97);backdrop-filter:blur(8px);border-bottom:1px solid rgba(176,137,74,.45)}
+  .nav .wrap{display:flex;align-items:center;justify-content:space-between;height:80px}
+  .logo{display:flex;align-items:center;gap:12px;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:25px;color:var(--cream);letter-spacing:-.02em}
+  .logo b{color:var(--gold);font-weight:800}
+  .logo .badge{width:50px;height:50px;border-radius:50%;flex-shrink:0}
+  .nav .links{display:flex;gap:30px;align-items:center}
+  .nav .links a{font-size:16px;font-weight:500;color:#d6e2e0}
+  .nav .links a:hover{color:#fff}
+  .nav .links a.on{color:var(--gold)}
+  .nav .links a.cta{background:var(--gold);color:#241a08;padding:12px 20px;border-radius:10px;font-weight:600}
+  .nav .links a.cta:hover{background:#c1985a}
+  @media(max-width:640px){
+    .nav .wrap{height:66px}.logo{font-size:21px;gap:10px}.logo .badge{width:42px;height:42px}
+    .nav .links a:not(.cta){display:none}.nav .links a.cta{font-size:14px;padding:10px 14px}
+  }
+
+  /* butonlar */
+  .btn{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:16px;padding:14px 24px;border-radius:10px;cursor:pointer;display:inline-block;border:0}
+  .btn.gold{background:var(--gold);color:#241a08}.btn.gold:hover{background:#c1985a}
+  .btn.blue{background:var(--blue);color:var(--cream)}.btn.blue:hover{background:var(--blue-deep)}
+  .btn.ghost-cream{background:transparent;border:1.5px solid rgba(243,236,219,.55);color:var(--cream)}
+  .btn.ghost-cream:hover{border-color:var(--gold);color:#fff}
+
+
+  .hero{background:var(--blue);color:var(--cream);padding:54px 0 58px}
+  .eyebrow{font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;display:flex;gap:8px;align-items:center}
+  .eyebrow::before{content:"";width:24px;height:2px;background:var(--gold)}
+  .hero h1{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(30px,5.6vw,46px);line-height:1.06;letter-spacing:-.025em;color:#fff;max-width:20ch}
+  .hero h1 em{font-style:normal;color:var(--gold)}
+  .hero p{margin-top:16px;font-size:17px;color:#dfe8e6;max-width:58ch}
+  section{padding:48px 0}
+  .doc{max-width:760px}
+  .doc h2{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(22px,3.4vw,27px);letter-spacing:-.015em;color:var(--ink);line-height:1.15;margin:38px 0 12px}
+  .doc h2:first-child{margin-top:0}
+  .doc h3{font-size:16px;font-weight:600;color:var(--ink);margin:20px 0 6px}
+  .doc p{font-size:15.5px;margin-bottom:12px}
+  .doc ul,.doc ol{padding-left:22px;margin-bottom:12px;font-size:15.5px}
+  .doc li{margin-bottom:6px}
+  .doc a{color:var(--blue);text-decoration:underline;text-decoration-color:rgba(42,95,126,.35)}
+  .doc b{color:var(--ink)}
+  .box{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin:14px 0 18px}
+  .tbl{width:100%;border-collapse:collapse;font-size:14.5px;margin:10px 0 18px;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  .tbl th,.tbl td{text-align:left;padding:11px 13px;border-bottom:1px solid var(--line);vertical-align:top}
+  .tbl th{background:#ece4d0;color:var(--ink);font-weight:600;font-size:13.5px}
+  .tbl tr:last-child td{border-bottom:0}
+  .tbl td:first-child{font-weight:600;color:var(--ink);width:30%}
+  @media(max-width:620px){.tbl,.tbl tbody,.tbl tr,.tbl td{display:block;width:100%!important}.tbl thead{display:none}.tbl td{border-bottom:0;padding:6px 13px}.tbl tr{border-bottom:1px solid var(--line);padding:6px 0}}
+  .upd{font-family:'Space Mono',monospace;font-size:12px;color:var(--muted);letter-spacing:.06em}
+  .fill{background:#fff3c4;padding:0 4px;border-radius:3px}
+
+  footer{background:var(--blue-deep);color:#c9d6cf;padding:34px 0;margin-top:30px}
+  footer .logo{margin-bottom:12px;font-size:21px}
+  footer .logo .badge{width:40px;height:40px}
+  footer .fl{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:14px}
+  footer .fl a{color:#d6e2e0;font-size:14px}
+  footer .fl a:hover{color:var(--gold)}
+  footer .cp{font-size:12px;color:#9fb3ad;border-top:1px solid rgba(176,137,74,.3);padding-top:14px}
+</style>
+<style>@media(max-width:960px){.nav .links a:not(.cta){display:none}}</style>
+</head>
+<body>
+<nav class="nav">
+  <div class="wrap">
+    <a href="index.html" class="logo"><img src="localprof-logo.png" class="badge" alt="LocalProf"><span>Local<b>Prof</b></span></a>
+    <div class="links">
+      <a href="index.html">Ana Sayfa</a>
+      <a href="mahalle-testi.html">Mahalle Testi</a>
+      <a href="hakkimizda.html">Hakkımızda</a>
+      <a href="mahalle-testi.html" class="cta">Mahalleni Bul</a>
+    </div>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Gizlilik ve KVKK</div>
+    <h1>Verin <em>senin.</em> Neyi neden tuttuğumuzu açıkça yazdık.</h1>
+    <p>Kişisel Verilerin Korunması Kanunu kapsamında aydınlatma metni ve gizlilik politikamız.</p>
+  </div>
+</div>
+
+<section>
+  <div class="wrap doc">
+    <p class="upd">Son güncelleme: 13 Ekim 2026</p>
+
+    <div class="box"><b>Kısaca:</b> Mahalle testi için ad ya da telefon istemiyoruz. Ad ve telefon yalnızca bir formu kendi isteğinle doldurduğunda alınır ve sadece o talep için kullanılır. Bilgilerin emlak danışmanlarıyla yalnızca ev talebi formunda <b>açık onay verirsen</b> paylaşılır. Sitede çerez, reklam ya da ziyaretçi takip aracı kullanmıyoruz.</div>
+
+    <h2>1. Veri sorumlusu</h2>
+    <p>6698 sayılı Kişisel Verilerin Korunması Kanunu ("KVKK") kapsamında veri sorumlusu, LocalProf markasının sahibi <b>CBS Kurumsal İş Çözümleri Ltd. Şti.</b>'dir.</p>
+    <ul>
+      <li>Adres (şirket merkezi): Cevizli Mah. Tugay Yolu Cad. A Blok Sk. No:20 Kat:9 (Ofisim İstanbul Plazaları), Maltepe / İstanbul</li>
+      <li>E-posta: <a href="mailto:onur.aydin@cbsturkey.com">onur.aydin@cbsturkey.com</a></li>
+      <li>Telefon / WhatsApp: 0531 770 84 14</li>
+    </ul>
+
+    <h2>2. Hangi verileri, nerede topluyoruz?</h2>
+    <table class="tbl">
+      <thead><tr><th>Nerede</th><th>Hangi veriler</th></tr></thead>
+      <tbody>
+        <tr><td>Mahalle Testi</td><td>Test cevapların, beyan ettiğin il ve (isteğe bağlı) ilçe, cihaz türü (mobil/masaüstü), siteye hangi kaynaktan geldiğin (ör. Instagram, partner daveti) ve rastgele üretilen bir test kimliği. <b>Ad, telefon ya da e-posta istenmez.</b></td></tr>
+        <tr><td>Ev talebi formu</td><td>Ad soyad, telefon, aradığın konut türü (kiralık/satılık), bütçe ve notun; ayrıca test sonucundaki önerilen mahalleler, mülk ve konum tercihin, hanehalkı yapın, taşınma zamanın ve yaşadığın şehir.</td></tr>
+        <tr><td>Yaşam danışmanlığı randevusu</td><td>Ad soyad, telefon, yaşadığın yer, taşınma zamanı, uygun görüşme zamanı, mesajın ve (testten geldiysen) test sonucu özeti.</td></tr>
+        <tr><td>DevirProf ön değerlendirme</td><td>Ad, telefon, sektör ve girdiğin işletme rakamları (devir bedeli, kira, ciro, gider oranı).</td></tr>
+        <tr><td>Ofis ön kaydı</td><td>Ad soyad, telefon, e-posta, ilgilendiğin alan, kişi sayısı, başlangıç zamanı, meslek ve notun.</td></tr>
+        <tr><td>Uzman Ağı başvurusu</td><td>Ad soyad, telefon, uzmanlık alanı, mahalle, Bodrum'da yaşadığın süre ve notun.</td></tr>
+        <tr><td>WhatsApp</td><td>Bize WhatsApp'tan yazmayı kendin seçersen, yazışma içeriği ve telefon numaran. WhatsApp'ın kendi gizlilik koşulları da geçerlidir.</td></tr>
+      </tbody>
+    </table>
+    <p>Testte sağlık, din, etnik köken gibi <b>özel nitelikli kişisel veri istenmez</b>. Lütfen not alanlarına da bu tür bilgileri yazma.</p>
+    <p>Test kaydı tek başına adını içermez. Ancak testin ardından randevu ya da ev talebi formu doldurursan, test kaydın aynı test kimliği üzerinden bu taleple eşleştirilebilir.</p>
+    <p><b>Partner modu:</b> Partnerini davet ettiğinde, test cevapların ona gönderdiğin linkin içinde yer alır. Böylece ortak sonucunuz hesaplanabilir. Bu linki kiminle paylaşacağına sen karar verirsin. Paylaşım görselleri senin cihazında oluşturulur, bize gönderilmez.</p>
+
+    <h2>3. Verileri ne için kullanıyoruz?</h2>
+    <ul>
+      <li>Mahalle raporunu oluşturmak ve sana göstermek,</li>
+      <li>Formla ilettiğin talep için seninle iletişime geçmek, randevu ayarlamak ve hizmeti sunmak,</li>
+      <li>Ev talebi formunda açık onay verdiysen, talebini anlaşmalı emlak danışmanına iletmek,</li>
+      <li>Hizmetlerimizi ve testi geliştirmek; hangi kanalların işe yaradığını ölçmek,</li>
+      <li>Bodrum'a taşınma eğilimleri üzerine <b>anonim ve toplulaştırılmış</b> istatistikler ve raporlar hazırlamak (ör. "testi çözenlerin %X'i site yaşamını tercih ediyor"). Bu raporlar emlak, inşaat, eğitim ve benzeri sektörlerdeki kurumlarla paylaşılabilir. Ancak bu raporlarda kimliği belirli ya da belirlenebilir kişilere ait veri yer almaz.</li>
+      <li>Yasal yükümlülüklerimizi yerine getirmek.</li>
+    </ul>
+
+    <h2>4. Hukuki sebepler</h2>
+    <p>Verilerini KVKK'nın 5. maddesindeki şu hukuki sebeplere dayanarak işliyoruz:</p>
+    <ul>
+      <li><b>Bir sözleşmenin kurulması ya da ifası</b> (randevu, danışmanlık, ön kayıt ve ön değerlendirme talepleri),</li>
+      <li><b>Meşru menfaatimiz</b> (testin ve hizmetlerin geliştirilmesi, anonim istatistik),</li>
+      <li><b>Hukuki yükümlülük</b> (yasal saklama ve bildirim yükümlülükleri),</li>
+      <li><b>Açık rızan</b> (ev talebinin anlaşmalı emlak danışmanlarıyla paylaşılması).</li>
+    </ul>
+
+    <h2>5. Verileri kimlerle paylaşıyoruz?</h2>
+    <ul>
+      <li><b>Anlaşmalı yaşam danışmanları:</b> Randevu aldığında, yalnızca o görüşme için gereken bilgiler.</li>
+      <li><b>Anlaşmalı emlak danışmanları:</b> Yalnızca ev talebi formunda açık onay verirsen ve yalnızca seni arayabilmeleri için.</li>
+      <li><b>Hizmet sağlayıcılar:</b> Form kayıtları Google LLC'nin bulut hizmetlerinde (Google E-Tablolar ve e-posta bildirimi) saklanır. Site GitHub Inc. üzerinde barındırılır ve yazı tipleri Google Fonts'tan yüklenir. Bu sağlayıcılar, siteye erişimin sırasında IP adresi gibi teknik verileri kendi koşullarına göre işleyebilir.</li>
+      <li><b>Yetkili kamu kurum ve kuruluşları:</b> Yalnızca yasal bir zorunluluk olduğunda.</li>
+    </ul>
+    <p><b>Yurt dışına aktarım:</b> Yukarıdaki hizmet sağlayıcıların sunucuları yurt dışında bulunabilir. Bu aktarım, KVKK'nın 9. maddesinde öngörülen şartlara ve güvencelere uygun olarak yapılır.</p>
+    <p>Kişisel verilerini <b>satmayız</b>. Kurumlarla yalnızca anonim, toplulaştırılmış istatistikler paylaşılabilir.</p>
+
+    <h2>6. Ne kadar saklıyoruz?</h2>
+    <ul>
+      <li>Talep ve başvuru formları: Talebin sonuçlanmasından itibaren en fazla <b>2 yıl</b>,</li>
+      <li>Mahalle testi kayıtları: En fazla <b>3 yıl</b>,</li>
+      <li>Mevzuat gereği daha uzun saklanması gereken kayıtlar (ör. fatura): İlgili mevzuattaki süre boyunca.</li>
+    </ul>
+    <p>Süre dolduğunda veriler silinir, yok edilir ya da anonim hale getirilir. Anonim istatistikler kişisel veri olmadığı için süresiz tutulabilir.</p>
+
+    <h2>7. Çerezler ve takip</h2>
+    <p>Sitemizde çerez, reklam pikseli ya da ziyaretçi analitiği aracı <b>kullanmıyoruz</b>. Siteye nereden geldiğin bilgisi, yalnızca testi tamamladığında yukarıda açıklanan test kaydına eklenir.</p>
+
+    <h2>8. Haklarınız</h2>
+    <p>KVKK'nın 11. maddesi uyarınca şu haklara sahipsin:</p>
+    <ol>
+      <li>Kişisel verilerinin işlenip işlenmediğini öğrenme,</li>
+      <li>İşlenmişse buna ilişkin bilgi talep etme,</li>
+      <li>İşlenme amacını ve amacına uygun kullanılıp kullanılmadığını öğrenme,</li>
+      <li>Yurt içinde ya da yurt dışında aktarıldığı üçüncü kişileri bilme,</li>
+      <li>Eksik ya da yanlış işlenmişse düzeltilmesini isteme,</li>
+      <li>KVKK'da öngörülen şartlar çerçevesinde silinmesini ya da yok edilmesini isteme,</li>
+      <li>Düzeltme, silme ve yok etme işlemlerinin, verilerin aktarıldığı üçüncü kişilere bildirilmesini isteme,</li>
+      <li>Münhasıran otomatik sistemlerle analiz edilmesi sonucunda aleyhine bir sonuç çıkmasına itiraz etme,</li>
+      <li>Kanuna aykırı işleme nedeniyle zarara uğrarsan zararın giderilmesini talep etme.</li>
+    </ol>
+    <p>Açık rızaya dayanan işlemler için verdiğin onayı istediğin zaman geri alabilirsin. Geri alma, o tarihten önce yapılan işlemleri etkilemez.</p>
+
+    <h2>9. Başvuru</h2>
+    <p>Haklarını kullanmak için başvurunu <a href="mailto:onur.aydin@cbsturkey.com">onur.aydin@cbsturkey.com</a> adresine e-postayla ya da Cevizli Mah. Tugay Yolu Cad. A Blok Sk. No:20 Kat:9 (Ofisim İstanbul Plazaları), Maltepe / İstanbul adresine yazılı olarak iletebilirsin. Başvurunda adını ve talebini açıkça belirt. Başvurunu en geç <b>30 gün</b> içinde ücretsiz olarak sonuçlandırırız.</p>
+
+    <h2>10. Değişiklikler</h2>
+    <p>Bu metni hizmetlerimiz değiştikçe güncelleyebiliriz. Güncel metin her zaman bu sayfada yayımlanır.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <a href="index.html" class="logo"><img src="localprof-logo.png" class="badge" alt="LocalProf"><span>Local<b>Prof</b></span></a>
+    <div class="fl">
+      <a href="index.html">Ana Sayfa</a>
+      <a href="mahalle-testi.html">Mahalle Testi</a>
+      <a href="danismanlik.html">Yaşam Danışmanlığı</a>
+      <a href="gerceklik-testi.html">DevirProf</a>
+      <a href="ofis.html">Ofis</a>
+      <a href="hakkimizda.html">Hakkımızda</a>
+      <a href="gizlilik.html">Gizlilik ve KVKK</a>
+    </div>
+    <div class="cp">© 2026 LocalProf · LocalProf, CBS Kurumsal İş Çözümleri Ltd. Şti. markasıdır.</div>
+  </div>
+</footer>
+</body>
+</html>
