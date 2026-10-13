@@ -530,7 +530,7 @@ const WD={
 let cur=0,ans=Array(Qs.length).fill(null);
 function start(){show('s-city');window.scrollTo(0,0);}
 function cityChg(){const v=document.getElementById('city').value,c2=document.getElementById('city2');const no=!v||v==='Belirtmek istemiyorum';c2.style.display=no?'none':'block';c2.placeholder=v==='Yurt dışı'?'Hangi ülke? (isteğe bağlı)':(v==='Bodrum'?'Hangi mahalle? (isteğe bağlı)':'İlçe (isteğe bağlı)');document.getElementById('btn-city').classList.toggle('on',!!v);}
-function cityGo(){if(!document.getElementById('city').value)return;show('s-quiz');render();window.scrollTo(0,0);}
+function cityGo(){if(!document.getElementById('city').value)return;LP_SID=Math.random().toString(36).slice(2,8).toUpperCase();LP_DONE=false;LP_LEFT=false;lpEvent('Başladı');show('s-quiz');render();window.scrollTo(0,0);}
 function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
 function render(){
   const q=Qs[cur];
@@ -693,10 +693,38 @@ function result(){
 /* ===== Anonim test kaydı → LocalProf Kayıtlar / Test Sonuçları ===== */
 var LP_SHEET_URL = "https://script.google.com/macros/s/AKfycbyDukUDrKZNkU4cGzUlyjGJ5YoDfNoaZ6pEImNEhG9rZ-buJ5oDyoSFGQLNnYKaVEg8kg/exec";
 var LP_QKISA = ["Kış","Şehirden kopma","Motivasyon","Yerel ilişki","Doğa","Çalışma modeli","Usta toleransı","Hanehalkı","Sağlık","Bütçe","Araç","Mülk tipi","Ev konumu","İnternet","Sosyal atmosfer","Yaz kalabalığı","Taşınma zamanı","Satın al / kirala","Risk","Öncelik"];
+/* ===== Testi başlatanları ölç: Test Başlangıç sekmesi ===== */
+var LP_SID = "", LP_DONE = false, LP_LEFT = false;
+function lpMeta(){
+  var q = new URLSearchParams(location.search), ref = "";
+  try{ ref = document.referrer ? new URL(document.referrer).hostname : ""; }catch(e){}
+  return {
+    "Test kimliği": LP_SID,
+    "Cihaz": /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent) ? "Mobil" : "Masaüstü",
+    "Kaynak": q.get("utm_source") || (ref ? (ref === location.hostname ? "Site içi" : ref) : "Doğrudan"),
+    "Yaşadığı şehir": document.getElementById("city").value,
+    "İlçe / ülke": document.getElementById("city2").value.trim()
+  };
+}
+function lpEvent(olay, extra, beacon){
+  if(LP_SHEET_URL.indexOf("https://") !== 0 || (typeof PAIR !== 'undefined' && PAIR && PAIR.view)) return;
+  try{
+    var d = lpMeta(); d["Olay"] = olay; for(var k in (extra||{})) d[k] = extra[k];
+    var b = new URLSearchParams(); b.append("form", "Test Başlangıç"); b.append("data", JSON.stringify(d));
+    if(beacon && navigator.sendBeacon) navigator.sendBeacon(LP_SHEET_URL, b);
+    else fetch(LP_SHEET_URL, {method:"POST", mode:"no-cors", body:b, keepalive:true}).catch(function(){});
+  }catch(e){}
+}
+document.addEventListener("visibilitychange", function(){
+  if(document.visibilityState !== "hidden" || !LP_SID || LP_DONE || LP_LEFT) return;
+  if(!document.getElementById("s-quiz").classList.contains("active")) return;
+  LP_LEFT = true;
+  lpEvent("Yarıda bıraktı", {"Kaldığı soru": cur + 1}, true);
+});
 function lpTestLog(prof, top, clashes){
   if(typeof PAIR !== 'undefined' && PAIR && PAIR.view) return '';
   try{
-    var sid = Math.random().toString(36).slice(2, 8).toUpperCase();
+    var sid = LP_SID || (LP_SID = Math.random().toString(36).slice(2, 8).toUpperCase()); LP_DONE = true;
     var q = new URLSearchParams(location.search), ref = "";
     try{ ref = document.referrer ? new URL(document.referrer).hostname : ""; }catch(e){}
     var kaynak = q.get("utm_source") || (ref ? (ref === location.hostname ? "Site içi" : ref) : "Doğrudan");
