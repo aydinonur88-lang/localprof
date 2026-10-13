@@ -167,21 +167,48 @@ footer .fl a:hover,.site-foot .fl a:hover{color:#F6B08C}
 header h1 em{color:#F6B08C}
 .ribbon.amber{background:#C77A2C}
 </style>
+<style id="lpn-css">
+.lpn{position:sticky;top:0;z-index:100;background:rgba(42,95,126,.97);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid rgba(184,84,48,.45);font-family:'Inter','DM Sans',system-ui,sans-serif}
+.lpn-in{max-width:1000px;margin:0 auto;padding:0 20px;height:72px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.lpn-logo{display:flex;align-items:center;gap:11px;text-decoration:none;font-family:'Bricolage Grotesque','Inter',system-ui,sans-serif;font-weight:800;font-size:23px;letter-spacing:-.02em;color:#F3ECDB;flex-shrink:0}
+.lpn-logo img{width:44px;height:44px;border-radius:50%;display:block}
+.lpn-logo b{color:#F6B08C;font-weight:800}
+.lpn-links{display:flex;align-items:center;gap:24px}
+.lpn-links a{font-size:15.5px;font-weight:500;color:#d6e2e0;text-decoration:none;white-space:nowrap;padding:6px 0;border-bottom:2px solid transparent}
+.lpn-links a:hover{color:#fff}
+.lpn-links a.on{color:#fff;border-bottom-color:#F6B08C}
+.lpn-cta{background:#B85430;color:#fff!important;padding:11px 18px!important;border-radius:10px;font-weight:600;font-size:15px;text-decoration:none;white-space:nowrap;border:0!important}
+.lpn-cta:hover{background:#A14726}
+.lpn-right{display:flex;align-items:center;gap:10px}
+.lpn-burger{display:none;width:44px;height:44px;border:1px solid rgba(243,236,219,.35);border-radius:10px;background:transparent;cursor:pointer;align-items:center;justify-content:center;padding:0}
+.lpn-burger span,.lpn-burger span::before,.lpn-burger span::after{display:block;width:20px;height:2px;background:#F3ECDB;border-radius:2px;position:relative;transition:transform .2s,background .2s}
+.lpn-burger span::before,.lpn-burger span::after{content:"";position:absolute;left:0}
+.lpn-burger span::before{top:-6px}.lpn-burger span::after{top:6px}
+.lpn.open .lpn-burger span{background:transparent}
+.lpn.open .lpn-burger span::before{transform:translateY(6px) rotate(45deg)}
+.lpn.open .lpn-burger span::after{transform:translateY(-6px) rotate(-45deg)}
+.lpn-drop{display:none;border-top:1px solid rgba(243,236,219,.15);padding:6px 20px 14px}
+.lpn-drop a{display:block;padding:13px 2px;font-size:17px;font-weight:500;color:#F3ECDB;text-decoration:none;border-bottom:1px solid rgba(243,236,219,.1)}
+.lpn-drop a.on{color:#F6B08C}
+.lpn-drop a:last-child{border-bottom:0}
+@media(max-width:920px){
+  .lpn-links .lpn-l{display:none}
+  .lpn-burger{display:inline-flex}
+  .lpn.open .lpn-drop{display:block}
+}
+@media(max-width:640px){
+  .lpn-in{height:62px;gap:8px}
+  .lpn-logo{font-size:20px;gap:9px}.lpn-logo img{width:38px;height:38px}
+  .lpn-cta{padding:9px 13px!important;font-size:14px}
+  .lpn-burger{width:40px;height:40px}
+}
+</style>
 </head>
 <body>
 
-<nav class="nav">
-  <div class="wrap">
-    <a href="index.html" class="logo"><img src="localprof-logo.png" class="badge" alt="LocalProf"><span>Local<b>Prof</b></span></a>
-    <div class="links">
-      <a href="index.html">Ana Sayfa</a>
-      <a href="mahalle-testi.html">Mahalle Testi</a>
-      <a href="danismanlik.html">Yaşam Danışmanlığı</a>
-      <a href="uzman-agi.html" class="on">Uzman Ağı</a>
-      <a href="#basvuru" class="cta">Başvur</a>
-    </div>
-  </div>
-</nav>
+<nav class="lpn" id="lpn"><div class="lpn-in"><a class="lpn-logo" href="index.html"><img src="localprof-logo.png" alt="LocalProf"><span>Local<b>Prof</b></span></a><div class="lpn-right"><div class="lpn-links"><a class="lpn-l" href="mahalle-testi.html">Mahalle Testi</a><a class="lpn-l on" href="danismanlik.html">Uzmanla Konuş</a><a class="lpn-l" href="gerceklik-testi.html">DevirProf</a><a class="lpn-l" href="ofis.html">Ofis</a><a class="lpn-l" href="hakkimizda.html">Hakkımızda</a><a class="lpn-cta" href="mahalle-testi.html">Mahalleni Bul</a></div><button class="lpn-burger" type="button" aria-label="Menüyü aç" aria-expanded="false"><span></span></button></div></div><div class="lpn-drop"><a href="mahalle-testi.html">Mahalle Testi</a><a class="on" href="danismanlik.html">Uzmanla Konuş</a><a href="gerceklik-testi.html">DevirProf</a><a href="ofis.html">Ofis</a><a href="hakkimizda.html">Hakkımızda</a><a href="index.html">Ana Sayfa</a></div></nav><script>(function(){var n=document.getElementById('lpn');if(!n)return;var b=n.querySelector('.lpn-burger');
+b.addEventListener('click',function(){var o=n.classList.toggle('open');b.setAttribute('aria-expanded',o?'true':'false');});
+n.querySelectorAll('.lpn-drop a').forEach(function(a){a.addEventListener('click',function(){n.classList.remove('open');});});})();</script>
 
 <div class="hero">
   <div class="wrap hero-grid">
