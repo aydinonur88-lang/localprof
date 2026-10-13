@@ -300,6 +300,12 @@ footer .fl a:hover,.site-foot .fl a:hover{color:#F6B08C}
 header h1 em{color:#F6B08C}
 .ribbon.amber{background:#C77A2C}
 </style>
+<style>/* bilirkişi analizi */
+.bk{margin:1.6rem 0 2.6rem;padding:1.4rem 1.5rem 1.5rem;background:#fff;border:1px solid var(--paper3);border-left:4px solid #B85430}
+.bk-lbl{display:flex;align-items:center;gap:8px;font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:#B85430;font-weight:600;margin-bottom:.7rem}
+.bk-lbl svg{width:16px;height:16px;fill:none;stroke:#B85430;stroke-width:2;stroke-linecap:round}
+.bk-t{font-family:var(--serif);font-size:clamp(19px,2.6vw,23px);line-height:1.45;color:var(--ink);margin:0}
+</style>
 <style id="lpn-css">
 .lpn{position:sticky;top:0;z-index:100;background:rgba(42,95,126,.97);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid rgba(184,84,48,.45);font-family:'Inter','DM Sans',system-ui,sans-serif}
 .lpn-in{max-width:1000px;margin:0 auto;padding:0 20px;height:72px;display:flex;align-items:center;justify-content:space-between;gap:16px}
@@ -400,6 +406,7 @@ n.querySelectorAll('.lpn-drop a').forEach(function(a){a.addEventListener('click'
   <h2 class="rep-headline">İşte <em>gerçekleriniz.</em></h2>
   <div class="rep-dateline" id="r-date"></div>
   <div class="pair-res" id="r-pair" hidden></div>
+  <div class="bk" id="r-bk"><div class="bk-lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>Bilirkişi analizi</div><p class="bk-t" id="r-bk-t"></p></div>
   <div class="rep-sec">
     <div class="rep-sec-rule"><span class="rep-sec-n">01</span><div class="rep-sec-line"></div><span class="rep-sec-title">Profil & karakter analizi</span></div>
     <div class="prof-block">
@@ -598,9 +605,68 @@ function getClashes(t){const sc=k=>t[k]||0;const cl=[];if(sc('sosyal')>=3&&sc('s
 function getProfile(t){const sc=k=>t[k]||0;const traits=[];if(sc('kışdayanıklı')>=2)traits.push('Kış uyumlu');if(sc('sosyal')>=3)traits.push('Sosyal bağımlı');if(sc('minimalist')>=2)traits.push('Minimalist');if(sc('entelektüel')>=2)traits.push('Entelektüel');if(sc('remote')>=2)traits.push('Remote çalışan');if(sc('hibrit')>=2)traits.push('Hibrit çalışan');if(sc('expat')>=2)traits.push('Expat odaklı');if(sc('lüks')>=2)traits.push('Konfor öncelikli');if(sc('okul')>=2)traits.push('Aile odaklı');if(sc('doğa')>=2)traits.push('Doğa odaklı');if(sc('ekonomik')>=2)traits.push('Bütçe bilinçli');if(sc('yazlık')>=3)traits.unshift('Yazlıkçı');if(sc('yazlık')>=3&&sc('lüks')>=3)return{name:"Prestijli bir yazlık arayan",body:"Bodrum'u yaz evi olarak düşünüyorsunuz ve konfor önceliğiniz net. Kışın boş kalacak evin güvenliği ve bakımı en çok atlanan maliyettir.",traits};if(sc('yazlık')>=3)return{name:"Bodrum'u yazlık olarak kullanacak",body:"Kışı başka yerde geçireceksiniz; bu yüzden kışın kapanan mahalleler sizin için dezavantaj değil. Asıl soru, yazın nasıl bir Bodrum istediğiniz.",traits};if(sc('okul')>=4&&sc('erişim')>=3)return{name:"Çocuk odaklı aile profili",body:"Okul kalitesi ve sağlık erişimi tüm tercihlerinizin üzerinde. Bölge araştırması mutlaka okul ziyaretiyle başlamalı.",traits};if(sc('hibrit')>=3&&sc('şehiryakın')>=2)return{name:"Hibrit çalışan şehir kaçkını",body:"Şehirden tam kopmak istemiyorsunuz. Ulaşım kalitesi ve mesafe her şeyden önce gelir.",traits};if(sc('elit')>=4&&sc('lüks')>=3)return{name:"Elit yaşam arayan pragmatik",body:"Konfor ve çevre kalitesi önceliğiniz net. Bu profilde en kritik risk hafife alınan bütçedir.",traits};if(sc('entelektüel')>=3&&sc('kültür')>=3)return{name:"Entelektüel kaçış arayan yaratıcı ruh",body:"Kültürel doku ve benzer profil insanlar önceliğinizin merkezinde. Kış izolasyonunu somut olarak planlayın.",traits};if(sc('minimalist')>=3&&sc('sakin')>=3)return{name:"Sadelik arayan gerçek minimalist",body:"Şehrin gürültüsünden kaçıyorsunuz ve bunu ciddi kastediyorsunuz. Gerçek minimalist yaşama hazır mısınız?",traits};if(sc('expat')>=3)return{name:"Kozmopolit expat topluluğu arayan",body:"Uluslararası bir çevre istiyorsunuz. Doğru bölgede bu mümkün — ama lokal kopuşun uzun vadeli bedeli var.",traits};if(sc('remote')>=3&&sc('internet')>=3)return{name:"Dijital göçebe arayan özgürlükçü",body:"Uzaktan çalışma özgürlüğünü konuma dönüştürmek istiyorsunuz. Fiber varlığı ilk filtre olmalı.",traits};if(sc('karadeniz')>=3)return{name:"Yeşil ve serin yaşam arayan",body:"Ege'nin sıcağından kaçıyorsunuz. Karadeniz bu özlemi karşılar ama iklimi mutlaka bizzat deneyimleyin.",traits};return{name:"Dengeli relokasyon arayan",body:"Ortada bir noktada yaşamak istiyorsunuz. Önce hangi kriterin gerçekten vazgeçilmez olduğuna karar verin.",traits};}
 function getWinter(top3){const w=(top3[0]&&top3[0].winter)||'orta';return WD[w]||WD['orta'];}
 function getSteps(t,clashes){const sc=k=>t[k]||0;const steps=[];if(sc('acil')>=3)steps.push({title:"Hemen saha ziyareti planlayın",desc:"Önerilen bölgeleri kış ayında ziyaret edin. En az 3–5 gün kalın."});else if(sc('yazlık')>=3)steps.push({title:"Sezon başında ve sonunda bir kez görün",desc:"Mayıs ve Ekim aylarında bölgeyi görmek, yazın kalabalığını ve sezon dışındaki halini birlikte anlamanızı sağlar."});else steps.push({title:"Önce kış ayında bir keşif ziyareti",desc:"Bölgeyi kışın görmek en kritik adım. Bu farkı bizzat yaşamadan karar vermeyin."});if(sc('kiralama')>=3||sc('finansal')>=2)steps.push({title:"İlk yıl mutlaka kiralayın",desc:"Satın alma kararını en az 1 yıllık kira deneyiminden sonra verin."});if(sc('okul')>=3)steps.push({title:"Okul araştırmasını önceden yapın",desc:"Bölgedeki okul seçeneklerini ve kontenjan durumunu öğrenin."});if(clashes.length>0)steps.push({title:"Çelişkilerinizi önce çözümleyin",desc:"Rapordaki çelişkiler taşınma kararından önce netleştirilmeli."});if(sc('devir')>=3)steps.push({title:"İşletmeyi devralmadan önce rakamları doğrulayın",desc:"Bodrum'da sezon dışı aylar kirayı karşılamayabilir. Devir sözleşmesinden önce gerçek yıllık tabloyu görün."});steps.push({title:"Bir LocalProf uzmanıyla görüşün",desc:"Bölgenin yazılı olmayan kuralları ancak sahada deneyim yaşamış biri tarafından aktarılabilir."});return steps;}
+/* ===== Bilirkişi analizi: hayal vs. gerçek ===== */
+const BK_DREAM=[ // [etiketler, ifade, eşik]
+ [['taşev','restorasyon'],'taş bir evde',3],
+ [['doğa','uzak'],'doğayla iç içe',3],
+ [['köy','lokal'],'köy dokusunun içinde',3],
+ [['müstakil'],'bahçeli, müstakil bir evde',2],
+ [['elit','lüks','premium'],'prestijli, konforlu bir çevrede',3],
+ [['kültür','entelektüel'],'kültürlü, entelektüel bir çevrede',3],
+ [['expat'],'uluslararası bir toplulukta',3],
+ [['sosyal'],'hareketli, sosyal bir hayatın ortasında',4],
+ [['sakin','minimalist','cittaslow'],'sakin, yavaş bir hayatta',5],
+ [['site','güvenlik','modern'],'modern, güvenlikli bir sitede',3],
+];
+const BK_CONS=[ // [etiket, kişi eşiği, kısıt ifadesi, mahallede "iyi" ifadesi]
+ ['okul',3,'okul çağında çocuğun var','okula yakın'],
+ ['sağlık',3,'hastanenin yakında olması şart','hastaneye yakın'],
+ ['düşüktolerans',3,'usta beklemeye hiç toleransın yok','ustaya ve hizmete kolay ulaşılan'],
+ ['internet',3,'kesintisiz fiber internet şartın var','fiber altyapısı olan'],
+ ['hibrit',3,'haftada birkaç gün şehre gitmen gerekiyor','havalimanına ve şehre yakın'],
+ ['ekonomik',3,'aylık bütçen sınırlı','bütçene uygun'],
+ ['araçsız',3,'araç kullanmak istemiyorsun','yürüyerek yaşanabilen'],
+];
+const BK_DAT={'Bodrum Merkez':"Bodrum Merkez'e",'Konacık':"Konacık'a",'Bitez':"Bitez'e",'Ortakent & Yahşi':"Ortakent & Yahşi'ye",'Gümbet':"Gümbet'e",'Turgutreis':"Turgutreis'e",'Gümüşlük':"Gümüşlük'e",'Yalıkavak':"Yalıkavak'a",'Göltürkbükü':"Göltürkbükü'ne",'Torba':"Torba'ya"};
+const BK_RED=['okul seçenekleri sınırlı','hastaneye uzak','araçsız yaşam zor','kışın çok sessiz','bütçenin üzerinde','internet altyapısı zayıf','havalimanına uzak'];
+const bkDat=n=>BK_DAT[n]||n;
+function bkJoin(a){return a.length<2?(a[0]||''):a.slice(0,-1).join(', ')+' ve '+a[a.length-1];}
+function bkAnaliz(t,ranked,clashes){
+  const sc=k=>t[k]||0, top=ranked[0];
+  const dreams=BK_DREAM.map(([ks,p,th])=>({p,v:Math.max(...ks.map(sc)),th})).filter(d=>d.v>=d.th).slice(0,2);
+  if(sc('yazlık')>=3){
+    return `Bodrum'u yazlık olarak düşünüyorsun; bu yüzden kışın sessizleşmesi senin için dert değil. `+
+      (dreams.length?`Yazın ${bkJoin(dreams.map(d=>d.p))} olmak istiyorsun ve bunu en iyi ${top.name} karşılıyor. `:`Yaz hayatına en uygun yer ${top.name}. `)+
+      `Asıl risk evin aylarca boş kalması: güvenlik, nem ve bakım için yerelden birini şimdiden ayarla.`;
+  }
+  if(!dreams.length){
+    return `Hayalini bir tatil sahnesi üzerine değil, pratik ihtiyaçların üzerine kurmuşsun. Bu iyi bir başlangıç. Cevapların seni ${bkDat(top.name)} götürüyor`+
+      (clashes.length?`; ama raporundaki ${clashes.length} çelişkiyi taşınmadan önce netleştirmelisin.`:`, ve tercihlerin birbiriyle tutarlı.`);
+  }
+  // hayal mahallesi: sadece hayal etiketleriyle eşleştir
+  const dt={};BK_DREAM.forEach(([ks])=>ks.forEach(k=>{if(sc(k))dt[k]=sc(k);}));
+  if(sc('kışdayanıklı')>0)dt['kışdayanıklı']=sc('kışdayanıklı');
+  const dream=matchRegions(dt)[0];
+  const F=FIT[dream.name]||{}, FT=FIT[top.name]||{};
+  const cons=BK_CONS.filter(([k,th])=>sc(k)>=th&&(F[k]||0)<=0);
+  if(sc('kışdayanıklı')<=-1&&(F['kışdayanıklı']||0)>=2)cons.push(['kışdayanıklı',0,'kışın sessizliğe dayanamıyorsun','kışın da canlı']);
+  const hayal=bkJoin(dreams.map(d=>d.p));
+  if(dream.name===top.name||!cons.length){
+    let s=`Hayalinle gerçeklerin büyük ölçüde örtüşüyor: ${hayal} yaşamak istiyorsun ve ${top.name} bunu karşılıyor.`;
+    if(top.minus&&top.minus.length){const m=top.minus[0];s+=BK_RED.includes(m)?` Yine de şunu bil: burada ${m}.`:` Yine de bir zayıf yanı var: ${m} konusunda güçlü değil.`;}
+    else if(clashes.length)s+=` Yine de raporundaki ${clashes.length} çelişkiyi taşınmadan önce netleştir.`;
+    return s;
+  }
+  const good=cons.filter(([k])=>k==='kışdayanıklı'?(FT['kışdayanıklı']||0)<=0:((FT[k]||0)>=2||(FT[k]||0)-(F[k]||0)>=2)).map(c=>(c[0]==='ekonomik'&&(FT.ekonomik||0)<2)?'bütçene daha yakın':c[3]);
+  const neden=bkJoin(cons.slice(0,2).map(c=>c[2]));
+  return `${hayal[0].toUpperCase()+hayal.slice(1)} yaşamayı hayal ediyorsun; bu tarif en çok ${bkDat(dream.name)} uyuyor. Ama ${neden}. `+
+    `Senin yerin ${dream.name} değil; `+(good.length?`${bkJoin(good.slice(0,2))} bir yer: `:'')+`${top.name}.`;
+}
+
 function result(){
   const t=scores();const ranked=matchRegions(t);const top4=ranked.slice(0,4);
   const prof=getProfile(t);const clashes=getClashes(t);
+  try{document.getElementById('r-bk-t').textContent=bkAnaliz(t,ranked,clashes);document.getElementById('r-bk').hidden=false;}catch(e){document.getElementById('r-bk').hidden=true;}
   const winter=(t.yazlık||0)>=3?{score:"Yazlık kullanım",title:"Kış senin için belirleyici değil",text:"Kışı Bodrum'da geçirmeyeceğini söyledin, bu yüzden önerilerde kışın sessizleşen mahalleler dezavantaj sayılmadı. Yine de evin kışın aylarca boş kalacak: güvenlik, nem ve bakım için yerel birini önceden ayarla. İleride yıl boyu yaşamayı düşünürsen testi yeniden çöz."}:getWinter(top4.slice(0,3));const steps=getSteps(t,clashes);
   const now=new Date();const months=['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
   document.getElementById('r-date').textContent=now.getDate()+' '+months[now.getMonth()]+' '+now.getFullYear()+' — Kişisel analiz raporu';
