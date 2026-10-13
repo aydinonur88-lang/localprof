@@ -103,7 +103,8 @@ body{font-family:var(--sans);background:var(--paper);color:var(--ink);min-height
 .pair-res .pair-row input{background:#fff}
 .pair-res .sh-note{color:rgba(244,239,227,.7)}
 
-.ev-block{margin:0 0 3rem;padding:2rem;border:1.5px solid var(--green);background:#fff}
+.ev-block{margin:2.5rem 0 1rem;padding:2rem;border:1.5px solid #B85430;border-radius:4px;background:#fff;box-shadow:0 8px 24px rgba(184,84,48,.10)}
+.ev-block .sh-btn.main{background:#B85430;border-color:#B85430;color:#fff}.ev-block .sh-btn.main:hover{background:#A14726;opacity:1}
 .ev-block .share-title{margin-bottom:.6rem}
 .ev-form{display:none;margin-top:1.2rem}
 .ev-form.open{display:block}
@@ -185,7 +186,7 @@ select.city-sel{background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www
 .step-n{font-family:var(--serif);font-size:22px;color:var(--paper3);font-weight:400;min-width:28px;line-height:1}
 .step-title{font-size:14px;font-weight:500;color:var(--ink);margin-bottom:.3rem}
 .step-desc{font-size:13px;color:var(--ink2);line-height:1.65}
-.cta-block{margin-top:3rem;padding:2.5rem;background:var(--ink);color:var(--paper);text-align:center}
+.cta-block{margin:3rem 0;padding:2.5rem;background:var(--ink);color:var(--paper);text-align:center}
 .cta-kicker{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:rgba(250,249,247,.4);margin-bottom:.75rem}
 .cta-title{font-family:var(--serif);font-size:clamp(22px,3.5vw,30px);color:var(--paper);margin-bottom:.75rem;font-weight:400;line-height:1.2}
 .cta-body{font-size:13px;color:rgba(250,249,247,.65);line-height:1.7;max-width:440px;margin:0 auto 1.75rem}
@@ -200,7 +201,7 @@ select.city-sel{background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www
 .fit.ok{color:#1d5c40;background:#EAF3EE;border-color:#c3dccd}
 .fit.no{color:#8b3a2a;background:#fdf0ee;border-color:rgba(139,58,42,.25)}
 @media(max-width:560px){.fit-h{min-width:0;flex-basis:100%}}
-.devir-block{margin-top:3rem;padding:2rem;border:1.5px solid #B85430;background:#FBF0EA;border-radius:4px}
+.devir-block{margin:0 0 2rem;padding:2rem;border:1.5px solid #B85430;background:#FBF0EA;border-radius:4px}
 .devir-label{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#8a6a35;font-weight:500;margin-bottom:.5rem}
 .devir-title{font-family:var(--serif);font-size:clamp(22px,3.4vw,28px);color:var(--ink);margin-bottom:.75rem;line-height:1.2}
 .devir-body{font-size:16px;color:var(--ink2);line-height:1.7;margin-bottom:1.25rem}
@@ -424,6 +425,45 @@ n.querySelectorAll('.lpn-drop a').forEach(function(a){a.addEventListener('click'
     <div class="rep-sec-rule"><span class="rep-sec-n">03</span><div class="rep-sec-line"></div><span class="rep-sec-title">Mahalle eşleşmeleri</span></div>
     <div id="r-regions"></div>
   </div>
+  <div class="rep-sec">
+    <div class="rep-sec-rule"><span class="rep-sec-n">04</span><div class="rep-sec-line"></div><span class="rep-sec-title">Kış gerçeği & mevsimsel uyarı</span></div>
+    <div class="winter-block" id="r-winter"></div>
+  </div>
+  <div class="rep-sec">
+    <div class="rep-sec-rule"><span class="rep-sec-n">05</span><div class="rep-sec-line"></div><span class="rep-sec-title">Pratik sonraki adımlar</span></div>
+    <div class="steps" id="r-steps"></div>
+  </div>
+  <div class="cta-block">
+    <div class="cta-kicker">Bir sonraki adım</div>
+    <div class="cta-title">Hayallerini uzmanına denetlet</div>
+    <div class="cta-body">Bu rapor bir başlangıç noktası. Mahallenin yazılı olmayan kurallarını, gerçek kira piyasasını ve yerel dinamikleri ancak sahada deneyim yaşamış bir uzman aktarabilir.</div>
+    <button class="btn-cta" onclick="goDanisman()">1 saatlik uzman görüşmesi →</button>
+  </div>
+
+  <div class="pair-block" id="r-invite">
+    <div class="pair-kicker">Partner modu</div>
+    <div class="share-title">Taşınma kararını birlikte mi veriyorsunuz?</div>
+    <p class="pair-body">Eşine, partnerine ya da birlikte taşınacağın kişiye gönder. O da testi çözünce ikinizin <b>ortak mahallesini</b> ve en çok ayrıştığınız konuları görecek.</p>
+    <div class="pair-row"><input id="pair-me" maxlength="20" placeholder="Adın (ona görünecek)"><button class="sh-btn main" onclick="lpInvite()">Partnerime gönder →</button></div>
+    <div class="sh-note" id="pair-note"></div>
+  </div>
+  <div class="share-block">
+    <div class="share-kicker">Sonucunu paylaş</div>
+    <div class="share-title">Senin Bodrum mahallen <em id="sh-name"></em>. Arkadaşlarınınki hangisi?</div>
+    <div class="share-btns">
+      <button class="sh-btn main" onclick="lpShareStory()">Hikâye görseli paylaş</button>
+      <button class="sh-btn" onclick="lpShareWa()">WhatsApp'ta gönder</button>
+      <button class="sh-btn" onclick="lpCopy(this,lpLink('paylasim'))">Linki kopyala</button>
+    </div>
+    <div class="sh-note" id="sh-note"></div>
+  </div>
+  <div class="devir-block" id="r-devir" hidden>
+    <div class="devir-label">Bodrum'da iş kuracaksan</div>
+    <div class="devir-title">İşletmeni seçerken sezon gerçeğini hesaba kat</div>
+    <div class="devir-body">Bodrum'da çoğu işletme yılın birkaç ayında kazanır, kira ise 12 ay sürer. Devralmayı düşündüğün işin rakamlarını ücretsiz Gerçeklik Testi'nde gir, yıl boyu tabloyu gör. İstersen sözleşmeden önce rakamları sahada birlikte doğrulayalım.</div>
+    <a class="devir-btn" href="gerceklik-testi.html">Ücretsiz Gerçeklik Testi →</a>
+    <a class="devir-link" href="paketler.html">DevirProf paketlerine bak</a>
+  </div>
   <div class="ev-block" id="r-ev">
     <div class="share-kicker">Ev arıyorsan</div>
     <div class="share-title">Bu mahallelerde ev bulmana yardım edelim mi?</div>
@@ -444,46 +484,7 @@ n.querySelectorAll('.lpn-drop a').forEach(function(a){a.addEventListener('click'
       <button class="sh-btn main" id="ev-btn" onclick="lpEvSend()">Talebimi gönder →</button>
       <div class="ev-done" id="ev-done"></div>
     </div>
-  </div>
-  <div class="share-block">
-    <div class="share-kicker">Sonucunu paylaş</div>
-    <div class="share-title">Senin Bodrum mahallen <em id="sh-name"></em>. Arkadaşlarınınki hangisi?</div>
-    <div class="share-btns">
-      <button class="sh-btn main" onclick="lpShareStory()">Hikâye görseli paylaş</button>
-      <button class="sh-btn" onclick="lpShareWa()">WhatsApp'ta gönder</button>
-      <button class="sh-btn" onclick="lpCopy(this,lpLink('paylasim'))">Linki kopyala</button>
-    </div>
-    <div class="sh-note" id="sh-note"></div>
-  </div>
-  <div class="pair-block" id="r-invite">
-    <div class="pair-kicker">Partner modu</div>
-    <div class="share-title">Taşınma kararını birlikte mi veriyorsunuz?</div>
-    <p class="pair-body">Eşine, partnerine ya da birlikte taşınacağın kişiye gönder. O da testi çözünce ikinizin <b>ortak mahallesini</b> ve en çok ayrıştığınız konuları görecek.</p>
-    <div class="pair-row"><input id="pair-me" maxlength="20" placeholder="Adın (ona görünecek)"><button class="sh-btn main" onclick="lpInvite()">Partnerime gönder →</button></div>
-    <div class="sh-note" id="pair-note"></div>
-  </div>
-  <div class="rep-sec">
-    <div class="rep-sec-rule"><span class="rep-sec-n">04</span><div class="rep-sec-line"></div><span class="rep-sec-title">Kış gerçeği & mevsimsel uyarı</span></div>
-    <div class="winter-block" id="r-winter"></div>
-  </div>
-  <div class="rep-sec">
-    <div class="rep-sec-rule"><span class="rep-sec-n">05</span><div class="rep-sec-line"></div><span class="rep-sec-title">Pratik sonraki adımlar</span></div>
-    <div class="steps" id="r-steps"></div>
-  </div>
-  <div class="devir-block" id="r-devir" hidden>
-    <div class="devir-label">Bodrum'da iş kuracaksan</div>
-    <div class="devir-title">İşletmeni seçerken sezon gerçeğini hesaba kat</div>
-    <div class="devir-body">Bodrum'da çoğu işletme yılın birkaç ayında kazanır, kira ise 12 ay sürer. Devralmayı düşündüğün işin rakamlarını ücretsiz Gerçeklik Testi'nde gir, yıl boyu tabloyu gör. İstersen sözleşmeden önce rakamları sahada birlikte doğrulayalım.</div>
-    <a class="devir-btn" href="gerceklik-testi.html">Ücretsiz Gerçeklik Testi →</a>
-    <a class="devir-link" href="paketler.html">DevirProf paketlerine bak</a>
-  </div>
-  <div class="cta-block">
-    <div class="cta-kicker">Bir sonraki adım</div>
-    <div class="cta-title">Hayallerini uzmanına denetlet</div>
-    <div class="cta-body">Bu rapor bir başlangıç noktası. Mahallenin yazılı olmayan kurallarını, gerçek kira piyasasını ve yerel dinamikleri ancak sahada deneyim yaşamış bir uzman aktarabilir.</div>
-    <button class="btn-cta" onclick="goDanisman()">1 saatlik uzman görüşmesi →</button>
-  </div>
-  <button class="btn-restart" onclick="restart()">— Testi yeniden başlat —</button>
+  </div>  <button class="btn-restart" onclick="restart()">— Testi yeniden başlat —</button>
 </div>
 </div>
 <script>
